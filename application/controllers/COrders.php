@@ -16,11 +16,12 @@ class COrders extends CI_Controller {
 				'id_address_delivery','id_address_invoice'
 			),
 			'order_invoice' => array(),
+			'order_invoice_payment' => array(),
 			'order_detail' => array(
 				'id_warehouse','id_shop','product_id','product_attribute_id','id_customization','id_tax_rules_group'
 			),
 			'order_carrier' => array('id_carrier'),
-			'order_cart_rule' => array(),
+			'order_cart_rule' => array('id_cart_rule'),
 			'order_history' => array(
 				'id_employee','id_order_state'
 			),
@@ -40,9 +41,15 @@ class COrders extends CI_Controller {
 		$data_order = $this->MOrders->obtenerById('orders', 'id_order', $order_id);
 		
 		// Variable que contendrá la nueva data armada que incluirá los datos relacionados de primer nivel
-		$new_data = array();  
+		$new_data = array();
 		
 		if(count($data_order) > 0){
+		
+			// Ids de las tablas con relaciones a terceras tablas
+			$id_order_detail;
+			$id_order_invoice;
+			$id_order_return;
+			$id_order_slip;
 		
 			$i = 0;
 			// Ciclo de recorrido de tablas
@@ -170,16 +177,10 @@ class COrders extends CI_Controller {
 				$i++;
 			}
 			
-			// Variable que contiene la lista de los campos de relación a otras tablas para traer sus datos asociados
-			//~ $relations = array('id_shop_group','id_shop','id_carrier','id_lang','id_customer','id_cart','id_currency','id_address_delivery','id_address_invoice'/*,'current_state'*/);        
-			
 			/// Convertimos los datos resultantes a formato JSON
 			$jsonencoded = json_encode($new_data, JSON_UNESCAPED_UNICODE);
 			echo $jsonencoded;
 			
-			//~ $fh = fopen("data.json", 'w');
-			//~ fwrite($fh, $jsonencoded);
-			//~ fclose($fh);
 		}
     }
 
