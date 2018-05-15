@@ -292,20 +292,20 @@ class PdfInventario extends FPDF
         # Z = Arriba / Abajo
         # D = Dimencion de la imagen */
                                                       # Y  Z D
-        $this->Image('static/img/GOErp_Logo.png',100,0,15);
+        //~ $this->Image('static/img/GOErp_Logo.png',100,0,15);
     }
     
     // El pie del pdf
     public function Footer()
     {
-        $this->SetY(-30);
-        $this->SetFont('Arial', 'I', 8);
-        $this->Cell(75,5,utf8_decode("Gerente de Administración"),'T',0,'C',1);
-		$this->Cell(35,5,"",'',0,'C',1);
-		//~ $fecha_actual = date('d/m/Y');
-		$this->Cell(75,5,"Presidente",'T',1,'C',1);
-		$this->SetY(-15);
-        $this->Cell(0, 10, utf8_decode('Página ') . $this->PageNo() . '/{nb}', 0, 0, 'R');
+        //~ $this->SetY(-30);
+        //~ $this->SetFont('Arial', 'I', 8);
+        //~ $this->Cell(75,5,utf8_decode("Gerente de Administración"),'T',0,'C',1);
+		//~ $this->Cell(35,5,"",'',0,'C',1);
+		//~ // $fecha_actual = date('d/m/Y');
+		//~ $this->Cell(75,5,"Presidente",'T',1,'C',1);
+		//~ $this->SetY(-15);
+        //~ $this->Cell(0, 10, utf8_decode('Página ') . $this->PageNo() . '/{nb}', 0, 0, 'R');
     }
 
     function Format_number($decimal)

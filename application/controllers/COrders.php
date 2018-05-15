@@ -358,14 +358,17 @@ class COrders extends CI_Controller {
 			
 		}
     }
-
-    // Método para editar
-    public function details($order_id) {
-
-        $result = $this->MOrders->obtenerById($order_id);
-
-        /// Convertimos los datos resultantes a formato JSON
-        echo json_encode($result, JSON_UNESCAPED_UNICODE);
+    
+	// Generación del reporte de la orden
+    function detail_order($order_id)
+    {
+        // Consultamos los datos de la orden
+		$get2 = file_get_contents("http://localhost/orders-json/orders/".$order_id);
+		$exchangeRates2 = json_decode($get2, true);
+        
+        $data['order'] = $exchangeRates2;
+        
+        $this->load->view('pdf/order_report', $data);
     }
 
 }
