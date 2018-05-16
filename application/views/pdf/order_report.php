@@ -91,20 +91,25 @@ if((int)$tasa_iva_decimals > 0){
 }
 $iva = 0;  // Monto en impuestos
 $total = 0;  // Monto total
-foreach($order['order_detail'] as $order_detail){
-	$this->pdf->Cell(30,5,"",'',0,'C',1);
-	// Aplicamos una variación de color de fondo a las filas
-	if($j%2 == 0){
-		$this->pdf->SetFillColor(221,221,221);
+
+if(isset($order['order_detail']) && count($order['order_detail']) > 0){
+	
+	foreach($order['order_detail'] as $order_detail){
+		$this->pdf->Cell(30,5,"",'',0,'C',1);
+		// Aplicamos una variación de color de fondo a las filas
+		if($j%2 == 0){
+			$this->pdf->SetFillColor(221,221,221);
+		}
+		$this->pdf->Cell(20,6,"".$order_detail['product_quantity'],'',0,'C',1);
+		$this->pdf->Cell(85,6,utf8_decode("".$order_detail['product_name']),'',0,'L',1);
+		$this->pdf->Cell(25,6,"".number_format($order_detail['product_price'], 2, ',', ' ')." Bs",'',0,'R',1);
+		$this->pdf->Cell(25,6,"".number_format($order_detail['product_price']*$order_detail['product_quantity'], 2, ',', ' ')." Bs",'',1,'R',1);
+		
+		$subtotal += ($order_detail['product_price']*$order_detail['product_quantity']);
+		
+		$j++;
 	}
-	$this->pdf->Cell(20,6,"".$order_detail['product_quantity'],'',0,'C',1);
-	$this->pdf->Cell(85,6,utf8_decode("".$order_detail['product_name']),'',0,'L',1);
-	$this->pdf->Cell(25,6,"".number_format($order_detail['product_price'], 2, ',', ' ')." Bs",'',0,'R',1);
-	$this->pdf->Cell(25,6,"".number_format($order_detail['product_price']*$order_detail['product_quantity'], 2, ',', ' ')." Bs",'',1,'R',1);
 	
-	$subtotal += ($order_detail['product_price']*$order_detail['product_quantity']);
-	
-	$j++;
 }
 // Subtotal
 $this->pdf->SetFillColor(255,255,255);

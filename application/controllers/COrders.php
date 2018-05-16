@@ -363,7 +363,7 @@ class COrders extends CI_Controller {
     function detail_order($order_id)
     {
         // Consultamos los datos de la orden
-		$get2 = file_get_contents("http://localhost/orders-json/orders/".$order_id);
+		$get2 = file_get_contents(base_url()."orders/".$order_id);
 		$exchangeRates2 = json_decode($get2, true);
         
         $data['order'] = $exchangeRates2;
