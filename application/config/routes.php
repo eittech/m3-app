@@ -55,5 +55,5 @@ $route['translate_uri_dashes'] = FALSE;
 
 /* orders */
 $route['orders/(:num)'] = 'COrders/index/$1';
-$route['orders/details/(:num)'] = 'COrders/detail_order/$1';
+$route['orders/invoice/(:num)'] = 'COrders/detail_order/$1';
 $route['orders/data'] = 'COrders/details';
