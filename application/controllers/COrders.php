@@ -360,7 +360,19 @@ class COrders extends CI_Controller {
     }
     
 	// Generación del reporte de la orden
-    function detail_order($order_id)
+    function pdf_invoice($order_id)
+    {
+        // Consultamos los datos de la orden
+		$get2 = file_get_contents(base_url()."orders/".$order_id);
+		$exchangeRates2 = json_decode($get2, true);
+        
+        $data['order'] = $exchangeRates2;
+        
+        $this->load->view('pdf/invoice_report', $data);
+    }
+    
+	// Generación del reporte de la orden
+    function pdf_order($order_id)
     {
         // Consultamos los datos de la orden
 		$get2 = file_get_contents(base_url()."orders/".$order_id);
