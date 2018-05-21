@@ -65,6 +65,29 @@ if(strlen($order['order'][0]['address_invoice'][0]['address1']) > 80){
 }
 $this->pdf->Cell(63,4,utf8_decode("Dirección fiscal: ".$direccion_factura),0,1,'L',1);
 
+// Imprimimos las direcciones secundarias si existe alguna
+if(strlen($order['order'][0]['address_delivery'][0]['address2']) > 0 || strlen($order['order'][0]['address_invoice'][0]['address2']) > 0){
+	
+	$this->pdf->Cell(63,4,utf8_decode(""),0,0,'L',1);
+	
+	// Recortamos la dirección de entrega secundaria si es muy larga
+	if(strlen($order['order'][0]['address_delivery'][0]['address2']) > 80){
+		$direccion_entrega = substr($order['order'][0]['address_delivery'][0]['address2'], 0, 70);
+	}else{
+		$direccion_entrega = $order['order'][0]['address_delivery'][0]['address2'];
+	}
+	$this->pdf->Cell(63,4,utf8_decode($direccion_entrega),0,0,'L',1);	
+	
+	// Recortamos la dirección de facturación secundaria si es muy larga
+	if(strlen($order['order'][0]['address_invoice'][0]['address2']) > 80){
+		$direccion_factura = substr($order['order'][0]['address_invoice'][0]['address2'], 0, 70);
+	}else{
+		$direccion_factura = $order['order'][0]['address_invoice'][0]['address2'];
+	}
+	$this->pdf->Cell(63,4,utf8_decode($direccion_factura),0,1,'L',1);
+	
+}
+
 // Teléfono
 $this->pdf->SetFillColor(255,255,255);
 $this->pdf->SetFont('Arial','',6);
