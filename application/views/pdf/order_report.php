@@ -26,9 +26,16 @@ $this->pdf->Cell(63,5,utf8_decode("Dirección de Facturación"),0,1,'L',1);
 // Razón social
 $this->pdf->SetFillColor(255,255,255);
 $this->pdf->SetFont('Arial','',5);
-$this->pdf->Cell(63,6,utf8_decode("Nombre o razón social: M3 Uniformes C.A."),0,0,'L',1);
-$this->pdf->Cell(63,4,utf8_decode("Nombre o razón social: ".$order['order'][0]['address_delivery'][0]['company']." CI o RIF: ".$order['order'][0]['address_delivery'][0]['dni']),0,0,'L',1);
-$this->pdf->Cell(63,4,utf8_decode("Nombre o razón social: Ibiza Venezuela, C.A. CI o RIF: J-40358416-8"),0,1,'L',1);
+$this->pdf->Cell(63,6,utf8_decode(""),0,0,'L',1);
+$this->pdf->Cell(63,4,utf8_decode("Nombre o razón social: ".$order['order'][0]['address_delivery'][0]['company']),0,0,'L',1);
+$this->pdf->Cell(63,4,utf8_decode("Nombre o razón social: ".$order['order'][0]['address_invoice'][0]['company']),0,1,'L',1);
+
+// RIF
+$this->pdf->SetFillColor(255,255,255);
+$this->pdf->SetFont('Arial','',5);
+$this->pdf->Cell(63,4,utf8_decode(""),0,0,'L',1);
+$this->pdf->Cell(63,4,utf8_decode("CI o RIF: ".$order['order'][0]['address_delivery'][0]['dni']),0,0,'L',1);
+$this->pdf->Cell(63,4,utf8_decode("CI o RIF: ".$order['order'][0]['address_invoice'][0]['dni']),0,1,'L',1);
 
 //~ $this->pdf->SetFont('Arial','',6);
 //~ $texto = 'Av. Ppal El Castaño - # 131 - Maracay, Aragua. Municipio Girardot. 2101.';
@@ -47,7 +54,7 @@ $this->pdf->Cell(63,4,utf8_decode("Nombre o razón social: Ibiza Venezuela, C.A.
 // Dirección fiscal
 $this->pdf->SetFillColor(255,255,255);
 $this->pdf->SetFont('Arial','',5);
-$this->pdf->Cell(63,4,utf8_decode("Dirección fiscal: Los Samanes, Maracay, estado Aragua, Maracay,"),0,0,'L',1);
+$this->pdf->Cell(63,4,utf8_decode("Nombre o razón social: M3 Uniformes C.A."),0,0,'L',1);
 
 // Recortamos la dirección de entrega si es muy larga
 if(strlen($order['order'][0]['address_delivery'][0]['address1']) > 80){
@@ -65,10 +72,18 @@ if(strlen($order['order'][0]['address_invoice'][0]['address1']) > 80){
 }
 $this->pdf->Cell(63,4,utf8_decode("Dirección fiscal: ".$direccion_factura),0,1,'L',1);
 
+
+// Generamos una línea más para las direcciones principales si éstas superan el límite de 55 caracteres
+if(strlen($order['order'][0]['address_delivery'][0]['address1']) > 55 || strlen($order['order'][0]['address_invoice'][0]['address1']) > 55){
+	$this->pdf->Cell(63,4,utf8_decode(""),0,0,'L',1);
+	$this->pdf->Cell(63,4,utf8_decode(substr($order['order'][0]['address_delivery'][0]['address1'], 55)),0,0,'L',1);
+	$this->pdf->Cell(63,4,utf8_decode(substr($order['order'][0]['address_invoice'][0]['address1'], 55)),0,1,'L',1);
+}
+
 // Imprimimos las direcciones secundarias si existe alguna
 if(strlen($order['order'][0]['address_delivery'][0]['address2']) > 0 || strlen($order['order'][0]['address_invoice'][0]['address2']) > 0){
 	
-	$this->pdf->Cell(63,4,utf8_decode(""),0,0,'L',1);
+	$this->pdf->Cell(63,4,utf8_decode("Dirección fiscal: Los Samanes, Maracay, estado Aragua, Maracay,"),0,0,'L',1);
 	
 	// Recortamos la dirección de entrega secundaria si es muy larga
 	if(strlen($order['order'][0]['address_delivery'][0]['address2']) > 80){
@@ -86,6 +101,18 @@ if(strlen($order['order'][0]['address_delivery'][0]['address2']) > 0 || strlen($
 	}
 	$this->pdf->Cell(63,4,utf8_decode($direccion_factura),0,1,'L',1);
 	
+}else{
+	$this->pdf->Cell(63,4,utf8_decode("Dirección fiscal: Los Samanes, Maracay, estado Aragua, Maracay,"),0,0,'L',1);
+	$this->pdf->Cell(63,4,utf8_decode(""),0,0,'L',1);
+	$this->pdf->Cell(63,4,utf8_decode(""),0,1,'L',1);
+}
+
+
+// Generamos una línea más para las direcciones secundarias si éstas superan el límite de 70 caracteres
+if(strlen($order['order'][0]['address_delivery'][0]['address2']) > 70 || strlen($order['order'][0]['address_invoice'][0]['address2']) > 70){
+	$this->pdf->Cell(63,4,utf8_decode(""),0,0,'L',1);
+	$this->pdf->Cell(63,4,utf8_decode(substr($order['order'][0]['address_delivery'][0]['address2'], 70)),0,0,'L',1);
+	$this->pdf->Cell(63,4,utf8_decode(substr($order['order'][0]['address_invoice'][0]['address2'], 70)),0,1,'L',1);
 }
 
 // Teléfono
