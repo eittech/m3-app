@@ -58,7 +58,7 @@ $this->pdf->SetFont('Arial','B',8);
 $this->pdf->Cell(23,4,utf8_decode("Dirección fiscal: "),'',0,'L',1);
 $this->pdf->SetFont('Arial','',8);
 $width_address = strlen($order['order'][0]['address_invoice'][0]['address1'])+30;  // De esta forma calculamos el espacio a asignarle a la celda (longitud de la cadena + 15)
-$this->pdf->Cell($width_address,4,$order['order'][0]['address_invoice'][0]['address1'],'',0,'L',1);
+$this->pdf->Cell($width_address,4,utf8_decode($order['order'][0]['address_invoice'][0]['address1']),'',0,'L',1);
 // Número de teléfono
 $this->pdf->SetFont('Arial','B',8);
 $this->pdf->Cell(15,4,utf8_decode(" Teléfono: "),'',0,'L',1);
@@ -176,7 +176,7 @@ $this->pdf->SetFont('Arial','B',7);
 $this->pdf->Write(5,utf8_decode("Método de pago:"),'',1,'C',0);
 $this->pdf->SetY(77);
 $this->pdf->SetFont('Arial','',8);
-$this->pdf->Write(5,$order['order'][0]['payment'],'',1,'C',0);
+$this->pdf->Write(5,utf8_decode($order['order'][0]['payment']),'',1,'C',0);
 
 //~ $this->pdf->Cell(125,1,"",'',1,'R',1);  // Cierre de bloque de productos
 
