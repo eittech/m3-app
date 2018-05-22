@@ -117,7 +117,7 @@ $this->pdf->SetFont('Arial','',6);
 $this->pdf->Cell(30,4,$order['order'][0]['id_order']." - ".$order['order'][0]['reference'],'LB',0,'C',1);
 $this->pdf->Cell(30,4,$order['order'][0]['invoice_date'],'B',0,'C',1);
 $this->pdf->Cell(30,4,$order['order'][0]['delivery_date'],'B',0,'C',1);
-$this->pdf->Cell(69,4,$order['order_carrier'][0]['carrier'][0]['name'],'B',0,'C',1);
+$this->pdf->Cell(69,4,utf8_decode($order['order_carrier'][0]['carrier'][0]['name']),'B',0,'C',1);
 $pay_method = $order['order_payment'][0]['payment_method'].': '.number_format((float)$order['order_payment'][0]['amount'], 2, ',', '.');
 $this->pdf->Cell(30,4,$pay_method,'RB',1,'C',1);
 
@@ -176,7 +176,7 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 	foreach($order['order_detail'] as $order_detail){
 		$this->pdf->Cell(10,4,"".$order_detail['product_id'],'LT',0,'C',1);
 		$this->pdf->Cell(20,4,utf8_decode("".$order_detail['product_reference']),'T',0,'C',1);
-		$this->pdf->Cell(149,4,$order_detail['product_name'],'T',0,'L',1);
+		$this->pdf->Cell(149,4,utf8_decode($order_detail['product_name']),'T',0,'L',1);
 		$this->pdf->Cell(10,4,"".$order_detail['product_quantity'],'TR',1,'C',1);
 		
 		$total += ($order_detail['product_quantity']);
