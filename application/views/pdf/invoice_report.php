@@ -101,7 +101,7 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 			$this->pdf->SetFillColor(221,221,221);
 		}
 		$this->pdf->Cell(20,6,"".$order_detail['product_quantity'],'',0,'C',1);
-		if(strlen($order['order'][0]['address_delivery'][0]['address2']) > 57){
+		if(strlen($order_detail['product_name']) > 57){
 			$this->pdf->Cell(85,6,utf8_decode(substr($order_detail['product_name'], 0, 55)."..."),'',0,'L',1);
 		}else{
 			$this->pdf->Cell(85,6,utf8_decode($order_detail['product_name']),'',0,'L',1);
