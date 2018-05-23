@@ -154,16 +154,18 @@ $this->pdf->Ln(10);
 $this->pdf->SetFillColor(240,240,240);
 $this->pdf->SetTextColor(0,0,0); # COLOR DEL TEXTO
 $this->pdf->SetFont('Arial','B',6);
-$this->pdf->Cell(10,4,"ID.",'LTB',0,'C',1);
+$this->pdf->Cell(19,4,"ID.",'LTB',0,'C',1);
+$this->pdf->Cell(10,4,"Cant.",'TB',0,'C',1);
 $this->pdf->Cell(20,4,"Referencia",'TB',0,'C',1);
-$this->pdf->Cell(149,4,"Producto",'TB',0,'C',1);
-$this->pdf->Cell(10,4,"Cant.",'TRB',1,'C',1);
+$this->pdf->Cell(120,4,"Producto",'TB',0,'C',1);
+$this->pdf->Cell(20,4,"Precio",'TRB',1,'C',1);
 
 $this->pdf->SetFillColor(255,255,255);
 $this->pdf->SetTextColor(0,0,0); # COLOR DEL TEXTO
 $this->pdf->SetFont('Arial','',6);
 $j = 1;  // Contador de registros
-$total = 0;  // Cantidad total
+$total_cant = 0;  // Cantidad total
+$total_price = 0;  // Precio total
 
 //~ // Registros de prueba
 //~ $productos = array();
@@ -201,12 +203,14 @@ $total = 0;  // Cantidad total
 if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 	
 	foreach($order['order_detail'] as $order_detail){
-		$this->pdf->Cell(10,4,"".$order_detail['product_id'],'LT',0,'C',1);
+		$this->pdf->Cell(19,4,"".$order_detail['product_id'],'LT',0,'C',1);
+		$this->pdf->Cell(10,4,"".$order_detail['product_quantity'],'T',0,'C',1);
 		$this->pdf->Cell(20,4,utf8_decode("".$order_detail['product_reference']),'T',0,'C',1);
-		$this->pdf->Cell(149,4,utf8_decode($order_detail['product_name']),'T',0,'L',1);
-		$this->pdf->Cell(10,4,"".$order_detail['product_quantity'],'TR',1,'C',1);
+		$this->pdf->Cell(120,4,utf8_decode($order_detail['product_name']),'T',0,'L',1);
+		$this->pdf->Cell(20,4,"".number_format((float)$order_detail['product_price'], 2, ',', '.'),'TR',1,'C',1);
 		
-		$total += ($order_detail['product_quantity']);
+		$total_cant += ($order_detail['product_quantity']);
+		$total_price += ($order_detail['product_price']);
 		
 		$j++;
 	}
@@ -217,9 +221,11 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 $this->pdf->SetFillColor(204,204,204);
 $this->pdf->SetTextColor(0,0,0); # COLOR DEL TEXTO
 $this->pdf->SetFont('Arial','B',6);
-$this->pdf->Cell(30,6,"",'LB',0,'C',1);
-$this->pdf->Cell(149,6,"Total de Productos",'B',0,'L',1);
-$this->pdf->Cell(10,6,"".$total,'RB',1,'C',1);
+$this->pdf->Cell(19,6,"Totales",'LB',0,'C',1);
+$this->pdf->Cell(10,6,"".$total_cant,'B',0,'C',1);
+$this->pdf->Cell(20,6,"",'B',0,'C',1);
+$this->pdf->Cell(120,6,"",'B',0,'L',1);
+$this->pdf->Cell(20,6,"".number_format((float)$total_price, 2, ',', '.'),'RB',1,'C',1);
 
 // Salida del Formato PDF
 $this->pdf->Output("order.pdf", 'I');
