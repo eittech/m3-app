@@ -216,13 +216,32 @@ $total_price = 0;  // Precio total
 if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 	
 	foreach($order['order_detail'] as $order_detail){
-		$this->pdf->Cell(19,4,"".$order_detail['product_id'],'LT',0,'C',1);
-		$this->pdf->Cell(10,4,"".$order_detail['product_quantity'],'T',0,'C',1);
-		$this->pdf->Cell(20,4,utf8_decode("".$order_detail['product_reference']),'T',0,'C',1);
-		$this->pdf->Cell(100,4,utf8_decode($order_detail['product_name']),'T',0,'L',1);
-		$this->pdf->Cell(20,4,"".number_format((float)$order_detail['product_price'], 2, ',', '.'),'T',0,'C',1);
-		$this->pdf->Cell(20,4,"".number_format((float)$order_detail['product_price']*$order_detail['product_quantity'], 2, ',', '.'),'TR',1,'C',1);
 		
+		// Si el nombre del producto es muy extenso, generamos dos filas para que quepa.
+		if(strlen($order_detail['product_name']) > 100){
+			
+			$this->pdf->Cell(19,4,"".$order_detail['product_id'],'LT',0,'C',1);
+			$this->pdf->Cell(10,4,"".$order_detail['product_quantity'],'T',0,'C',1);
+			$this->pdf->Cell(20,4,utf8_decode("".$order_detail['product_reference']),'T',0,'C',1);
+			$this->pdf->Cell(100,4,utf8_decode(substr($order_detail['product_name'], 0, 100)),'T',0,'L',1);
+			$this->pdf->Cell(20,4,"".number_format((float)$order_detail['product_price'], 2, ',', '.'),'T',0,'C',1);
+			$this->pdf->Cell(20,4,"".number_format((float)$order_detail['product_price']*$order_detail['product_quantity'], 2, ',', '.'),'TR',1,'C',1);
+			
+			$this->pdf->Cell(19,3,"",'LB',0,'C',1);
+			$this->pdf->Cell(10,3,"",'B',0,'C',1);
+			$this->pdf->Cell(20,3,"",'B',0,'C',1);
+			$this->pdf->Cell(100,3,utf8_decode(substr($order_detail['product_name'], 100)),'B',0,'L',1);
+			$this->pdf->Cell(20,3,"",'B',0,'C',1);
+			$this->pdf->Cell(20,3,"",'BR',1,'C',1);
+			
+		}else{
+			$this->pdf->Cell(19,4,"".$order_detail['product_id'],'LT',0,'C',1);
+			$this->pdf->Cell(10,4,"".$order_detail['product_quantity'],'T',0,'C',1);
+			$this->pdf->Cell(20,4,utf8_decode("".$order_detail['product_reference']),'T',0,'C',1);
+			$this->pdf->Cell(100,4,utf8_decode($order_detail['product_name']),'T',0,'L',1);
+			$this->pdf->Cell(20,4,"".number_format((float)$order_detail['product_price'], 2, ',', '.'),'T',0,'C',1);
+			$this->pdf->Cell(20,4,"".number_format((float)$order_detail['product_price']*$order_detail['product_quantity'], 2, ',', '.'),'TR',1,'C',1);
+		}
 		$total_cant += ($order_detail['product_quantity']);
 		$subtotal_price += ($order_detail['product_price']*$order_detail['product_quantity']);
 		
