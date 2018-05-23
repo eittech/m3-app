@@ -157,14 +157,27 @@ $this->pdf->SetFont('Arial','B',6);
 $this->pdf->Cell(19,4,"ID.",'LTB',0,'C',1);
 $this->pdf->Cell(10,4,"Cant.",'TB',0,'C',1);
 $this->pdf->Cell(20,4,"Referencia",'TB',0,'C',1);
-$this->pdf->Cell(120,4,"Producto",'TB',0,'C',1);
-$this->pdf->Cell(20,4,"Precio",'TRB',1,'C',1);
+$this->pdf->Cell(100,4,"Producto",'TB',0,'C',1);
+$this->pdf->Cell(20,4,"Precio Unitario",'TB',0,'C',1);
+$this->pdf->Cell(20,4,"Precio Total",'TRB',1,'C',1);
 
 $this->pdf->SetFillColor(255,255,255);
 $this->pdf->SetTextColor(0,0,0); # COLOR DEL TEXTO
 $this->pdf->SetFont('Arial','',6);
 $j = 1;  // Contador de registros
 $total_cant = 0;  // Cantidad total
+$subtotal_price = 0;  // Precio total
+
+// Tasa de impuesto
+$tasa_iva_decimals = explode(".", (string)number_format($order['order'][0]['carrier_tax_rate'], 2));
+$tasa_iva_decimals = $tasa_iva_decimals[1];
+if((int)$tasa_iva_decimals > 0){
+	$tasa_iva = number_format($order['order'][0]['carrier_tax_rate'], 2);  // Tasa de impuesto de la orden
+}else{
+	$tasa_iva = number_format($order['order'][0]['carrier_tax_rate'], 0);  // Tasa de impuesto de la orden
+}
+$iva = 0;  // Monto en impuestos
+
 $total_price = 0;  // Precio total
 
 //~ // Registros de prueba
@@ -206,25 +219,53 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 		$this->pdf->Cell(19,4,"".$order_detail['product_id'],'LT',0,'C',1);
 		$this->pdf->Cell(10,4,"".$order_detail['product_quantity'],'T',0,'C',1);
 		$this->pdf->Cell(20,4,utf8_decode("".$order_detail['product_reference']),'T',0,'C',1);
-		$this->pdf->Cell(120,4,utf8_decode($order_detail['product_name']),'T',0,'L',1);
-		$this->pdf->Cell(20,4,"".number_format((float)$order_detail['product_price'], 2, ',', '.'),'TR',1,'C',1);
+		$this->pdf->Cell(100,4,utf8_decode($order_detail['product_name']),'T',0,'L',1);
+		$this->pdf->Cell(20,4,"".number_format((float)$order_detail['product_price'], 2, ',', '.'),'T',0,'C',1);
+		$this->pdf->Cell(20,4,"".number_format((float)$order_detail['product_price']*$order_detail['product_quantity'], 2, ',', '.'),'TR',1,'C',1);
 		
 		$total_cant += ($order_detail['product_quantity']);
-		$total_price += ($order_detail['product_price']);
+		$subtotal_price += ($order_detail['product_price']*$order_detail['product_quantity']);
 		
 		$j++;
 	}
 	
 }
 
-// Total
+// Subtotal
 $this->pdf->SetFillColor(204,204,204);
 $this->pdf->SetTextColor(0,0,0); # COLOR DEL TEXTO
 $this->pdf->SetFont('Arial','B',6);
-$this->pdf->Cell(19,6,"Totales",'LB',0,'C',1);
+$this->pdf->Cell(19,6,"Cant. Total",'LB',0,'C',1);
 $this->pdf->Cell(10,6,"".$total_cant,'B',0,'C',1);
 $this->pdf->Cell(20,6,"",'B',0,'C',1);
-$this->pdf->Cell(120,6,"",'B',0,'L',1);
+$this->pdf->Cell(100,6,"",'B',0,'L',1);
+$this->pdf->Cell(20,6,"Subtotal",'B',0,'C',1);
+$this->pdf->Cell(20,6,"".number_format((float)$subtotal_price, 2, ',', '.'),'RB',1,'C',1);
+
+// Iva
+$iva = $subtotal_price * (float)$tasa_iva / 100;
+$this->pdf->SetFillColor(255,255,255);
+$this->pdf->SetTextColor(0,0,0); # COLOR DEL TEXTO
+$this->pdf->SetFont('Arial','B',6);
+$this->pdf->Cell(19,6,"",'',0,'C',1);
+$this->pdf->Cell(10,6,"",'',0,'C',1);
+$this->pdf->Cell(20,6,"",'',0,'C',1);
+$this->pdf->Cell(100,6,"",'',0,'L',1);
+$this->pdf->SetFillColor(204,204,204);
+$this->pdf->Cell(20,6,"IVA(".$tasa_iva."%)",'LB',0,'C',1);
+$this->pdf->Cell(20,6,"".number_format((float)$iva, 2, ',', '.'),'RB',1,'C',1);
+
+// Total + Iva
+$total_price = $subtotal_price + $iva;
+$this->pdf->SetFillColor(255,255,255);
+$this->pdf->SetTextColor(0,0,0); # COLOR DEL TEXTO
+$this->pdf->SetFont('Arial','B',6);
+$this->pdf->Cell(19,6,"",'',0,'C',1);
+$this->pdf->Cell(10,6,"",'',0,'C',1);
+$this->pdf->Cell(20,6,"",'',0,'C',1);
+$this->pdf->Cell(100,6,"",'',0,'L',1);
+$this->pdf->SetFillColor(204,204,204);
+$this->pdf->Cell(20,6,"Total",'LB',0,'C',1);
 $this->pdf->Cell(20,6,"".number_format((float)$total_price, 2, ',', '.'),'RB',1,'C',1);
 
 // Salida del Formato PDF
