@@ -13,13 +13,16 @@ $this->pdf->SetTextColor(0,0,0); # COLOR DEL TEXTO
 $this->pdf->SetMargins(8,8,8); # MÁRGENES DEL DOCUMENTO
 
 // SECCIÓN DE CABECERAS DE PROVEEDOR Y CLIENTE
-// Títulos
+// Nombre cliente
 $this->pdf->SetFillColor(255,255,255);
 $this->pdf->SetFont('Arial','B',20);
 $this->pdf->Ln(5);
 $customer_name = utf8_decode($order['order'][0]['customer'][0]['firstname']." ".$order['order'][0]['customer'][0]['lastname']);
-$this->pdf->Cell(63,5,$customer_name,0,0,'L',1);
+$this->pdf->Cell(189,5,$customer_name,0,1,'L',1);
+$this->pdf->Ln(3);
+//Títulos
 $this->pdf->SetFont('Arial','B',6);
+$this->pdf->Cell(63,5,"",0,0,'L',1);
 $this->pdf->Cell(63,5,utf8_decode("Dirección de Entrega"),0,0,'L',1);
 $this->pdf->Cell(63,5,utf8_decode("Dirección de Facturación"),0,1,'L',1);
 
