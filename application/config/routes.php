@@ -58,3 +58,6 @@ $route['orders/(:num)'] = 'COrders/index/$1';
 $route['orders/invoice/(:num)'] = 'COrders/pdf_invoice/$1';
 $route['orders/order/(:num)'] = 'COrders/pdf_order/$1';
 $route['orders/data'] = 'COrders/details';
+
+/* products */
+$route['products/(:num)'] = 'CProducts/index/$1';

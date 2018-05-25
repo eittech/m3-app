@@ -148,7 +148,10 @@ $this->pdf->Cell(30,4,$order['order'][0]['id_order']." - ".$order['order'][0]['r
 $this->pdf->Cell(30,4,$order['order'][0]['invoice_date'],'B',0,'C',1);
 $this->pdf->Cell(30,4,$order['order'][0]['delivery_date'],'B',0,'C',1);
 $this->pdf->Cell(69,4,utf8_decode($order['order_carrier'][0]['carrier'][0]['name']),'B',0,'C',1);
-$pay_method = $order['order_payment'][0]['payment_method'].': '.number_format((float)$order['order_payment'][0]['amount'], 2, ',', '.');
+$pay_method = "";
+if(isset($order['order_payment'][0]['payment_method']) && count($order['order_payment'][0]['payment_method']) > 0){
+	$pay_method = $order['order_payment'][0]['payment_method'].': '.number_format((float)$order['order_payment'][0]['amount'], 2, ',', '.');
+}
 $this->pdf->Cell(30,4,$pay_method,'RB',1,'C',1);
 
 // SECCIÓN DE LISTADO DE PRODUCTOS
