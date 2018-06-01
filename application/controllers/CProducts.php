@@ -2,6 +2,8 @@
 //~ header('Content-Type: text/json; charset=utf-8;');
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+header("Access-Control-Allow-Origin: *");
+
 class CProducts extends CI_Controller {
 	
 	public $table1;  // Tabla con las relaciones de los atributos del producto

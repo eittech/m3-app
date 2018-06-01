@@ -105,100 +105,323 @@ class COrders extends CI_Controller {
 					
 					$field_data = array();
 					
-					foreach($registro as $key => $valor){
+					// Si la tabla iterada es la de detalles de productos
+					if($table == "order_detail" && count($registro) > 0){
 						
-						// Guardamos los ids de las tablas con relaciones secundarias
-						if($table == "order_detail" && $key == "id_order_detail"){
-							$id_order_detail[] = $valor;
-						}
-						if($table == "order_invoice" && $key == "id_order_invoice"){
-							$id_order_invoice[] = $valor;
-						}
-						if($table == "order_return" && $key == "id_order_return"){
-							$id_order_return[] = $valor;
-						}
-						if($table == "order_slip" && $key == "id_order_slip"){
-							$id_order_slip[] = $valor;
-						}
+						// Consultamos las personalizaciones del detalle(producto) 
+						$customizations = $this->MOrders->getCustomizations($data_order[0]->id_cart, $registro->product_attribute_id, $registro->product_id);
 						
-						// Cargamos cada campo-valor del registro
-						$field_data[$key] = $valor;
+						$customs = array();  // Agrupará los atributos de las personalizaciones por id_customization
 						
-						// Si la clave actual está presente en la lista de ids asociativos
-						if(in_array($key, $relations)){
+						// Si hay customizaciones(personalizaciones) del detalle(producto)
+						if(count($customizations) > 0){
 							
-							// Separamos el nombre de la tabla a consultar
-							$table2 = explode("_", $key);
+							// Proceso de agrupación de personalizaciones
+							foreach($customizations as $customization){
+								
+								$customs[$customization->id_customization][$customization->name] = $customization->value;
+								$customs[$customization->id_customization]['product_quantity'] = $customization->quantity;
+								
+							}
 							
-							// Armamos el nombre de la tabla a consultar
-							if(count($table2) > 3){
-								$table2 = $table2[1]."_".$table2[2]."_".$table2[3];
-							}else if(count($table2) > 2){
-								// Si es una clave de dirección entonces tomamos sólo la segunda palabra y obviamos la tercera
+							//  Generamos un registro por cada agrupación(personalización) del detalle(producto)
+							foreach($customs as $key_custom => $attr){
+								
+								// Recorrido de los campos del registro
+								foreach($registro as $key => $valor){
+								
+									// Guardamos los ids de las tablas con relaciones secundarias
+									if($key == "id_order_detail"){
+										$id_order_detail[] = $valor;
+									}
+									
+									// Cargamos cada campo-valor del registro
+									$field_data[$key] = $valor;
+									
+									// Si la clave actual está presente en la lista de ids asociativos
+									if(in_array($key, $relations)){
+										
+										// Separamos el nombre de la tabla a consultar
+										$table2 = explode("_", $key);
+										
+										// Armamos el nombre de la tabla a consultar
+										if(count($table2) > 3){
+											$table2 = $table2[1]."_".$table2[2]."_".$table2[3];
+										}else if(count($table2) > 2){
+											// Si es una clave de dirección entonces tomamos sólo la segunda palabra y obviamos la tercera
+											if($key == "id_address_delivery" || $key == "id_address_invoice"){
+												$table2 = $table2[1];
+											}
+											// Si es una clave con nomenclatura invertida 'xxxx_xxxx_id' tomamos la primera palabra
+											else if($table2[2] == "id"){
+												$table2 = $table2[0]."_".$table2[1];
+											}else{
+												$table2 = $table2[1]."_".$table2[2];
+											}
+										}else if(count($table2) == 2){
+											// Si es una clave con nomenclatura invertida 'xxxx_id' tomamos la primera palabra
+											if($table2[1] == "id"){
+												$table2 = $table2[0];
+											}else{
+												$table2 = $table2[1];
+											}
+										}
+										
+										$clave = $key;
+										// Si es una clave de dirección entonces fijamos la misma en 'id_address'
+										if($key == "id_address_delivery" || $key == "id_address_invoice"){
+											$clave = 'id_address';
+										}
+										// Si es una clave de producto entonces fijamos la misma en 'id_product'
+										else if($key == "product_id"){
+											$clave = 'id_product';
+										}
+										// Si es una clave de atributo de producto entonces fijamos la misma en 'id_product_attribute'|
+										else if($key == "product_attribute_id"){
+											$clave = 'id_product_attribute';
+										}
+										
+										// Consultamos los detalles de la asociación a la tabla resultante
+										$data_detalle = $this->MOrders->obtenerDetalle($table2, $clave, $valor);
+										
+										// Cargamos un nuevo campo-valor con los detalles del campo asociado
+										// En este caso la clave será simplificada y recortada para eliminar el segmento 'id_'
+										$new_key = explode("_", $key, 2);
+										// Si es una clave con nomenclatura invertida 'xxxx_id' tomamos la primera palabra
+										if($key == "product_id"){
+											$new_key = $new_key[0];
+										}
+										// Si es una clave con nomenclatura invertida 'xxxx_xxxx_id' tomamos las dos primeras palabras
+										else if($key == "product_attribute_id"){
+											$new_key = substr($key, 0, -3);
+										}
+										// Si es una clave con nomenclatura normal 'id_xxxx' tomamos la seguda palabra
+										else{
+											$new_key = $new_key[1];
+										}
+										$field_data[$new_key] = $data_detalle;
+										
+									}
+									
+									/* Consultamos el nombre del producto directamente a la tabla 'product_lang', 
+									 * teniendo en cuenta su id y la tienda a la que pertenece.
+									 * */
+									if($key == "product_id"){
+										
+										$datalle_producto = $this->MOrders->obtenerByIds('product_lang', 'id_shop', 'id_product', $data_order[0]->id_shop, $valor);
+										
+										// Cargamos el campo-valor del nombre del producto
+										$field_data['product_short_name'] = $datalle_producto[0]->name;
+										
+									}
+									
+								}
+								
+								// Añadimos los campos de personalización
+								foreach($attr as $key_attr => $value_attr){
+									$field_data[$key_attr] = $value_attr;
+								}
+								
+								$reg_data[] = $field_data;
+							
+							}
+							
+							
+						}else{  // Si no hay customizaciones(personalizaciones) del detalle(producto
+							
+							// Recorrido de los campos del registro
+							foreach($registro as $key => $valor){
+							
+								// Guardamos los ids de las tablas con relaciones secundarias
+								if($key == "id_order_detail"){
+									$id_order_detail[] = $valor;
+								}
+								
+								// Cargamos cada campo-valor del registro
+								$field_data[$key] = $valor;
+								
+								// Si la clave actual está presente en la lista de ids asociativos
+								if(in_array($key, $relations)){
+									
+									// Separamos el nombre de la tabla a consultar
+									$table2 = explode("_", $key);
+									
+									// Armamos el nombre de la tabla a consultar
+									if(count($table2) > 3){
+										$table2 = $table2[1]."_".$table2[2]."_".$table2[3];
+									}else if(count($table2) > 2){
+										// Si es una clave de dirección entonces tomamos sólo la segunda palabra y obviamos la tercera
+										if($key == "id_address_delivery" || $key == "id_address_invoice"){
+											$table2 = $table2[1];
+										}
+										// Si es una clave con nomenclatura invertida 'xxxx_xxxx_id' tomamos la primera palabra
+										else if($table2[2] == "id"){
+											$table2 = $table2[0]."_".$table2[1];
+										}else{
+											$table2 = $table2[1]."_".$table2[2];
+										}
+									}else if(count($table2) == 2){
+										// Si es una clave con nomenclatura invertida 'xxxx_id' tomamos la primera palabra
+										if($table2[1] == "id"){
+											$table2 = $table2[0];
+										}else{
+											$table2 = $table2[1];
+										}
+									}
+									
+									$clave = $key;
+									// Si es una clave de dirección entonces fijamos la misma en 'id_address'
+									if($key == "id_address_delivery" || $key == "id_address_invoice"){
+										$clave = 'id_address';
+									}
+									// Si es una clave de producto entonces fijamos la misma en 'id_product'
+									else if($key == "product_id"){
+										$clave = 'id_product';
+									}
+									// Si es una clave de atributo de producto entonces fijamos la misma en 'id_product_attribute'|
+									else if($key == "product_attribute_id"){
+										$clave = 'id_product_attribute';
+									}
+									
+									// Consultamos los detalles de la asociación a la tabla resultante
+									$data_detalle = $this->MOrders->obtenerDetalle($table2, $clave, $valor);
+									
+									// Cargamos un nuevo campo-valor con los detalles del campo asociado
+									// En este caso la clave será simplificada y recortada para eliminar el segmento 'id_'
+									$new_key = explode("_", $key, 2);
+									// Si es una clave con nomenclatura invertida 'xxxx_id' tomamos la primera palabra
+									if($key == "product_id"){
+										$new_key = $new_key[0];
+									}
+									// Si es una clave con nomenclatura invertida 'xxxx_xxxx_id' tomamos las dos primeras palabras
+									else if($key == "product_attribute_id"){
+										$new_key = substr($key, 0, -3);
+									}
+									// Si es una clave con nomenclatura normal 'id_xxxx' tomamos la seguda palabra
+									else{
+										$new_key = $new_key[1];
+									}
+									$field_data[$new_key] = $data_detalle;
+									
+								}
+								
+								/* Consultamos el nombre del producto directamente a la tabla 'product_lang', 
+								 * teniendo en cuenta su id y la tienda a la que pertenece.
+								 * */
+								if($key == "product_id"){
+									
+									$datalle_producto = $this->MOrders->obtenerByIds('product_lang', 'id_shop', 'id_product', $data_order[0]->id_shop, $valor);
+									
+									// Cargamos el campo-valor del nombre del producto
+									$field_data['product_short_name'] = $datalle_producto[0]->name;
+									
+								}
+								
+							}
+							
+							$reg_data[] = $field_data;
+						}
+						
+					}else{
+						
+						// Recorrido de los campos del registro
+						foreach($registro as $key => $valor){
+							
+							// Guardamos los ids de las tablas con relaciones secundarias
+							if($table == "order_invoice" && $key == "id_order_invoice"){
+								$id_order_invoice[] = $valor;
+							}
+							if($table == "order_return" && $key == "id_order_return"){
+								$id_order_return[] = $valor;
+							}
+							if($table == "order_slip" && $key == "id_order_slip"){
+								$id_order_slip[] = $valor;
+							}
+							
+							// Cargamos cada campo-valor del registro
+							$field_data[$key] = $valor;
+							
+							// Si la clave actual está presente en la lista de ids asociativos
+							if(in_array($key, $relations)){
+								
+								// Separamos el nombre de la tabla a consultar
+								$table2 = explode("_", $key);
+								
+								// Armamos el nombre de la tabla a consultar
+								if(count($table2) > 3){
+									$table2 = $table2[1]."_".$table2[2]."_".$table2[3];
+								}else if(count($table2) > 2){
+									// Si es una clave de dirección entonces tomamos sólo la segunda palabra y obviamos la tercera
+									if($key == "id_address_delivery" || $key == "id_address_invoice"){
+										$table2 = $table2[1];
+									}
+									// Si es una clave con nomenclatura invertida 'xxxx_xxxx_id' tomamos la primera palabra
+									else if($table2[2] == "id"){
+										$table2 = $table2[0]."_".$table2[1];
+									}else{
+										$table2 = $table2[1]."_".$table2[2];
+									}
+								}else if(count($table2) == 2){
+									// Si es una clave con nomenclatura invertida 'xxxx_id' tomamos la primera palabra
+									if($table2[1] == "id"){
+										$table2 = $table2[0];
+									}else{
+										$table2 = $table2[1];
+									}
+								}
+								
+								$clave = $key;
+								// Si es una clave de dirección entonces fijamos la misma en 'id_address'
 								if($key == "id_address_delivery" || $key == "id_address_invoice"){
-									$table2 = $table2[1];
+									$clave = 'id_address';
 								}
-								// Si es una clave con nomenclatura invertida 'xxxx_xxxx_id' tomamos la primera palabra
-								else if($table2[2] == "id"){
-									$table2 = $table2[0]."_".$table2[1];
-								}else{
-									$table2 = $table2[1]."_".$table2[2];
+								// Si es una clave de producto entonces fijamos la misma en 'id_product'
+								else if($key == "product_id"){
+									$clave = 'id_product';
 								}
-							}else if(count($table2) == 2){
+								// Si es una clave de atributo de producto entonces fijamos la misma en 'id_product_attribute'|
+								else if($key == "product_attribute_id"){
+									$clave = 'id_product_attribute';
+								}
+								
+								// Consultamos los detalles de la asociación a la tabla resultante
+								$data_detalle = $this->MOrders->obtenerDetalle($table2, $clave, $valor);
+								
+								// Cargamos un nuevo campo-valor con los detalles del campo asociado
+								// En este caso la clave será simplificada y recortada para eliminar el segmento 'id_'
+								$new_key = explode("_", $key, 2);
 								// Si es una clave con nomenclatura invertida 'xxxx_id' tomamos la primera palabra
-								if($table2[1] == "id"){
-									$table2 = $table2[0];
-								}else{
-									$table2 = $table2[1];
+								if($key == "product_id"){
+									$new_key = $new_key[0];
 								}
+								// Si es una clave con nomenclatura invertida 'xxxx_xxxx_id' tomamos las dos primeras palabras
+								else if($key == "product_attribute_id"){
+									$new_key = substr($key, 0, -3);
+								}
+								// Si es una clave con nomenclatura normal 'id_xxxx' tomamos la seguda palabra
+								else{
+									$new_key = $new_key[1];
+								}
+								$field_data[$new_key] = $data_detalle;
+								
 							}
 							
-							$clave = $key;
-							// Si es una clave de dirección entonces fijamos la misma en 'id_address'
-							if($key == "id_address_delivery" || $key == "id_address_invoice"){
-								$clave = 'id_address';
-							}
-							// Si es una clave de producto entonces fijamos la misma en 'id_product'
-							else if($key == "product_id"){
-								$clave = 'id_product';
-							}
-							// Si es una clave de atributo de producto entonces fijamos la misma en 'id_product_attribute'|
-							else if($key == "product_attribute_id"){
-								$clave = 'id_product_attribute';
+							/* Consultamos el nombre del producto directamente a la tabla 'product_lang', 
+							 * teniendo en cuenta su id y la tienda a la que pertenece.
+							 * */
+							if($table == "order_detail" && $key == "product_id"){
+								
+								$datalle_producto = $this->MOrders->obtenerByIds('product_lang', 'id_shop', 'id_product', $data_order[0]->id_shop, $valor);
+								
+								// Cargamos el campo-valor del nombre del producto
+								$field_data['product_short_name'] = $datalle_producto[0]->name;
+								
 							}
 							
-							// Consultamos los detalles de la asociación a la tabla resultante
-							$data_detalle = $this->MOrders->obtenerDetalle($table2, $clave, $valor);
-							
-							// Cargamos un nuevo campo-valor con los detalles del campo asociado
-							// En este caso la clave será simplificada y recortada para eliminar el segmento 'id_'
-							$new_key = explode("_", $key, 2);
-							// Si es una clave con nomenclatura invertida 'xxxx_xxxx_id' tomamos la primera palabra
-							if($key == "product_id"){
-								$new_key = $new_key[0];
-							}
-							// Si es una clave con nomenclatura invertida 'xxxx_xxxx_id' tomamos la primera palabra
-							else if($key == "product_attribute_id"){
-								$new_key = substr($key, 0, -3);
-							}
-							// Si es una clave con nomenclatura normal 'id_xxxx' tomamos la seguda palabra
-							else{
-								$new_key = $new_key[1];
-							}
-							$field_data[$new_key] = $data_detalle;
-							
-							// foreach($data_detalle as $reg){
-								// 
-								// foreach($reg as $key_sub => $valor_sub){
-									// 
-								// }
-							// 
-							// }
 						}
 						
+						$reg_data[] = $field_data;
 					}
-					
-					$reg_data[] = $field_data;
 					
 				}
 				
