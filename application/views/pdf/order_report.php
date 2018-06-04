@@ -244,6 +244,24 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 		}
 		#CIERRE DE SECCIÓN PARA EL SALTO DE PÁGINA CADA VEZ QUE IMPRIMA 25 REGISTROS (IMPRIMIMOS LAS REFERENCIAS Y LOS TÍTULOS)
 		
+		// Separación de personalización
+		$product_long_name = explode(",", $order_detail['product_name']);
+		
+		$tela = "No Aplica";
+		$pos1 = strpos($product_long_name[0], "Tela");
+		if(!$pos1 === false){
+			$tela = explode(" - ", $product_long_name[0]);
+			$tela = explode(" : ", $tela[1]);
+			$tela = $tela[1];
+		}		
+		
+		$talla = "No Aplica";
+		$pos2 = strpos($product_long_name[1], "Talla");
+		if(!$pos2 === false){
+			$talla = explode(" : ", $product_long_name[1]);
+			$talla = $talla[1];
+		}		
+		
 		// Si el nombre del producto es muy extenso, generamos dos filas para que quepa.
 		if(strlen($order_detail['product_short_name']) > 50){
 			
@@ -251,12 +269,22 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 			$this->pdf->Cell(10,4,"".$order_detail['product_quantity'],'T',0,'C',1);
 			$this->pdf->Cell(20,4,utf8_decode("".$order_detail['product_reference']),'T',0,'C',1);
 			$this->pdf->Cell(41,4,utf8_decode(substr($order_detail['product_short_name'], 0, 50)),'T',0,'L',1);
-			$this->pdf->Cell(15,4,utf8_decode(""),'T',0,'L',1);
-			$this->pdf->Cell(30,4,utf8_decode(""),'T',0,'L',1);
-			$this->pdf->Cell(15,4,utf8_decode(""),'T',0,'L',1);
-			$this->pdf->Cell(30,4,utf8_decode(""),'T',0,'L',1);
-			$this->pdf->Cell(30,4,utf8_decode(""),'T',0,'L',1);
-			$this->pdf->Cell(30,4,utf8_decode(""),'T',0,'L',1);
+			$this->pdf->Cell(15,4,utf8_decode($tela),'T',0,'C',1);
+			// Validación de atributo Color
+			$color = ""; if(isset($order_detail['Color'])){ $color = $order_detail['Color']; }else{ $color = "No Aplica"; }
+			$this->pdf->Cell(30,4,utf8_decode($color),'T',0,'C',1);
+			// Validación de atributo Talla
+			//~ $talla = ""; if(isset($order_detail['Talla'])){ $talla = $order_detail['Talla']; }else{ $talla = "No Aplica"; }
+			$this->pdf->Cell(15,4,utf8_decode($talla),'T',0,'C',1);
+			// Validación de atributo Variable
+			$variable = ""; if(isset($order_detail['Variable'])){ $variable = $order_detail['Variable']; }else{ $variable = "No Aplica"; }
+			$this->pdf->Cell(30,4,utf8_decode($variable),'T',0,'C',1);
+			// Validación de atributo Combinación
+			$combinacion = ""; if(isset($order_detail['Combinación'])){ $combinacion = $order_detail['Combinación']; }else{ $combinacion = "No Aplica"; }
+			$this->pdf->Cell(30,4,utf8_decode($combinacion),'T',0,'C',1);
+			// Validación de atributo Extra
+			$extra = ""; if(isset($order_detail['Extra'])){ $extra = $order_detail['Extra']; }else{ $extra = "No Aplica"; }
+			$this->pdf->Cell(30,4,utf8_decode($extra),'T',0,'C',1);
 			$this->pdf->Cell(20,4,"".number_format((float)$order_detail['product_price'], 2, ',', '.'),'T',0,'C',1);
 			$this->pdf->Cell(20,4,"".number_format((float)$order_detail['product_price']*$order_detail['product_quantity'], 2, ',', '.'),'TR',1,'C',1);
 			
@@ -278,12 +306,12 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 			$this->pdf->Cell(10,4,"".$order_detail['product_quantity'],'T',0,'C',1);
 			$this->pdf->Cell(20,4,utf8_decode("".$order_detail['product_reference']),'T',0,'C',1);
 			$this->pdf->Cell(41,4,utf8_decode($order_detail['product_short_name']),'T',0,'L',1);
-			$this->pdf->Cell(15,4,utf8_decode("Oxfor"),'T',0,'C',1);
+			$this->pdf->Cell(15,4,utf8_decode($tela),'T',0,'C',1);
 			// Validación de atributo Color
 			$color = ""; if(isset($order_detail['Color'])){ $color = $order_detail['Color']; }else{ $color = "No Aplica"; }
 			$this->pdf->Cell(30,4,utf8_decode($color),'T',0,'C',1);
 			// Validación de atributo Talla
-			$talla = ""; if(isset($order_detail['Talla'])){ $color = $order_detail['Talla']; }else{ $talla = "No Aplica"; }
+			//~ $talla = ""; if(isset($order_detail['Talla'])){ $talla = $order_detail['Talla']; }else{ $talla = "No Aplica"; }
 			$this->pdf->Cell(15,4,utf8_decode($talla),'T',0,'C',1);
 			// Validación de atributo Variable
 			$variable = ""; if(isset($order_detail['Variable'])){ $variable = $order_detail['Variable']; }else{ $variable = "No Aplica"; }
