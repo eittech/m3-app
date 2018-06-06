@@ -256,11 +256,13 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 		}		
 		
 		$talla = "No Aplica";
-		$pos2 = strpos($product_long_name[1], "Talla");
-		if(!$pos2 === false){
-			$talla = explode(" : ", $product_long_name[1]);
-			$talla = $talla[1];
-		}		
+		if(isset($product_long_name[1])){  // Si la división del nombre dio como resultado más de una parte
+			$pos2 = strpos($product_long_name[1], "Talla");
+			if(!$pos2 === false){
+				$talla = explode(" : ", $product_long_name[1]);
+				$talla = $talla[1];
+			}
+		}	
 		
 		// Si el nombre del producto es muy extenso, generamos dos filas para que quepa.
 		if(strlen($order_detail['product_short_name']) > 50){
