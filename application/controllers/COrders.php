@@ -2,6 +2,8 @@
 //~ header('Content-Type: text/json; charset=utf-8;');
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+header("Access-Control-Allow-Origin: *");
+
 class COrders extends CI_Controller {
 	
 	public $tables;  // Tablas con relación directa a las ordenes
@@ -580,6 +582,34 @@ class COrders extends CI_Controller {
 			echo $jsonencoded;
 			
 		}
+    }
+    
+    // Actualización del número de factura de un pedido
+    public function update_order() {
+		
+		$invoice_number = $this->input->post('invoice_number');
+		
+		if($invoice_number != '' && gettype($invoice_number)){
+			$datos = array(
+				'id_order' => $this->input->post('id_order'),
+				'invoice_number' => $this->input->post('invoice_number')
+			);
+			
+			$result = $this->MOrders->update('orders',$datos);
+			
+			if ($result) {
+					
+				echo '{"response":"ok"}';
+				
+			}else{
+				
+				echo '{"response":"error"}';
+				
+			}
+		}else{
+			echo '{"response":"invalid number invoice field"}';
+		}
+		
     }
     
 	// Generación del reporte de la orden
