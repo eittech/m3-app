@@ -589,7 +589,7 @@ class COrders extends CI_Controller {
 		
 		$invoice_number = $this->input->post('invoice_number');
 		
-		if($invoice_number != '' && gettype($invoice_number)){
+		if($invoice_number != '' && is_numeric($invoice_number)){
 			$datos = array(
 				'id_order' => $this->input->post('id_order'),
 				'invoice_number' => $this->input->post('invoice_number')
