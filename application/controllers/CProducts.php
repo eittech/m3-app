@@ -63,6 +63,8 @@ class CProducts extends CI_Controller {
 		$get2 = file_get_contents(base_url()."products/".$product_id);
 		$attributes = json_decode($get2, true);
         
+        $telas = "";  // Costruiremos una cadena con las telas
+        
         $tallas = "";  // Costruiremos una cadena con las tallas
         
         $variables = "";  // Costruiremos una cadena con las variables
@@ -101,6 +103,7 @@ class CProducts extends CI_Controller {
 		}
 		
 		// Incluimos las cadenas en la data de contexto a enviar al formato
+		$data['telas'] = $telas;
 		$data['tallas'] = $tallas;
 		$data['variables'] = $variables;
 		$data['combinaciones'] = $combinaciones;
