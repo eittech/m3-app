@@ -95,10 +95,13 @@ $total = 0;  // Monto total
 if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 	
 	foreach($order['order_detail'] as $order_detail){
+		$this->pdf->SetFillColor(255,255,255);
 		$this->pdf->Cell(30,5,"",'',0,'C',1);
 		// Aplicamos una variación de color de fondo a las filas
-		if($j%2 == 0){
+		if($j >= 2 && $j%2 == 0){
 			$this->pdf->SetFillColor(221,221,221);
+		}else{
+			$this->pdf->SetFillColor(255,255,255);
 		}
 		$this->pdf->Cell(20,6,"".$order_detail['product_quantity'],'',0,'C',1);
 		if(strlen($order_detail['product_name']) > 57){
