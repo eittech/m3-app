@@ -36,37 +36,133 @@ $this->pdf->SetFont('Arial','',10);
 // Tallas
 $this->pdf->Cell(120,6,"",'',0,'C',1);
 $this->pdf->Cell(65,6,"TALLAS:",'L',1,'L',1);
-//~ $this->pdf->MultiCell(120,6,"",'','C',1);
-$this->pdf->MultiCell(185,6,utf8_decode($tallas),'LTRB','R',1);
+// Dividimos las tallas en cadenas de 10 en 10
+$tallas = explode("-", $tallas);
+$i = 0;
+$subtalla = "";
+foreach($tallas as $sub){
+	$i += 1;
+	$subtalla .= $sub."-";
+	if($i == 10){
+		$this->pdf->Cell(120,6,"",'',0,'C',1);
+		$this->pdf->Cell(65,6,utf8_decode($subtalla),'L',1,'L',1);
+		$subtalla = "";
+	}else if($i > 10 && $i%10 == 0){
+		$this->pdf->Cell(120,6,"",'',0,'C',1);
+		$this->pdf->Cell(65,6,utf8_decode($subtalla),'L',1,'L',1);
+		$subtalla = "";
+	}else if($i > 10 && $i == count($tallas)){
+		$this->pdf->Cell(120,6,"",'',0,'C',1);
+		$this->pdf->Cell(65,6,utf8_decode($subtalla),'L',1,'L',1);
+	}else if($i < 10 && $i == count($tallas)){
+		$this->pdf->Cell(120,6,"",'',0,'C',1);
+		$this->pdf->Cell(65,6,utf8_decode($subtalla),'L',1,'L',1);
+	}
+}
 // Tela
 $this->pdf->Cell(120,6,"",'',0,'C',1);
 $this->pdf->Cell(65,6,"TELA:",'L',1,'L',1);
-$this->pdf->MultiCell(185,6,utf8_decode(""),'LTRB','R',1);
+// Dividimos las telas en cadenas de 4 en 4
+$telas = explode("-", $telas);
+$j = 0;
+$subtela = "";
+foreach($telas as $sub){
+	$j += 1;
+	$subtela .= $sub."-";
+	if($j == 4){
+		$this->pdf->Cell(120,6,"",'',0,'C',1);
+		$this->pdf->Cell(65,6,utf8_decode($subtela),'L',1,'L',1);
+		$subtela = "";
+	}else if($j > 4 && $j%4 == 0){
+		$this->pdf->Cell(120,6,"",'',0,'C',1);
+		$this->pdf->Cell(65,6,utf8_decode($subtela),'L',1,'L',1);
+		$subtela = "";
+	}else if($j > 4 && $j == count($telas)){
+		$this->pdf->Cell(120,6,"",'',0,'C',1);
+		$this->pdf->Cell(65,6,utf8_decode($subtela),'L',1,'L',1);
+	}else if($j < 4 && $j == count($telas)){
+		$this->pdf->Cell(120,6,"",'',0,'C',1);
+		$this->pdf->Cell(65,6,utf8_decode($subtela),'L',1,'L',1);
+	}
+}
 // Combinación
-//~ $this->pdf->Cell(120,6,"",'',0,'C',1);
-//~ $this->pdf->Cell(65,6,utf8_decode("COMBINACIÓN:"),'L',1,'L',1);
-//~ $subcombinaciones = array();
-//~ $combinaciones = explode("-", $combinaciones);
-//~ $i = 0;
-//~ foreach($combinaciones as $sub){
-	//~ $i += 1; 
-	//~ $subcombinacion = "";
-	//~ $subcombinacion .= $sub."-";
-	//~ if($i == 3){
-		//~ echo $subcombinacion;
-	//~ }
-//~ }
 $this->pdf->Cell(120,6,"",'',0,'C',1);
 $this->pdf->Cell(65,6,utf8_decode("COMBINACIÓN:"),'L',1,'L',1);
-$this->pdf->MultiCell(185,6,utf8_decode($combinaciones),'LTRB','R',1);
+// Dividimos las combinaciones en cadenas de 3 en 3
+$combinaciones = explode("-", $combinaciones);
+$k = 0;
+$subcombinacion = "";
+foreach($combinaciones as $sub){
+	$k += 1;
+	$subcombinacion .= $sub."-";
+	if($k == 3){
+		$this->pdf->Cell(120,6,"",'',0,'C',1);
+		$this->pdf->Cell(65,6,utf8_decode($subcombinacion),'L',1,'L',1);
+		$subcombinacion = "";
+	}else if($k > 3 && $k%3 == 0){
+		$this->pdf->Cell(120,6,"",'',0,'C',1);
+		$this->pdf->Cell(65,6,utf8_decode($subcombinacion),'L',1,'L',1);
+		$subcombinacion = "";
+	}else if($k > 3 && $k == count($combinaciones)){
+		$this->pdf->Cell(120,6,"",'',0,'C',1);
+		$this->pdf->Cell(65,6,utf8_decode($subcombinacion),'L',1,'L',1);
+	}else if($k < 3 && $k == count($combinaciones)){
+		$this->pdf->Cell(120,6,"",'',0,'C',1);
+		$this->pdf->Cell(65,6,utf8_decode($subcombinacion),'L',1,'L',1);
+	}
+}
 // Variable
 $this->pdf->Cell(120,6,"",'',0,'C',1);
 $this->pdf->Cell(65,6,"VARIABLE:",'L',1,'L',1);
-$this->pdf->MultiCell(185,6,utf8_decode($variables),'LTRB','R',1);
+// Dividimos las variables en cadenas de 3 en 3
+$variables = explode("-", $variables);
+$l = 0;
+$subvariable = "";
+foreach($variables as $sub){
+	$l += 1;
+	$subvariable .= $sub."-";
+	if($l == 3){
+		$this->pdf->Cell(120,6,"",'',0,'C',1);
+		$this->pdf->Cell(65,6,utf8_decode($subvariable),'L',1,'L',1);
+		$subvariable = "";
+	}else if($l > 3 && $l%3 == 0){
+		$this->pdf->Cell(120,6,"",'',0,'C',1);
+		$this->pdf->Cell(65,6,utf8_decode($subvariable),'L',1,'L',1);
+		$subvariable = "";
+	}else if($l > 3 && $l == count($variables)){
+		$this->pdf->Cell(120,6,"",'',0,'C',1);
+		$this->pdf->Cell(65,6,utf8_decode($subvariable),'L',1,'L',1);
+	}else if($l < 3 && $l == count($variables)){
+		$this->pdf->Cell(120,6,"",'',0,'C',1);
+		$this->pdf->Cell(65,6,utf8_decode($subvariable),'L',1,'L',1);
+	}
+}
 // Extra
 $this->pdf->Cell(120,6,"",'',0,'C',1);
 $this->pdf->Cell(65,6,"EXTRA:",'L',1,'L',1);
-$this->pdf->MultiCell(185,6,utf8_decode($extras),'LTRB','R',1);
+// Dividimos las variables en cadenas de 3 en 3
+$extras = explode("-", $extras);
+$m = 0;
+$subextra = "";
+foreach($extras as $sub){
+	$m += 1;
+	$subextra .= $sub."-";
+	if($m == 3){
+		$this->pdf->Cell(120,6,"",'',0,'C',1);
+		$this->pdf->Cell(65,6,utf8_decode($subextra),'L',1,'L',1);
+		$subextra = "";
+	}else if($m > 3 && $m%3 == 0){
+		$this->pdf->Cell(120,6,"",'',0,'C',1);
+		$this->pdf->Cell(65,6,utf8_decode($subextra),'L',1,'L',1);
+		$subextra = "";
+	}else if($m > 3 && $m == count($extras)){
+		$this->pdf->Cell(120,6,"",'',0,'C',1);
+		$this->pdf->Cell(65,6,utf8_decode($subextra),'L',1,'L',1);
+	}else if($m < 3 && $m == count($extras)){
+		$this->pdf->Cell(120,6,"",'',0,'C',1);
+		$this->pdf->Cell(65,6,utf8_decode($subextra),'L',1,'L',1);
+	}
+}
 
 
 // Número de pedido
