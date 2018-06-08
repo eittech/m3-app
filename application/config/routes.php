@@ -62,3 +62,4 @@ $route['orders/data'] = 'COrders/details';
 
 /* products */
 $route['products/(:num)'] = 'CProducts/index/$1';
+$route['products/catalogue/(:num)'] = 'CProducts/pdf_catalogue/$1';
