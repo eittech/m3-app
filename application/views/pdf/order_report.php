@@ -287,8 +287,8 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 			// Validación de atributo Extra
 			$extra = ""; if(isset($order_detail['Extra'])){ $extra = $order_detail['Extra']; }else{ $extra = "No Aplica"; }
 			$this->pdf->Cell(30,4,utf8_decode($extra),'T',0,'C',1);
-			$this->pdf->Cell(20,4,"".number_format((float)$order_detail['product_price'], 2, ',', '.'),'T',0,'C',1);
-			$this->pdf->Cell(20,4,"".number_format((float)$order_detail['product_price']*$order_detail['product_quantity'], 2, ',', '.'),'TR',1,'C',1);
+			$this->pdf->Cell(20,4,"".number_format((float)$order_detail['unit_price_tax_excl'], 2, ',', '.'),'T',0,'C',1);
+			$this->pdf->Cell(20,4,"".number_format((float)$order_detail['unit_price_tax_excl']*$order_detail['product_quantity'], 2, ',', '.'),'TR',1,'C',1);
 			
 			$this->pdf->Cell(19,3,"",'LB',0,'C',1);
 			$this->pdf->Cell(10,3,"",'B',0,'C',1);
@@ -324,11 +324,11 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 			// Validación de atributo Extra
 			$extra = ""; if(isset($order_detail['Extra'])){ $extra = $order_detail['Extra']; }else{ $extra = "No Aplica"; }
 			$this->pdf->Cell(30,4,utf8_decode($extra),'T',0,'C',1);
-			$this->pdf->Cell(20,4,"".number_format((float)$order_detail['product_price'], 2, ',', '.'),'T',0,'C',1);
-			$this->pdf->Cell(20,4,"".number_format((float)$order_detail['product_price']*$order_detail['product_quantity'], 2, ',', '.'),'TR',1,'C',1);
+			$this->pdf->Cell(20,4,"".number_format((float)$order_detail['unit_price_tax_excl'], 2, ',', '.'),'T',0,'C',1);
+			$this->pdf->Cell(20,4,"".number_format((float)$order_detail['unit_price_tax_excl']*$order_detail['product_quantity'], 2, ',', '.'),'TR',1,'C',1);
 		}
 		$total_cant += ($order_detail['product_quantity']);
-		$subtotal_price += ($order_detail['product_price']*$order_detail['product_quantity']);
+		$subtotal_price += ($order_detail['unit_price_tax_excl']*$order_detail['product_quantity']);
 		
 		$j++;
 	}
