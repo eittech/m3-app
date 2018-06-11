@@ -68,7 +68,7 @@ class MOrders extends CI_Model {
         $query = $this->db->order_by('customization.id_customization');
         $query = $this->db->get();
         
-        //~ echo $db->last_query();
+        //~ echo $this->db->last_query();
 
         if ($query->num_rows() > 0)
             return $query->result();

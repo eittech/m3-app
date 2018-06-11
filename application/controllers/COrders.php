@@ -200,7 +200,28 @@ class COrders extends CI_Controller {
 						
 					}
 					
-					$reg_data[] = $field_data;
+					/*
+					 * Proceso de agrupación de los productos repetidos.
+					 * Se suman las cantidades de los productos duplicados.
+					 * */
+					if(count($reg_data) == 0){
+						$reg_data[] = $field_data;
+					}else{
+						// Buscamos
+						$encontrado = 0;
+						$i = 0;
+						foreach($reg_data as $reg){
+							if($reg['product_id'] == $field_data['product_id']){
+								$reg_data[$i]['product_quantity'] += (int)$field_data['product_quantity'];
+								$encontrado += 1;
+							}
+							$i += 1;
+						}
+						// Incluimos el nuevo producto si no lo encontramos
+						if($encontrado == 0){
+							$reg_data[] = $field_data;
+						}
+					}
 					
 				}
 				
