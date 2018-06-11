@@ -120,13 +120,13 @@ class CProducts extends CI_Controller {
 		}
 		
 		// Incluimos las cadenas en la data de contexto a enviar al formato
-		$data['telas'] = $telas;
-		$data['tallas'] = $tallas;
-		$data['variables'] = $variables;
-		$data['combinaciones'] = $combinaciones;
-		$data['extras'] = $extras;
-		$data['colores'] = $colores;
-		$data['otros'] = $otros;
+		$data['telas'] = substr($telas, 0, -1);
+		$data['tallas'] = substr($tallas, 0, -1);
+		$data['variables'] = substr($variables, 0, -1);
+		$data['combinaciones'] = substr($combinaciones, 0, -1);
+		$data['extras'] = substr($extras, 0, -1);
+		$data['colores'] = substr($colores, 0, -1);
+		$data['otros'] = substr($otros, 0, -1);
         
         $this->load->view('pdf/catalogue_report', $data);
     }

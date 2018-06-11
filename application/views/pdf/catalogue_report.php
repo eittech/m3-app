@@ -174,7 +174,7 @@ foreach($extras as $sub){
 $this->pdf->Cell(185,6,"",'',1,'L',1);  // Salto de línea
 
 // La imagen siempre se debe cargar al final, de lo contrario se mostrará incorrectamente
-$this->pdf->Image('assets/m3uniformes.jpg', 15, 40, 110, 100,'JPG', 'http://www.desarrolloweb.com');
+$this->pdf->Image('assets/m3uniformes.jpg', 15, 40, 110, 100,'JPG', 'http://psadmin.m3uniformes.com');
 
 // Salida del Formato PDF
 $this->pdf->Output("catalogue.pdf", 'I');
