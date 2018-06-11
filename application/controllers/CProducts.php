@@ -44,6 +44,23 @@ class CProducts extends CI_Controller {
 				$i++;
 			}
 			
+			/* Proceso de ordenamiento alfabético de los distintos atributos.
+			 * Primero capturamos las claves del arreglo y armamos una lista de claves,
+			 * luego usamos esa lista para realizar el ordenamiento por cada clave
+			 * */
+			$claves = array();
+			foreach($new_data as $key => $valor){
+				$claves[] = $key;
+			}
+			
+			foreach($claves as $clave){
+				if($clave != 'Talla'){  // No reordenamos las tallas
+					sort($new_data[$clave]);
+				}
+			}
+			
+			//~ print_r($new_data);
+			
 			//~ Convertimos los datos resultantes a formato JSON
 			$jsonencoded = json_encode($new_data, JSON_UNESCAPED_UNICODE);
 			echo $jsonencoded;
@@ -77,7 +94,7 @@ class CProducts extends CI_Controller {
         
         $otros = "";
         
-        print_r($data['product']);
+        //~ print_r($data['product']);
         
         // Recorremos los atributos para construir las cadenas correspondientes con sus valores
         foreach($attributes as $key => $attr){

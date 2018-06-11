@@ -35,8 +35,8 @@ $this->pdf->SetTextColor(77,77,77); # COLOR DEL TEXTO
 $this->pdf->SetFont('Arial','',10);
 // Tallas
 $this->pdf->Cell(120,6,"",'',0,'C',1);
-$this->pdf->Cell(65,6,"TALLAS:",'L',1,'L',1);
-// Dividimos las tallas en cadenas de 10 en 10
+$this->pdf->Cell(65,6,"TALLAS:",'',1,'L',1);
+// Dividimos las tallas en cadenas de 10 en 10, para que haga un salto de línea
 $tallas = explode("-", $tallas);
 $i = 0;
 $subtalla = "";
@@ -45,24 +45,26 @@ foreach($tallas as $sub){
 	$subtalla .= $sub."-";
 	if($i == 10){
 		$this->pdf->Cell(120,6,"",'',0,'C',1);
-		$this->pdf->Cell(65,6,utf8_decode($subtalla),'L',1,'L',1);
+		$this->pdf->Cell(65,6,utf8_decode($subtalla),'',1,'L',1);
 		$subtalla = "";
 	}else if($i > 10 && $i%10 == 0){
 		$this->pdf->Cell(120,6,"",'',0,'C',1);
-		$this->pdf->Cell(65,6,utf8_decode($subtalla),'L',1,'L',1);
+		$this->pdf->Cell(65,6,utf8_decode($subtalla),'',1,'L',1);
 		$subtalla = "";
 	}else if($i > 10 && $i == count($tallas)){
 		$this->pdf->Cell(120,6,"",'',0,'C',1);
-		$this->pdf->Cell(65,6,utf8_decode($subtalla),'L',1,'L',1);
+		$this->pdf->Cell(65,6,utf8_decode($subtalla),'',1,'L',1);
 	}else if($i < 10 && $i == count($tallas)){
 		$this->pdf->Cell(120,6,"",'',0,'C',1);
-		$this->pdf->Cell(65,6,utf8_decode($subtalla),'L',1,'L',1);
+		$this->pdf->Cell(65,6,utf8_decode($subtalla),'',1,'L',1);
 	}
 }
+$this->pdf->Cell(185,6,"",'',1,'L',1);  // Salto de línea
+
 // Tela
 $this->pdf->Cell(120,6,"",'',0,'C',1);
-$this->pdf->Cell(65,6,"TELA:",'L',1,'L',1);
-// Dividimos las telas en cadenas de 4 en 4
+$this->pdf->Cell(65,6,"TELA:",'',1,'L',1);
+// Dividimos las telas en cadenas de 4 en 4, para que haga un salto de línea
 $telas = explode("-", $telas);
 $j = 0;
 $subtela = "";
@@ -71,24 +73,26 @@ foreach($telas as $sub){
 	$subtela .= $sub."-";
 	if($j == 4){
 		$this->pdf->Cell(120,6,"",'',0,'C',1);
-		$this->pdf->Cell(65,6,utf8_decode($subtela),'L',1,'L',1);
+		$this->pdf->Cell(65,6,utf8_decode($subtela),'',1,'L',1);
 		$subtela = "";
 	}else if($j > 4 && $j%4 == 0){
 		$this->pdf->Cell(120,6,"",'',0,'C',1);
-		$this->pdf->Cell(65,6,utf8_decode($subtela),'L',1,'L',1);
+		$this->pdf->Cell(65,6,utf8_decode($subtela),'',1,'L',1);
 		$subtela = "";
 	}else if($j > 4 && $j == count($telas)){
 		$this->pdf->Cell(120,6,"",'',0,'C',1);
-		$this->pdf->Cell(65,6,utf8_decode($subtela),'L',1,'L',1);
+		$this->pdf->Cell(65,6,utf8_decode($subtela),'',1,'L',1);
 	}else if($j < 4 && $j == count($telas)){
 		$this->pdf->Cell(120,6,"",'',0,'C',1);
-		$this->pdf->Cell(65,6,utf8_decode($subtela),'L',1,'L',1);
+		$this->pdf->Cell(65,6,utf8_decode($subtela),'',1,'L',1);
 	}
 }
+$this->pdf->Cell(185,6,"",'',1,'L',1);  // Salto de línea
+
 // Combinación
 $this->pdf->Cell(120,6,"",'',0,'C',1);
-$this->pdf->Cell(65,6,utf8_decode("COMBINACIÓN:"),'L',1,'L',1);
-// Dividimos las combinaciones en cadenas de 3 en 3
+$this->pdf->Cell(65,6,utf8_decode("COMBINACIÓN:"),'',1,'L',1);
+// Dividimos las combinaciones en cadenas de 3 en 3, para que haga un salto de línea
 $combinaciones = explode("-", $combinaciones);
 $k = 0;
 $subcombinacion = "";
@@ -97,24 +101,26 @@ foreach($combinaciones as $sub){
 	$subcombinacion .= $sub."-";
 	if($k == 3){
 		$this->pdf->Cell(120,6,"",'',0,'C',1);
-		$this->pdf->Cell(65,6,utf8_decode($subcombinacion),'L',1,'L',1);
+		$this->pdf->Cell(65,6,utf8_decode($subcombinacion),'',1,'L',1);
 		$subcombinacion = "";
 	}else if($k > 3 && $k%3 == 0){
 		$this->pdf->Cell(120,6,"",'',0,'C',1);
-		$this->pdf->Cell(65,6,utf8_decode($subcombinacion),'L',1,'L',1);
+		$this->pdf->Cell(65,6,utf8_decode($subcombinacion),'',1,'L',1);
 		$subcombinacion = "";
 	}else if($k > 3 && $k == count($combinaciones)){
 		$this->pdf->Cell(120,6,"",'',0,'C',1);
-		$this->pdf->Cell(65,6,utf8_decode($subcombinacion),'L',1,'L',1);
+		$this->pdf->Cell(65,6,utf8_decode($subcombinacion),'',1,'L',1);
 	}else if($k < 3 && $k == count($combinaciones)){
 		$this->pdf->Cell(120,6,"",'',0,'C',1);
-		$this->pdf->Cell(65,6,utf8_decode($subcombinacion),'L',1,'L',1);
+		$this->pdf->Cell(65,6,utf8_decode($subcombinacion),'',1,'L',1);
 	}
 }
+$this->pdf->Cell(185,6,"",'',1,'L',1);  // Salto de línea
+
 // Variable
 $this->pdf->Cell(120,6,"",'',0,'C',1);
-$this->pdf->Cell(65,6,"VARIABLE:",'L',1,'L',1);
-// Dividimos las variables en cadenas de 3 en 3
+$this->pdf->Cell(65,6,"VARIABLE:",'',1,'L',1);
+// Dividimos las variables en cadenas de 3 en 3, para que haga un salto de línea
 $variables = explode("-", $variables);
 $l = 0;
 $subvariable = "";
@@ -123,23 +129,25 @@ foreach($variables as $sub){
 	$subvariable .= $sub."-";
 	if($l == 3){
 		$this->pdf->Cell(120,6,"",'',0,'C',1);
-		$this->pdf->Cell(65,6,utf8_decode($subvariable),'L',1,'L',1);
+		$this->pdf->Cell(65,6,utf8_decode($subvariable),'',1,'L',1);
 		$subvariable = "";
 	}else if($l > 3 && $l%3 == 0){
 		$this->pdf->Cell(120,6,"",'',0,'C',1);
-		$this->pdf->Cell(65,6,utf8_decode($subvariable),'L',1,'L',1);
+		$this->pdf->Cell(65,6,utf8_decode($subvariable),'',1,'L',1);
 		$subvariable = "";
 	}else if($l > 3 && $l == count($variables)){
 		$this->pdf->Cell(120,6,"",'',0,'C',1);
-		$this->pdf->Cell(65,6,utf8_decode($subvariable),'L',1,'L',1);
+		$this->pdf->Cell(65,6,utf8_decode($subvariable),'',1,'L',1);
 	}else if($l < 3 && $l == count($variables)){
 		$this->pdf->Cell(120,6,"",'',0,'C',1);
-		$this->pdf->Cell(65,6,utf8_decode($subvariable),'L',1,'L',1);
+		$this->pdf->Cell(65,6,utf8_decode($subvariable),'',1,'L',1);
 	}
 }
+$this->pdf->Cell(185,6,"",'',1,'L',1);  // Salto de línea
+
 // Extra
 $this->pdf->Cell(120,6,"",'',0,'C',1);
-$this->pdf->Cell(65,6,"EXTRA:",'L',1,'L',1);
+$this->pdf->Cell(65,6,"EXTRA:",'',1,'L',1);
 // Dividimos las variables en cadenas de 3 en 3
 $extras = explode("-", $extras);
 $m = 0;
@@ -149,50 +157,24 @@ foreach($extras as $sub){
 	$subextra .= $sub."-";
 	if($m == 3){
 		$this->pdf->Cell(120,6,"",'',0,'C',1);
-		$this->pdf->Cell(65,6,utf8_decode($subextra),'L',1,'L',1);
+		$this->pdf->Cell(65,6,utf8_decode($subextra),'',1,'L',1);
 		$subextra = "";
 	}else if($m > 3 && $m%3 == 0){
 		$this->pdf->Cell(120,6,"",'',0,'C',1);
-		$this->pdf->Cell(65,6,utf8_decode($subextra),'L',1,'L',1);
+		$this->pdf->Cell(65,6,utf8_decode($subextra),'',1,'L',1);
 		$subextra = "";
 	}else if($m > 3 && $m == count($extras)){
 		$this->pdf->Cell(120,6,"",'',0,'C',1);
-		$this->pdf->Cell(65,6,utf8_decode($subextra),'L',1,'L',1);
+		$this->pdf->Cell(65,6,utf8_decode($subextra),'',1,'L',1);
 	}else if($m < 3 && $m == count($extras)){
 		$this->pdf->Cell(120,6,"",'',0,'C',1);
-		$this->pdf->Cell(65,6,utf8_decode($subextra),'L',1,'L',1);
+		$this->pdf->Cell(65,6,utf8_decode($subextra),'',1,'L',1);
 	}
 }
+$this->pdf->Cell(185,6,"",'',1,'L',1);  // Salto de línea
 
-
-// Número de pedido
-$this->pdf->SetY(51);
-$this->pdf->SetTextColor(77,77,77); # COLOR DEL TEXTO
-$this->pdf->SetFont('Arial','B',7);
-$this->pdf->Write(5,utf8_decode("Número de pedido:"),'',1,'C',0);
-$this->pdf->SetY(55);
-$this->pdf->SetFont('Arial','',8);
-$this->pdf->Write(5,"",'',1,'C',0);
-
-// Fecha de pedido
-$this->pdf->SetY(62);
-$this->pdf->SetTextColor(77,77,77); # COLOR DEL TEXTO
-$this->pdf->SetFont('Arial','B',7);
-$this->pdf->Write(6,utf8_decode("Fecha de pedido:"),'',1,'R',0);
-$this->pdf->SetY(66);
-$this->pdf->SetFont('Arial','',8);
-$this->pdf->Write(5,"",'',1,'R',0);
-
-// Método de pago
-$this->pdf->SetY(73);
-$this->pdf->SetTextColor(77,77,77); # COLOR DEL TEXTO
-$this->pdf->SetFont('Arial','B',7);
-$this->pdf->Write(5,utf8_decode("Método de pago:"),'',1,'C',0);
-$this->pdf->SetY(77);
-$this->pdf->SetFont('Arial','',8);
-$this->pdf->Write(5,"",'',1,'C',0);
-
-//~ $this->pdf->Cell(125,1,"",'',1,'R',1);  // Cierre de bloque de productos
+// La imagen siempre se debe cargar al final, de lo contrario se mostrará incorrectamente
+$this->pdf->Image('assets/m3uniformes.jpg', 15, 40, 110, 100,'JPG', 'http://www.desarrolloweb.com');
 
 // Salida del Formato PDF
 $this->pdf->Output("catalogue.pdf", 'I');
