@@ -109,10 +109,10 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 		}else{
 			$this->pdf->Cell(85,6,utf8_decode($order_detail['product_name']),'',0,'L',1);
 		}
-		$this->pdf->Cell(25,6,"".number_format($order_detail['product_price'], 2, ',', ' ')." Bs",'',0,'R',1);
-		$this->pdf->Cell(25,6,"".number_format($order_detail['product_price']*$order_detail['product_quantity'], 2, ',', ' ')." Bs",'',1,'R',1);
+		$this->pdf->Cell(25,6,"".number_format($order_detail['unit_price_tax_excl'], 2, ',', ' ')." Bs",'',0,'R',1);
+		$this->pdf->Cell(25,6,"".number_format($order_detail['unit_price_tax_excl']*$order_detail['product_quantity'], 2, ',', ' ')." Bs",'',1,'R',1);
 		
-		$subtotal += ($order_detail['product_price']*$order_detail['product_quantity']);
+		$subtotal += ($order_detail['unit_price_tax_excl']*$order_detail['product_quantity']);
 		
 		$j++;
 	}
