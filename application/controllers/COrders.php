@@ -211,7 +211,7 @@ class COrders extends CI_Controller {
 						$encontrado = 0;
 						$i = 0;
 						foreach($reg_data as $reg){
-							if($reg['product_id'] == $field_data['product_id']){
+							if(isset($field_data['product_id']) && $reg['product_id'] == $field_data['product_id'] && $reg['unit_price_tax_excl'] == $field_data['unit_price_tax_excl']){
 								$reg_data[$i]['product_quantity'] += (int)$field_data['product_quantity'];
 								$encontrado += 1;
 							}
@@ -671,7 +671,7 @@ class COrders extends CI_Controller {
 							
 							/*
 							 * Proceso de agrupación de los productos repetidos.
-							 * No se suman las cantidades de los productos duplicados.
+							 * Se suman las cantidades de los productos duplicados.
 							 * */
 							if(count($reg_data) == 0){
 								$reg_data[] = $field_data;
@@ -680,9 +680,8 @@ class COrders extends CI_Controller {
 								$encontrado = 0;
 								$i = 0;
 								foreach($reg_data as $reg){
-									// Validamos que coincida el id del producto pero no el id de su personalización (customization)
-									if($reg['product_id'] == $field_data['product_id'] && $reg['id_customization'] != $field_data['id_customization']){
-										//~ $reg_data[$i]['product_quantity'] += (int)$field_data['product_quantity'];
+									if($reg['product_id'] == $field_data['product_id']){
+										$reg_data[$i]['product_quantity'] += (int)$field_data['product_quantity'];
 										$encontrado += 1;
 									}
 									$i += 1;
