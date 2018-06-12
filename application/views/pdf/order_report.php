@@ -276,7 +276,7 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 			$color = ""; if(isset($order_detail['Color'])){ $color = $order_detail['Color']; }else{ $color = "No Aplica"; }
 			$this->pdf->Cell(30,4,utf8_decode($color),'T',0,'C',1);
 			// Validación de atributo Talla
-			//~ $talla = ""; if(isset($order_detail['Talla'])){ $talla = $order_detail['Talla']; }else{ $talla = "No Aplica"; }
+			/*$talla = "";*/ if(isset($order_detail['Talla'])){ $talla = $order_detail['Talla']; }/*else{ $talla = "No Aplica"; }*/
 			$this->pdf->Cell(15,4,utf8_decode($talla),'T',0,'C',1);
 			// Validación de atributo Variable
 			$variable = ""; if(isset($order_detail['Variable'])){ $variable = $order_detail['Variable']; }else{ $variable = "No Aplica"; }
@@ -313,7 +313,7 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 			$color = ""; if(isset($order_detail['Color'])){ $color = $order_detail['Color']; }else{ $color = "No Aplica"; }
 			$this->pdf->Cell(30,4,utf8_decode($color),'T',0,'C',1);
 			// Validación de atributo Talla
-			//~ $talla = ""; if(isset($order_detail['Talla'])){ $talla = $order_detail['Talla']; }else{ $talla = "No Aplica"; }
+			/*$talla = "";*/ if(isset($order_detail['Talla'])){ $talla = $order_detail['Talla']; }/*else{ $talla = "No Aplica"; }*/
 			$this->pdf->Cell(15,4,utf8_decode($talla),'T',0,'C',1);
 			// Validación de atributo Variable
 			$variable = ""; if(isset($order_detail['Variable'])){ $variable = $order_detail['Variable']; }else{ $variable = "No Aplica"; }
