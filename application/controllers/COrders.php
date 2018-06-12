@@ -548,7 +548,31 @@ class COrders extends CI_Controller {
 									$field_data[$key_attr] = $value_attr;
 								}
 								
-								$reg_data[] = $field_data;
+								/*
+								 * Proceso de agrupación de los productos repetidos.
+								 * No se suman las cantidades de los productos duplicados.
+								 * */
+								if(count($reg_data) == 0){
+									$reg_data[] = $field_data;
+								}else{
+									// Buscamos
+									$encontrado = 0;
+									$i = 0;
+									foreach($reg_data as $reg){
+										// Validamos que coincida el id del producto pero no el id de su personalización (customization)
+										if($reg['product_id'] == $field_data['product_id'] && $reg['id_customization'] != $field_data['id_customization']){
+											//~ $reg_data[$i]['product_quantity'] += (int)$field_data['product_quantity'];
+											$encontrado += 1;
+										}
+										$i += 1;
+									}
+									// Incluimos el nuevo producto si no lo encontramos
+									if($encontrado == 0){
+										$reg_data[] = $field_data;
+									}
+								}
+								
+								//~ $reg_data[] = $field_data;  // Forma anterior
 							
 							}
 							
@@ -645,7 +669,31 @@ class COrders extends CI_Controller {
 								
 							}
 							
-							$reg_data[] = $field_data;
+							/*
+							 * Proceso de agrupación de los productos repetidos.
+							 * No se suman las cantidades de los productos duplicados.
+							 * */
+							if(count($reg_data) == 0){
+								$reg_data[] = $field_data;
+							}else{
+								// Buscamos
+								$encontrado = 0;
+								$i = 0;
+								foreach($reg_data as $reg){
+									// Validamos que coincida el id del producto pero no el id de su personalización (customization)
+									if($reg['product_id'] == $field_data['product_id'] && $reg['id_customization'] != $field_data['id_customization']){
+										//~ $reg_data[$i]['product_quantity'] += (int)$field_data['product_quantity'];
+										$encontrado += 1;
+									}
+									$i += 1;
+								}
+								// Incluimos el nuevo producto si no lo encontramos
+								if($encontrado == 0){
+									$reg_data[] = $field_data;
+								}
+							}
+							
+							//~ $reg_data[] = $field_data;  // Forma anterior
 						}
 						
 					}else{
