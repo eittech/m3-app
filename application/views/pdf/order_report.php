@@ -372,7 +372,8 @@ $this->pdf->Cell(20,6,"IVA(".$tasa_iva."%)",'LB',0,'C',1);
 $this->pdf->Cell(20,6,"".number_format((float)$iva, 2, ',', '.'),'RB',1,'C',1);
 
 // Total + Iva
-$total_price = $subtotal_price + $iva;
+//~ $total_price = $subtotal_price + $iva;  // Monto anterior calculado desde el documento
+$total_price = $order['order'][0]['total_paid_tax_incl'];
 $this->pdf->SetFillColor(255,255,255);
 $this->pdf->SetTextColor(0,0,0); # COLOR DEL TEXTO
 $this->pdf->SetFont('Arial','B',6);

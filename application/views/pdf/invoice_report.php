@@ -138,7 +138,8 @@ $this->pdf->SetFillColor(255,255,255);
 $this->pdf->SetFont('Arial','',8);
 $this->pdf->Cell(25,6,"".number_format($iva, 2, ',', ' ')." Bs",'',1,'R',1);
 // Total
-$total = $subtotal + $iva;
+//~ $total = $subtotal + $iva;  // Monto anterior calculado desde el documento
+$total = $order['order'][0]['total_paid_tax_incl'];
 $this->pdf->SetFillColor(255,255,255);
 $this->pdf->SetTextColor(77,77,77); # COLOR DEL TEXTO
 $this->pdf->SetFont('Arial','B',8);
