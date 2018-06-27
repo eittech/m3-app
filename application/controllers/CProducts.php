@@ -54,7 +54,7 @@ class CProducts extends CI_Controller {
 			}
 			
 			foreach($claves as $clave){
-				if($clave != 'Talla'){  // No reordenamos las tallas
+				if($clave == 'Color'){  // No reordenamos las tallas
 					sort($new_data[$clave]);
 				}
 			}
