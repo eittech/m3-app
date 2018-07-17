@@ -50,6 +50,30 @@ class MProducts extends CI_Model {
     }
 
     // Método para consultar los atributos asociados a un prodcuto dado
+    public function obtenerCombinaciones() {
+		
+		$select = "p.id_product, p_l.name as product_name, a_l.id_attribute, a_l.name as attribute_name, p_a.id_product_attribute";
+		$query = $this->db->select($select);
+		$query = $this->db->from('product p');
+		$query = $this->db->join('product_lang p_l', 'p_l.id_product=p.id_product');
+		$query = $this->db->join('product_attribute p_a', 'p_a.id_product=p.id_product');
+		$query = $this->db->join('product_attribute_combination p_a_c', 'p_a_c.id_product_attribute=p_a.id_product_attribute');
+		$query = $this->db->join('attribute a', 'a.id_attribute=p_a_c.id_attribute');
+		$query = $this->db->join('attribute_group_lang a_g_l', 'a_g_l.id_attribute_group=a.id_attribute_group');
+		$query = $this->db->join('attribute_lang a_l', 'a_l.id_attribute=p_a_c.id_attribute');
+        $query = $this->db->group_by(array('p_l.name', 'a_l.name'));
+        $query = $this->db->order_by('p.id_product, a_l.id_attribute');
+        $query = $this->db->get();
+        
+        //~ echo $this->db->last_query();
+
+        if ($query->num_rows() > 0)
+            return $query->result();
+        else
+            return $query->result();
+    }
+
+    // Método para consultar los atributos asociados a un prodcuto dado
     public function obtenerAtributos($table, $field, $value) {
 		
 		$select = "a_g_l.id_attribute_group, a_g_l.public_name, a_l.id_attribute, a_l.name";
