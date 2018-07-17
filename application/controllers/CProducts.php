@@ -166,5 +166,101 @@ class CProducts extends CI_Controller {
         
         $this->load->view('pdf/catalogue_report', $data);
     }
+    
+    
+    // Generación de lista completa de productos con sus combinaciones
+    function update_price_prestashop()
+    {
+		$list_products = "";
+		
+		// Listado de productos y sus respectivas combinaciones
+		$attribs_product = $this->MProducts->obtenerCombinaciones();
+		
+		// Construimos la lista del cuerto si existen combinaciones
+		if(count($attribs_product) > 0){
+			
+			$precio_costo;
+			$i = 0;
+			foreach($attribs_product as $combination){
+				
+				// Búsqueda del precio de cada combinación de producto
+				$search_price = $this->calculate_price($combination->id_product, $combination->id_attribute, $combination->id_product_attribute);
+				
+				if($i == 0){
+					
+					$precio_costo = $search_price;
+					
+				}else{
+					
+					// Reasignamos el valor del precio costo si el precio calculado es menor que el anterior
+					if($search_price < $precio_costo){
+						$precio_costo = $search_price;
+					}
+					
+				}
+				
+				$i++;
+				
+			}			
+			
+			foreach($attribs_product as $combination){
+				
+				$precio = 1;
+				$precio_iva = 0;
+				
+				// Búsqueda del precio de cada combinación de producto
+				$search_price = $this->calculate_price($combination->id_product, $combination->id_attribute, $combination->id_product_attribute);
+				
+				$precio = $search_price;
+				
+				$precio_iva = $precio * 1.12;
+				
+				$list_products .= "<tr>
+									<td>".$combination->id_product."</td>
+									<td>".$combination->product_name."</td>
+									<td>".$combination->attribute_name."</td>
+									<td>".$precio."</td>
+									<td>".$precio_costo."</td>
+									<td>".$precio_iva."</td>
+								</tr>";
+				
+			}
+			
+		}
+		
+		// Imprimimos el listado resultante
+		echo "
+			<style>
+				table, tr, th, td {
+					border:1px solid; padding:10px;
+				}
+			</style>
+			
+			<table id='list_products'>
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Nombre Producto</th>
+						<th>Combinación</th>
+						<th>Precio</th>
+						<th>Precio Costo</th>
+						<th>Precio Iva</th>
+					</tr>
+				</thead>
+				<tbody>
+					".$list_products."
+				</tbody>
+			</table>";
+	}
+	
+	
+	// Cálculo del precio de un producto por combinación
+	function calculate_price($id_product, $id_attribute, $id_combination){
+		
+		$price = 1;
+		
+		return $price;
+		
+	}
 
 }
