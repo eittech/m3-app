@@ -73,6 +73,29 @@ class MProducts extends CI_Model {
             return $query->result();
     }
 
+    // Método para consultar el monto total de ganancia
+    public function obtenerPrecio1() {
+		$sql = "SELECT (sum(cf.price)/pa.amount) as resultado FROM costs_fixed cf, productionaverage pa;";
+		
+		$query = $this->db->query($sql);
+        
+        //~ echo $this->db->last_query();
+
+        return $query->result();
+    }
+
+    // Método para consultar los atributos asociados a un prodcuto dado
+    public function obtenerPrecio2($id_combination) {
+		$sql2 = "SELECT sum(m.price * cv.amount) as resultado FROM material m, costs_variable cv ";
+		$sql2 .= "where m.id = cv.id_material and cv.id_combinacion = ".$id_combination;
+		
+		$query = $this->db->query($sql2);
+        
+        //~ echo $this->db->last_query();
+
+        return $query->result();
+    }
+
     // Método para consultar los atributos asociados a un prodcuto dado
     public function obtenerAtributos($table, $field, $value) {
 		
