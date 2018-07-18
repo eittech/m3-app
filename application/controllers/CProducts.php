@@ -207,16 +207,18 @@ class CProducts extends CI_Controller {
 				// Búsqueda del precio de cada combinación de producto
 				$search_price = $this->calculate_price($combination->id_product, $combination->id_attribute, $combination->id_product_attribute);
 				
-				$precio = $search_price;
+				$precio = number_format($search_price, 2, ',', '.');
 				
-				$precio_iva = $precio * 1.12;
+				$precio_iva = number_format($precio * 1.12, 2, ',', '.');
 				
 				$list_products .= "<tr>
 									<td>".$combination->id_product."</td>
+									<td>".$combination->category_name."</td>
+									<td>".$combination->reference."</td>
 									<td>".$combination->product_name."</td>
 									<td>".$combination->attribute_name."</td>
 									<td>".$precio."</td>
-									<td>".$precio_costo."</td>
+									<td>".number_format($precio_costo, 2, ',', '.')."</td>
 									<td>".$precio_iva."</td>
 								</tr>";
 				
@@ -236,6 +238,8 @@ class CProducts extends CI_Controller {
 				<thead>
 					<tr>
 						<th>#</th>
+						<th>Categoría</th>
+						<th>Referencia</th>
 						<th>Nombre Producto</th>
 						<th>Combinación</th>
 						<th>Precio</th>
