@@ -94,8 +94,6 @@ class CProducts extends CI_Controller {
 			}
 			
 		}
-			
-		//~ print_r($new_data);
 		
 		//~ Convertimos los datos resultantes a formato JSON
 		$jsonencoded = json_encode($new_data, JSON_UNESCAPED_UNICODE);
@@ -127,8 +125,6 @@ class CProducts extends CI_Controller {
         $colores = "";  // Costruiremos una cadena con los colores
         
         $otros = "";
-        
-        //~ print_r($data['product']);
         
         // Recorremos los atributos para construir las cadenas correspondientes con sus valores
         foreach($attributes as $key => $attr){
@@ -258,6 +254,27 @@ class CProducts extends CI_Controller {
 	function calculate_price($id_product, $id_attribute, $id_combination){
 		
 		$price = 1;
+		
+		$sub_price1 = 0;
+		
+		$sub_price2 = 0;
+		
+		// Consultamos el monto del costo base
+		$resultado1 = $this->MProducts->obtenerPrecio1();
+		
+		// Consultamos el monto del costo de materiales
+		$resultado2 = $this->MProducts->obtenerPrecio2($id_combination);
+		
+		if(count($resultado1) > 0){
+			$sub_price1 = $resultado1[0]->resultado;
+		}
+		
+		if(count($resultado2) > 0){
+			$sub_price2 = $resultado2[0]->resultado;
+		}
+		
+		// Sumamos el monto del costo base más el monto del costo de materiales
+		$price = $sub_price1 + $sub_price2;
 		
 		return $price;
 		
