@@ -211,6 +211,7 @@ class CProducts extends CI_Controller {
 				
 				$list_products .= "<tr>
 									<td>".$combination->id_product."</td>
+									<td>".$combination->category_name_parent."</td>
 									<td>".$combination->category_name."</td>
 									<td>".$combination->reference."</td>
 									<td>".$combination->product_name."</td>
@@ -243,6 +244,7 @@ class CProducts extends CI_Controller {
 				<thead>
 					<tr>
 						<th>#</th>
+						<th>Categoría Padre</th>
 						<th>Categoría</th>
 						<th>Referencia</th>
 						<th>Nombre Producto</th>
