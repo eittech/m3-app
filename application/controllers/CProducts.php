@@ -222,7 +222,7 @@ class CProducts extends CI_Controller {
 									<td>".number_format($costos_variables, 2, ',', '.')."</td>
 									<td>".$precio_costo."</td>
 									<td>".number_format($precio*1.30, 2, ',', '.')."</td>
-									<td>".number_format($precio*1.60, 2, ',', '.')."</td>
+									<td>".number_format($precio*1.30*1.30, 2, ',', '.')."</td>
 								</tr>";
 				
 			}
