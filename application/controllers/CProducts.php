@@ -175,22 +175,22 @@ class CProducts extends CI_Controller {
 		// Construimos la lista del cuerto si existen combinaciones
 		if(count($attribs_product) > 0){
 			
-			$precio_costo;
+			$precio_minimo;
 			$i = 0;
 			foreach($attribs_product as $combination){
 				
 				// Búsqueda del precio de cada combinación de producto
-				$search_price = $this->calculate_price($combination->id_product, $combination->id_attribute, $combination->id_product_attribute);
+				list($costos_fijos, $costos_variables, $precio) = $this->calculate_price($combination->id_product, $combination->id_attribute, $combination->id_product_attribute);
 				
 				if($i == 0){
 					
-					$precio_costo = $search_price;
+					$precio_minimo = $precio;
 					
 				}else{
 					
 					// Reasignamos el valor del precio costo si el precio calculado es menor que el anterior
-					if($search_price < $precio_costo){
-						$precio_costo = $search_price;
+					if($precio < $precio_minimo){
+						$precio_minimo = $precio;
 					}
 					
 				}
@@ -205,11 +205,9 @@ class CProducts extends CI_Controller {
 				$precio_iva = 0;
 				
 				// Búsqueda del precio de cada combinación de producto
-				$search_price = $this->calculate_price($combination->id_product, $combination->id_attribute, $combination->id_product_attribute);
+				list($costos_fijos, $costos_variables, $precio) = $this->calculate_price($combination->id_product, $combination->id_attribute, $combination->id_product_attribute);
 				
-				$precio = number_format($search_price, 2, ',', '.');
-				
-				$precio_iva = number_format($search_price * 1.12, 2, ',', '.');
+				$precio_costo = number_format($precio, 2, ',', '.');
 				
 				$list_products .= "<tr>
 									<td>".$combination->id_product."</td>
@@ -218,9 +216,12 @@ class CProducts extends CI_Controller {
 									<td>".$combination->product_name."</td>
 									<td class='id-combination'>".$combination->id_product_attribute."</td>
 									<td>".$combination->attribute_name."</td>
-									<td>".$precio."</td>
-									<td>".number_format($precio_costo, 2, ',', '.')."</td>
-									<td>".$precio_iva."</td>
+									<td>".number_format($precio_minimo, 2, ',', '.')."</td>
+									<td>".number_format($costos_fijos, 2, ',', '.')."</td>
+									<td>".number_format($costos_variables, 2, ',', '.')."</td>
+									<td>".$precio_costo."</td>
+									<td>".number_format($precio*1.30, 2, ',', '.')."</td>
+									<td>".number_format($precio*1.60, 2, ',', '.')."</td>
 								</tr>";
 				
 			}
@@ -247,9 +248,12 @@ class CProducts extends CI_Controller {
 						<th>Nombre Producto</th>
 						<th>Id Combinación</th>
 						<th>Combinación</th>
-						<th>Precio</th>
-						<th>Precio Costo</th>
-						<th>Precio Iva</th>
+						<th>Precio Mínimo</th>
+						<th>Costos Fijos</th>
+						<th>Costos Variables</th>
+						<th>Precio de Costo</th>
+						<th>Precio Mayor</th>
+						<th>Precio Detal</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -292,7 +296,7 @@ class CProducts extends CI_Controller {
 		// Sumamos el monto del costo base más el monto del costo de materiales
 		$price = $sub_price1 + $sub_price2;
 		
-		return $price;
+		return array($sub_price1, $sub_price2, $price);
 		
 	}
 
