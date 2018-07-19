@@ -209,7 +209,7 @@ class CProducts extends CI_Controller {
 				
 				$precio = number_format($search_price, 2, ',', '.');
 				
-				$precio_iva = number_format($precio * 1.12, 2, ',', '.');
+				$precio_iva = number_format($search_price * 1.12, 2, ',', '.');
 				
 				$list_products .= "<tr>
 									<td>".$combination->id_product."</td>
