@@ -67,7 +67,7 @@ class MProducts extends CI_Model {
 		$query = $this->db->where('c_l.id_lang', 1);
 		$query = $this->db->where('p_l.id_lang', 1);
         $query = $this->db->group_by(array('p_l.name', 'a_l.id_attribute'));
-        $query = $this->db->order_by('c.position, c_l.id_category, c_p.position');
+        $query = $this->db->order_by('c.position, c_l.id_category, c_p.position, a.position');
         $query = $this->db->get();
         
         //~ echo $this->db->last_query();
