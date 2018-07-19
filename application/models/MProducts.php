@@ -52,7 +52,9 @@ class MProducts extends CI_Model {
     // Método para consultar los atributos asociados a un prodcuto dado
     public function obtenerCombinaciones() {
 		
-		$select = "p.id_product, p.reference, c.position as category_position, c_l.id_category, c_l.name as category_name, c_p.position as category_position_product, p_l.name as product_name, a_l.id_attribute, a_l.name as attribute_name, p_a.id_product_attribute";
+		$select = "p.id_product, p.reference, c.position as category_position, c_l.id_category, c_l.name as category_name, ";
+		$select .= "c_p.position as category_position_product, p_l.name as product_name, a_l.id_attribute, a_l.name as attribute_name, ";
+		$select .= "p_a.id_product_attribute";
 		$query = $this->db->select($select);
 		$query = $this->db->from('product p');
 		$query = $this->db->join('category_product c_p', 'c_p.id_product=p.id_product');
