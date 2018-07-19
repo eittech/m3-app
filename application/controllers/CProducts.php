@@ -216,6 +216,7 @@ class CProducts extends CI_Controller {
 									<td>".$combination->category_name."</td>
 									<td>".$combination->reference."</td>
 									<td>".$combination->product_name."</td>
+									<td class='id-combination'>".$combination->id_product_attribute."</td>
 									<td>".$combination->attribute_name."</td>
 									<td>".$precio."</td>
 									<td>".number_format($precio_costo, 2, ',', '.')."</td>
@@ -232,6 +233,9 @@ class CProducts extends CI_Controller {
 				table, tr, th, td {
 					border:1px solid; padding:10px;
 				}
+				.id-combination {
+					text-align: center;
+				}
 			</style>
 			
 			<table id='list_products'>
@@ -241,6 +245,7 @@ class CProducts extends CI_Controller {
 						<th>Categoría</th>
 						<th>Referencia</th>
 						<th>Nombre Producto</th>
+						<th>Id Combinación</th>
 						<th>Combinación</th>
 						<th>Precio</th>
 						<th>Precio Costo</th>
