@@ -274,8 +274,15 @@ class CProducts extends CI_Controller {
 		// Consultamos el monto del costo de materiales
 		$resultado2 = $this->MProducts->obtenerPrecio2($id_combination);
 		
+		// Consultamos el monto del costo variable correspondiente a la combinación
+		$resultado3 = $this->MProducts->obtenerCostoVariable($id_combination);
+		
 		if(count($resultado1) > 0){
-			$sub_price1 = $resultado1[0]->resultado;
+			if(count($resultado3) > 0){
+				$sub_price1 = $resultado1[0]->resultado * $resultado3[0]->amount;
+			}else{
+				$sub_price1 = $resultado1[0]->resultado;
+			}
 		}
 		
 		if(count($resultado2) > 0){

@@ -103,6 +103,17 @@ class MProducts extends CI_Model {
         return $query->result();
     }
 
+    // Método para consultar el costo variable correspondiente a la combinación
+    public function obtenerCostoVariable($id_combination) {
+		$sql3 = "SELECT c_v.amount FROM costs_variable c_v where c_v.id_material = 0 AND c_v.id_combinacion =".$id_combination;
+		
+		$query = $this->db->query($sql3);
+        
+        //~ echo $this->db->last_query();
+
+        return $query->result();
+    }
+
     // Método para consultar los atributos asociados a un prodcuto dado
     public function obtenerAtributos($table, $field, $value) {
 		
