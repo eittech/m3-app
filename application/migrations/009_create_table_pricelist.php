@@ -56,7 +56,7 @@ class Migration_create_table_pricelist extends CI_Migration
 					"type" => "VARCHAR",
 					"constraint" => 100,
 					"null" => TRUE
-				)
+				),
 				"price_cost" => array(
 					"type" => "FLOAT",
 					"null" => TRUE
