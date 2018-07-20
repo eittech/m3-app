@@ -521,3 +521,20 @@ $config['rewrite_short_tags'] = FALSE;
 | Array:		array('10.0.1.200', '192.168.5.0/24')
 */
 $config['proxy_ips'] = '';
+
+/*
+|--------------------------------------------------------------------------
+| Identification and other aspects of the application
+|--------------------------------------------------------------------------
+|
+| Configuration for the general identification of the application. Includes title, 
+| arrangement of menus, copy right texts and names of the logos.
+*/
+$config['title_app'] = 'Invision';
+$config['title_app_login'] = 'Invision | Login';
+$config['copyright_footer'] = '';
+$config['copyright_footer_login'] = '';
+$config['logo_login'] = 'logotipo_320x130.png';
+$config['logo_menu_bar'] = 'logotipo_200x50.png';
+$config['logo_menu_admin'] = 'logotipo_50x50.png';
+$config['logo_favicon'] = '';
