@@ -53,6 +53,50 @@ $route['default_controller'] = 'welcome';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
+/* Vistas de inicio de sesión */
+$route['login'] = 'CLogin/login/';
+$route['logout'] = 'CLogin/logout/';
+$route['home'] = 'Home/home/';
+$route['admin'] = 'Welcome/admin/';
+
+/* Perfiles */
+$route['profile'] = 'CPerfil';
+$route['profile/register'] = 'CPerfil/register';
+$route['profile/edit/(:num)'] = 'CPerfil/edit/$1';
+$route['profile/delete/(:num)'] = 'CPerfil/delete/$1';
+
+/*   Users */
+$route['users'] = 'CUser';
+$route['users/register'] = 'CUser/register';
+$route['users/edit/(:num)'] = 'CUser/edit/$1';
+$route['users/change_passwd'] = 'CChangePasswd/index';
+$route['users/update_passwd'] = 'CChangePasswd/update_passwd';
+$route['users/update_session'] = 'CUser/transcurrido';
+
+/*   Menús */
+$route['menus'] = 'CMenus';
+$route['menus/register'] = 'CMenus/register';
+$route['menus/edit/(:num)'] = 'CMenus/edit/$1';
+$route['menus/delete/(:num)'] = 'CMenus/delete/$1';
+
+/*   Submenús */
+$route['submenus'] = 'CSubMenus';
+$route['submenus/register'] = 'CSubMenus/register';
+$route['submenus/edit/(:num)'] = 'CSubMenus/edit/$1';
+$route['submenus/delete/(:num)'] = 'CSubMenus/delete/$1';
+
+/*   Acciones */
+$route['actions'] = 'CAcciones';
+$route['actions/register'] = 'CAcciones/register';
+$route['actions/edit/(:num)'] = 'CAcciones/edit/$1';
+$route['actions/delete/(:num)'] = 'CAcciones/delete/$1';
+
+/*   Monedas */
+$route['coins'] = 'CCoins';
+$route['coins/register'] = 'CCoins/register';
+$route['coins/edit/(:num)'] = 'CCoins/edit/$1';
+$route['coins/delete/(:num)'] = 'CCoins/delete/$1';
+
 /* orders */
 $route['orders/(:num)'] = 'COrders/index/$1';
 $route['orders/details/(:num)'] = 'COrders/details/$1';
@@ -64,3 +108,6 @@ $route['orders/update_num_invoice'] = 'COrders/update_order';
 $route['products/(:num)'] = 'CProducts/index/$1';
 $route['products/catalogue/(:num)'] = 'CProducts/pdf_catalogue/$1';
 $route['products/update/price'] = 'CProducts/update_price_prestashop';
+
+/*assets*/
+$route['assets/(:any)'] = 'assets/$1';
