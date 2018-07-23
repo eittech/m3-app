@@ -97,17 +97,34 @@ $route['coins/register'] = 'CCoins/register';
 $route['coins/edit/(:num)'] = 'CCoins/edit/$1';
 $route['coins/delete/(:num)'] = 'CCoins/delete/$1';
 
-/* orders */
+/* Orders */
 $route['orders/(:num)'] = 'COrders/index/$1';
 $route['orders/details/(:num)'] = 'COrders/details/$1';
 $route['orders/invoice/(:num)'] = 'COrders/pdf_invoice/$1';
 $route['orders/order/(:num)'] = 'COrders/pdf_order/$1';
 $route['orders/update_num_invoice'] = 'COrders/update_order';
 
-/* products */
+/* Products */
 $route['products/(:num)'] = 'CProducts/index/$1';
 $route['products/catalogue/(:num)'] = 'CProducts/pdf_catalogue/$1';
 $route['products/update/price'] = 'CProducts/update_price_prestashop';
+
+/* Precios */
+$route['prices'] = 'CPrices';
+$route['prices_list'] = 'CPricesList';
+$route['prices/edit/(:num)'] = 'CPricesList/edit/$1';
+
+/* Costos Fijos */
+$route['fixed_costs'] = 'CFixedCosts';
+
+/* Costos Variables */
+$route['variable_costs'] = 'CVariableCosts';
+
+/* Materiales */
+$route['materials'] = 'CMaterials';
+
+/* Colores */
+$route['colors'] = 'CColors';
 
 /*assets*/
 $route['assets/(:any)'] = 'assets/$1';

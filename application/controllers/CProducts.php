@@ -172,7 +172,7 @@ class CProducts extends CI_Controller {
 		// Listado de productos y sus respectivas combinaciones
 		$attribs_product = $this->MProducts->obtenerCombinaciones();
 		
-		// Construimos la lista del cuerto si existen combinaciones
+		// Construimos la lista del cuerpo si existen combinaciones
 		if(count($attribs_product) > 0){
 			
 			$precio_minimo;

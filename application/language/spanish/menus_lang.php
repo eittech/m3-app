@@ -1,7 +1,5 @@
 <?php
-$lang['Resumen'] = 'Resumen';
-$lang['Cuentas'] = 'Cuentas';
-$lang['Inversiones'] = 'Inversiones';
+$lang['M3 Uniformes'] = 'M3 Uniformes';
 $lang['Usuarios'] = 'Usuarios';
 $lang['Menús'] = 'Menús';
 $lang['Cambiar Contraseña'] = 'Cambiar Contraseña';

@@ -1,12 +1,11 @@
 <?php
-// Submenús de Cuentas
-$lang['Transacciones'] = 'Transacciones';
-$lang['Cuentas'] = 'Cuentas';
-$lang['Monedas'] = 'Monedas';
-
-// Submenús de Inversiones
-$lang['Inversiones'] = 'Inversiones';
-$lang['Invertir'] = 'Invertir';
+// Submenús de Costos
+$lang['Precios'] = 'Precios';
+$lang['Lista de Precios'] = 'Lista de Precios';
+$lang['Costos Fijos'] = 'Costos Fijos';
+$lang['Costos Variables'] = 'Costos Variables';
+$lang['Materiales'] = 'Materiales';
+$lang['Colores'] = 'Colores';
 
 // Submenús de Usuarios
 $lang['Perfiles'] = 'Perfiles';
