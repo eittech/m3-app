@@ -8,6 +8,7 @@ class CPrices extends CI_Controller {
         
 		// Load database
         $this->load->model('MProducts');
+        $this->load->model('MPrices');
 		
     }
 	
@@ -18,74 +19,74 @@ class CPrices extends CI_Controller {
 		$data['ident'] = "M3_Uniformes";
 		$data['ident_sub'] = "Precios";
 		
-		// Listado de productos y sus respectivas combinaciones (Filtrado final)
-		$data['listar'] = array();
-		
-		// Consulta de listado de productos y sus respectivas combinaciones
-		$attribs_product = $this->MProducts->obtenerCombinaciones();
-		
-		// Filtrado de listado de productos y sus respectivas combinaciones
-		$list_products = array();
-		
-		// Construimos la lista del cuerpo si existen combinaciones
-		if(count($attribs_product) > 0){
-			
-			$precio_minimo;
-			$i = 0;
-			foreach($attribs_product as $combination){
-				
-				// Búsqueda del precio de cada combinación de producto
-				list($costos_fijos, $costos_variables, $precio) = $this->calculate_price($combination->id_product, $combination->id_attribute, $combination->id_product_attribute);
-				
-				if($i == 0){
-					
-					$precio_minimo = $precio;
-					
-				}else{
-					
-					// Reasignamos el valor del precio costo si el precio calculado es menor que el anterior
-					if($precio < $precio_minimo){
-						$precio_minimo = $precio;
-					}
-					
-				}
-				
-				$i++;
-				
-			}
-			
-			foreach($attribs_product as $combination){
-				
-				$precio = 1;
-				$precio_iva = 0;
-				
-				// Búsqueda del precio de cada combinación de producto
-				list($costos_fijos, $costos_variables, $precio) = $this->calculate_price($combination->id_product, $combination->id_attribute, $combination->id_product_attribute);
-				
-				$precio_costo = number_format($precio, 2, ',', '.');
-				
-				$list_products[] = array(
-					"id_product" => $combination->id_product,
-					"category_name_parent" => $combination->category_name_parent,
-					"category_name" => $combination->category_name,
-					"reference" => $combination->reference,
-					"product_name" => $combination->product_name,
-					"id_product_attribute" => $combination->id_product_attribute,
-					"attribute_name" => $combination->attribute_name,
-					"price_min" => number_format($precio_minimo, 2, ',', '.'),
-					"costs_fixed" => number_format($costos_fijos, 2, ',', '.'),
-					"costs_variable" => number_format($costos_variables, 2, ',', '.'),
-					"price_cost" => $precio_costo,
-					"price_wholesale" => number_format($precio*1.30, 2, ',', '.'),
-					"price_retail" => number_format($precio*1.30*1.30, 2, ',', '.')
-				);				
-				
-			}
-			
-		}
-		
-		// Transformamos el arreglo resultante en un arreglo de objetos y lo asignamos el arreglo principal
-		$data['listar'] = json_decode(json_encode($list_products), false);
+		//~ // Listado de productos y sus respectivas combinaciones (Filtrado final)
+		//~ $data['listar'] = array();
+		//~ 
+		//~ // Consulta de listado de productos y sus respectivas combinaciones
+		//~ $attribs_product = $this->MProducts->obtenerCombinaciones();
+		//~ 
+		//~ // Filtrado de listado de productos y sus respectivas combinaciones
+		//~ $list_products = array();
+		//~ 
+		//~ // Construimos la lista del cuerpo si existen combinaciones
+		//~ if(count($attribs_product) > 0){
+			//~ 
+			//~ $precio_minimo;
+			//~ $i = 0;
+			//~ foreach($attribs_product as $combination){
+				//~ 
+				//~ // Búsqueda del precio de cada combinación de producto
+				//~ list($costos_fijos, $costos_variables, $precio) = $this->calculate_price($combination->id_product, $combination->id_attribute, $combination->id_product_attribute);
+				//~ 
+				//~ if($i == 0){
+					//~ 
+					//~ $precio_minimo = $precio;
+					//~ 
+				//~ }else{
+					//~ 
+					//~ // Reasignamos el valor del precio costo si el precio calculado es menor que el anterior
+					//~ if($precio < $precio_minimo){
+						//~ $precio_minimo = $precio;
+					//~ }
+					//~ 
+				//~ }
+				//~ 
+				//~ $i++;
+				//~ 
+			//~ }
+			//~ 
+			//~ foreach($attribs_product as $combination){
+				//~ 
+				//~ $precio = 1;
+				//~ $precio_iva = 0;
+				//~ 
+				//~ // Búsqueda del precio de cada combinación de producto
+				//~ list($costos_fijos, $costos_variables, $precio) = $this->calculate_price($combination->id_product, $combination->id_attribute, $combination->id_product_attribute);
+				//~ 
+				//~ $precio_costo = number_format($precio, 2, ',', '.');
+				//~ 
+				//~ $list_products[] = array(
+					//~ "id_product" => $combination->id_product,
+					//~ "category_name_parent" => $combination->category_name_parent,
+					//~ "category_name" => $combination->category_name,
+					//~ "reference" => $combination->reference,
+					//~ "product_name" => $combination->product_name,
+					//~ "id_product_attribute" => $combination->id_product_attribute,
+					//~ "attribute_name" => $combination->attribute_name,
+					//~ "price_min" => number_format($precio_minimo, 2, ',', '.'),
+					//~ "costs_fixed" => number_format($costos_fijos, 2, ',', '.'),
+					//~ "costs_variable" => number_format($costos_variables, 2, ',', '.'),
+					//~ "price_cost" => $precio_costo,
+					//~ "price_wholesale" => number_format($precio*1.30, 2, ',', '.'),
+					//~ "price_retail" => number_format($precio*1.30*1.30, 2, ',', '.')
+				//~ );				
+				//~ 
+			//~ }
+			//~ 
+		//~ }
+		//~ 
+		//~ // Transformamos el arreglo resultante en un arreglo de objetos y lo asignamos el arreglo principal
+		//~ $data['listar'] = json_decode(json_encode($list_products), false);
 		
 		// Filtro para cargar las vistas según el perfil del usuario logueado
 		$perfil_id = $this->session->userdata('logged_in')['profile_id'];
@@ -138,6 +139,102 @@ class CPrices extends CI_Controller {
 		
 		return array($sub_price1, $sub_price2, $price);
 		
+	}
+	
+/**
+ * ------------------------------------------------------
+ * Método alternativo para cargar los datos de la tabla de 
+ * transacciones usando ajax.
+ * ------------------------------------------------------
+ * 
+ * Este método permite construir un listado de transacciones adaptado 
+ * a la solicitud realizada con ajax desde la vista por el plugin datatable.
+ */
+    public function ajax_prices()
+	{
+		// Listado de combinaciones de productos y sus respectivos precios
+		$fetch_data = $this->MPrices->make_datatables();
+		
+		// Cálculo del precio mínimo
+		$precio_minimo;
+		$i = 0;
+		foreach($fetch_data as $row){
+			
+			// Búsqueda del precio de cada combinación de producto
+			list($costos_fijos, $costos_variables, $precio) = $this->calculate_price($row->id_product, $row->id_attribute, $row->id_product_attribute);
+			
+			if($i == 0){
+				
+				$precio_minimo = $precio;
+				
+			}else{
+				
+				// Reasignamos el valor del precio costo si el precio calculado es menor que el anterior
+				if($precio < $precio_minimo){
+					$precio_minimo = $precio;
+				}
+				
+			}
+			
+			$i++;
+			
+		}
+		
+		// Armado del nuevo listado
+		$data = array();
+		$i = 1;
+		foreach($fetch_data as $row){
+			
+			$sub_array = array();
+			
+			$precio = 1;
+			$precio_iva = 0;
+			
+			// Búsqueda del precio de cada combinación de producto
+			list($costos_fijos, $costos_variables, $precio) = $this->calculate_price($row->id_product, $row->id_attribute, $row->id_product_attribute);
+			
+			$precio_costo = number_format($precio, 2, ',', '.');
+			
+			$edit;
+			
+			// Validación de botón de edición
+			if($this->session->userdata('logged_in')['profile_id'] == 1){
+				$edit = "<a href='".base_url()."prices/edit/".$row->id_product."' title='".$this->lang->line('list_edit_prices')."'><i class='fa fa-edit fa-2x'></i></a>";
+			}else{
+				$edit = "<a ><i class='fa fa-ban fa-2x' style='color:#D33333;'></i></a>";
+			}
+			
+			// Mostramos los datos ya filtrados
+			$sub_array[] = $row->id_product;
+			$sub_array[] = $row->category_name_parent;
+			$sub_array[] = $row->category_name;
+			$sub_array[] = $row->reference;
+			$sub_array[] = $row->product_name;
+			$sub_array[] = $row->id_product_attribute;
+			$sub_array[] = $row->attribute_name;
+			$sub_array[] = number_format($precio_minimo, 2, ',', '.');
+			$sub_array[] = number_format($costos_fijos, 2, ',', '.');
+			$sub_array[] = number_format($costos_variables, 2, ',', '.');
+			$sub_array[] = $precio_costo;
+			$sub_array[] = number_format($precio*1.30, 2, ',', '.');
+			$sub_array[] = number_format($precio*1.30*1.30, 2, ',', '.');
+			$sub_array[] = "<a target='_blank' href='".base_url()."products/catalogue/".$row->id_product."'><i class='fa fa-search fa-2x'></i></a>";
+			$sub_array[] = $edit;
+			$sub_array[] = "<a target='_blank' href='".base_url()."products/catalogue/".$row->id_product."'><i class='fa fa-search fa-2x'></i></a>";
+			
+			$data[] = $sub_array;
+			
+			$i++;
+		}
+		
+		$output = array(
+			"draw" => intval($_POST["draw"]),
+			"recordsTotal" => $this->MPrices->get_all_data(),
+			"recordsFiltered" => $this->MPrices->get_filtered_data(),
+			"data" => $data
+		);
+		
+		echo json_encode($output);
 	}
 	
 }

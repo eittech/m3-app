@@ -113,6 +113,7 @@ $route['products/update/price'] = 'CProducts/update_price_prestashop';
 $route['prices'] = 'CPrices';
 $route['prices_list'] = 'CPricesList';
 $route['prices/edit/(:num)'] = 'CPricesList/edit/$1';
+$route['prices_json'] = 'CPrices/ajax_prices';
 
 /* Costos Fijos */
 $route['fixed_costs'] = 'CFixedCosts';
