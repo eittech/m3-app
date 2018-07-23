@@ -62,7 +62,7 @@
                                     <th><?php echo $this->lang->line('list_download_prices'); ?></th>
                                 </tr>
                             </thead>
-                            <!--<tbody>
+                            <tbody>
                                 <?php $i = 1; ?>
                                 <?php foreach ($listar as $producto) { ?>
                                     <tr style="text-align: center">
@@ -121,7 +121,7 @@
                                     </tr>
                                     <?php $i++ ?>
                                 <?php } ?>
-                            </tbody>-->
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -145,21 +145,6 @@ $(document).ready(function(){
         "iDisplayStart": 0,
         "sPaginationType": "full_numbers",
         "aLengthMenu": [10, 50, 100, 150],
-        // Nuevo
-        "processing": true,
-        "serverSide": true,
-        "order": [],
-        "ajax": {
-			"method":"POST",
-			"url": "<?= base_url() ?>prices_json"
-		},
-		"columnDefs": [
-			{
-				//~ "target": [0, 3, 4],
-				"orderable":false,
-			}
-		],
-		//Nuevo
         "oLanguage": {"sUrl": "<?= assets_url() ?>js/es.txt"},
         "aoColumns": [
             {"sClass": "registro center", "sWidth": "5%"},
@@ -172,7 +157,7 @@ $(document).ready(function(){
             {"sClass": "none", "sWidth": "30%"},
             {"sClass": "none", "sWidth": "30%"},
             {"sClass": "none", "sWidth": "30%"},
-            {"sClass": "registro center", "sWidth": "10%", "bSortable": false},
+            {"sClass": "registro center", "sWidth": "10%"},
             {"sClass": "none", "sWidth": "30%"},
             {"sClass": "none", "sWidth": "30%"},
             {"sWidth": "3%", "bSortable": false, "sClass": "center sorting_false", "bSearchable": false},
