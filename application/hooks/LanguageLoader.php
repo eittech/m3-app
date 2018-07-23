@@ -19,6 +19,7 @@ class LanguageLoader
             $ci->lang->load('submenus_module',$siteLang);
             $ci->lang->load('actions',$siteLang);
             $ci->lang->load('change_passwd',$siteLang);
+            $ci->lang->load('prices',$siteLang);
         } else {
             $ci->lang->load('header','spanish');
             $ci->lang->load('login','spanish');
@@ -32,6 +33,7 @@ class LanguageLoader
             $ci->lang->load('submenus_module','spanish');
             $ci->lang->load('actions','spanish');
             $ci->lang->load('change_passwd','spanish');
+            $ci->lang->load('prices','spanish');
         }
     }
 }
