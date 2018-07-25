@@ -26,9 +26,11 @@ class MProducts extends CI_Model {
 
     //Public method to obtain the products
     public function obtenerProductos() {
+		
         $query = $this->db->get('product');
 
         return $query->result();
+        
     }
 
     // Método para consultar los atributos asociados a un prodcuto dado

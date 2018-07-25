@@ -182,6 +182,8 @@ class CProducts extends CI_Controller {
 			//~ $productos = $this->MProducts->obtenerProductos();  // Listado de productos sin combinaciones
 			//~ 
 			//~ foreach($productos as $producto){
+				
+				//~ $precios_minimos[$producto->id_product] = 0;
 			
 				$i = 0;
 				foreach($attribs_product as $combination){
@@ -189,18 +191,25 @@ class CProducts extends CI_Controller {
 					// Búsqueda del precio de cada combinación de producto
 					list($costos_fijos, $costos_variables, $precio) = $this->calculate_price($combination->id_product, $combination->id_attribute, $combination->id_product_attribute);
 					
-					if($i == 0){
+					//~ if($combination->id_product == $producto->id_product){
 						
-						$precio_minimo = $precio;
-						
-					}else{
-						
-						// Reasignamos el valor del precio costo si el precio calculado es menor que el anterior
-						if($precio < $precio_minimo = $precio){
+						if($i == 0){
+							
 							$precio_minimo = $precio;
+							//~ $precios_minimos[$producto->id_product] = $precio;
+							
+						}else{
+							
+							// Reasignamos el valor del precio costo si el precio calculado es menor que el anterior
+							//~ if($precio < $precios_minimos[$producto->id_product]){
+							if($precio < $precio_minimo){
+								$precio_minimo = $precio;
+								//~ $precios_minimos[$producto->id_product] = $precio;
+							}
+							
 						}
 						
-					}
+					//~ }
 					
 					$i++;
 					
@@ -211,7 +220,7 @@ class CProducts extends CI_Controller {
 			//~ sort($precios_minimos);
 			//~ 
 			//~ print_r($precios_minimos);
-			
+			//~ 
 			//~ exit();
 			
 			foreach($attribs_product as $combination){
