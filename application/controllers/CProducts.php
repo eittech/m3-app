@@ -291,6 +291,7 @@ class CProducts extends CI_Controller {
 		// Construimos la lista del cuerpo si existen combinaciones
 		if(count($attribs_product) > 0){
 			
+			$i = 1;
 			foreach($attribs_product as $combination){
 				
 				$precio = 1;
@@ -302,7 +303,7 @@ class CProducts extends CI_Controller {
 				$precio_costo = number_format($precio, 2, ',', '.');
 				
 				$list_products .= "<tr>
-									<td>".$combination->id_product."</td>
+									<td>".$i."</td>
 									<td>".$combination->category_name_parent."</td>
 									<td>".$combination->category_name."</td>
 									<td>".$combination->product_name."</td>
@@ -310,6 +311,8 @@ class CProducts extends CI_Controller {
 									<td>".number_format($precio*1.30, 2, ',', '.')."</td>
 									<td>".number_format($precio*1.30*1.30, 2, ',', '.')."</td>
 								</tr>";
+								
+				$i++;
 				
 			}
 			
