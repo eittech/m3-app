@@ -108,6 +108,7 @@ $route['orders/update_num_invoice'] = 'COrders/update_order';
 $route['products/(:num)'] = 'CProducts/index/$1';
 $route['products/catalogue/(:num)'] = 'CProducts/pdf_catalogue/$1';
 $route['products/update/price'] = 'CProducts/update_price_prestashop';
+$route['products/update/public_price'] = 'CProducts/update_public_price_prestashop';
 
 /* Precios */
 $route['prices'] = 'CPrices';

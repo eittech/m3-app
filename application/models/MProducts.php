@@ -13,7 +13,7 @@ class MProducts extends CI_Model {
         //~ $this->db_psadmin = $this->load->database('psadmin', TRUE);  // Indicamos que use la base de datos 'psadmin' en vez de 'm32018'
     }
 
-    //Public method to obtain the orders
+    //Public method to obtain the attribute product
     public function obtener() {
         $query = $this->db->get('attribute_product');
         //~ $query = $db_psadmin->get('attribute_product');
@@ -22,6 +22,13 @@ class MProducts extends CI_Model {
             return $query->result();
         else
             return $query->result();
+    }
+
+    //Public method to obtain the products
+    public function obtenerProductos() {
+        $query = $this->db->get('product');
+
+        return $query->result();
     }
 
     // Método para consultar los atributos asociados a un prodcuto dado

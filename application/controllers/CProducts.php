@@ -175,29 +175,44 @@ class CProducts extends CI_Controller {
 		// Construimos la lista del cuerpo si existen combinaciones
 		if(count($attribs_product) > 0){
 			
+			$precios_minimos = array();
+			
 			$precio_minimo;
-			$i = 0;
-			foreach($attribs_product as $combination){
-				
-				// Búsqueda del precio de cada combinación de producto
-				list($costos_fijos, $costos_variables, $precio) = $this->calculate_price($combination->id_product, $combination->id_attribute, $combination->id_product_attribute);
-				
-				if($i == 0){
+			
+			//~ $productos = $this->MProducts->obtenerProductos();  // Listado de productos sin combinaciones
+			//~ 
+			//~ foreach($productos as $producto){
+			
+				$i = 0;
+				foreach($attribs_product as $combination){
 					
-					$precio_minimo = $precio;
+					// Búsqueda del precio de cada combinación de producto
+					list($costos_fijos, $costos_variables, $precio) = $this->calculate_price($combination->id_product, $combination->id_attribute, $combination->id_product_attribute);
 					
-				}else{
-					
-					// Reasignamos el valor del precio costo si el precio calculado es menor que el anterior
-					if($precio < $precio_minimo){
+					if($i == 0){
+						
 						$precio_minimo = $precio;
+						
+					}else{
+						
+						// Reasignamos el valor del precio costo si el precio calculado es menor que el anterior
+						if($precio < $precio_minimo = $precio){
+							$precio_minimo = $precio;
+						}
+						
 					}
+					
+					$i++;
 					
 				}
 				
-				$i++;
-				
-			}			
+			//~ }
+			
+			//~ sort($precios_minimos);
+			//~ 
+			//~ print_r($precios_minimos);
+			
+			//~ exit();
 			
 			foreach($attribs_product as $combination){
 				
@@ -254,6 +269,71 @@ class CProducts extends CI_Controller {
 						<th>Costos Fijos</th>
 						<th>Costos Variables</th>
 						<th>Precio de Costo</th>
+						<th>Precio Mayor</th>
+						<th>Precio Detal</th>
+					</tr>
+				</thead>
+				<tbody>
+					".$list_products."
+				</tbody>
+			</table>";
+	}
+    
+    
+    // Generación de lista completa de productos con sus combinaciones
+    function update_public_price_prestashop()
+    {
+		$list_products = "";
+		
+		// Listado de productos y sus respectivas combinaciones
+		$attribs_product = $this->MProducts->obtenerCombinaciones();
+		
+		// Construimos la lista del cuerpo si existen combinaciones
+		if(count($attribs_product) > 0){
+			
+			foreach($attribs_product as $combination){
+				
+				$precio = 1;
+				$precio_iva = 0;
+				
+				// Búsqueda del precio de cada combinación de producto
+				list($costos_fijos, $costos_variables, $precio) = $this->calculate_price($combination->id_product, $combination->id_attribute, $combination->id_product_attribute);
+				
+				$precio_costo = number_format($precio, 2, ',', '.');
+				
+				$list_products .= "<tr>
+									<td>".$combination->id_product."</td>
+									<td>".$combination->category_name_parent."</td>
+									<td>".$combination->category_name."</td>
+									<td>".$combination->product_name."</td>
+									<td>".$combination->attribute_name."</td>
+									<td>".number_format($precio*1.30, 2, ',', '.')."</td>
+									<td>".number_format($precio*1.30*1.30, 2, ',', '.')."</td>
+								</tr>";
+				
+			}
+			
+		}
+		
+		// Imprimimos el listado resultante
+		echo "
+			<style>
+				table, tr, th, td {
+					border:1px solid; padding:10px;
+				}
+				.id-combination {
+					text-align: center;
+				}
+			</style>
+			
+			<table id='list_products'>
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Categoría</th>
+						<th>Sub Categoría</th>
+						<th>Producto</th>
+						<th>Tela</th>
 						<th>Precio Mayor</th>
 						<th>Precio Detal</th>
 					</tr>
