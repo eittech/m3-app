@@ -112,6 +112,7 @@ $route['products/update/public_price'] = 'CProducts/update_public_price_prestash
 
 /* Precios */
 $route['prices'] = 'CPrices';
+$route['prices/save'] = 'CPrices/save_prices';
 $route['prices_list'] = 'CPricesList';
 $route['prices/edit/(:num)'] = 'CPricesList/edit/$1';
 $route['prices_json'] = 'CPrices/ajax_prices';

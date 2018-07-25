@@ -20,6 +20,11 @@ class Migration_create_table_pricelist extends CI_Migration
 					"constraint" => 11,
 					"null" => TRUE
 				),
+				"list_type" => array(
+					"type" => "VARCHAR",
+					"constraint" => 20,
+					"null" => TRUE
+				),
 				"date" => array(
 					"type" => "TIMESTAMP",
 					"null" => TRUE
@@ -52,9 +57,13 @@ class Migration_create_table_pricelist extends CI_Migration
 					"constraint" => 11,
 					"null" => TRUE
 				),
-				"combination" => array(
+				"material" => array(
 					"type" => "VARCHAR",
 					"constraint" => 100,
+					"null" => TRUE
+				),
+				"price_minimal" => array(
+					"type" => "FLOAT",
 					"null" => TRUE
 				),
 				"price_cost" => array(

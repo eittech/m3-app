@@ -147,7 +147,7 @@ class CPrices extends CI_Controller {
  * transacciones usando ajax.
  * ------------------------------------------------------
  * 
- * Este método permite construir un listado de transacciones adaptado 
+ * Este método permite construir un listado de precios adaptado 
  * a la solicitud realizada con ajax desde la vista por el plugin datatable.
  */
     public function ajax_prices()
@@ -235,6 +235,112 @@ class CPrices extends CI_Controller {
 		);
 		
 		echo json_encode($output);
+	}
+	
+	
+/**
+ * ------------------------------------------------------
+ * Método para guardar los datos del listado de precios
+ * en la tabla 'pricelist'.
+ * ------------------------------------------------------
+ * 
+ * Este método permite construir un listado de precios adaptado 
+ * a la solicitud realizada con ajax desde la vista por el plugin datatable.
+ */
+    public function save_prices()
+	{		
+		// Consulta de listado de productos y sus respectivas combinaciones
+		$attribs_product = $this->MProducts->obtenerCombinaciones();
+		
+		// Para contar errores
+		$errors = 0;
+		
+		// Construimos la lista del cuerpo si existen combinaciones
+		if(count($attribs_product) > 0){
+			
+			// Cálculo del precio mínimo
+			$precio_minimo;
+			$i = 0;
+			foreach($attribs_product as $combination){
+				
+				// Búsqueda del precio de cada combinación de producto
+				list($costos_fijos, $costos_variables, $precio) = $this->calculate_price($combination->id_product, $combination->id_attribute, $combination->id_product_attribute);
+				
+				if($i == 0){
+					
+					$precio_minimo = $precio;
+					
+				}else{
+					
+					// Reasignamos el valor del precio costo si el precio calculado es menor que el anterior
+					if($precio < $precio_minimo){
+						$precio_minimo = $precio;
+					}
+					
+				}
+				
+				$i++;
+				
+			}
+			
+			// Construcción del número identificador del listado
+			$list_number = $this->MPrices->next_number_list();
+			
+			if(count($list_number) > 0){
+				$list_number = $list_number[0]->list_number+1;
+			}else{
+				$list_number = 1;
+			}
+			
+			$j = 1;
+			foreach($attribs_product as $combination){
+				
+				$precio = 1;
+				$precio_iva = 0;
+				
+				// Búsqueda del precio de cada combinación de producto
+				list($costos_fijos, $costos_variables, $precio) = $this->calculate_price($combination->id_product, $combination->id_attribute, $combination->id_product_attribute);
+				
+				$precio_costo = $precio;
+				
+				$combination_price = array(
+					"list_number" => $list_number,
+					"list_type" => "M3",
+					"date" => date('Y-m-d H:i:s'),
+					"position" => $j,
+					"category" => $combination->category_name_parent,
+					"subcategory" => $combination->category_name,
+					"reference" => $combination->reference,
+					"product" => $combination->product_name,
+					"id_combination" => $combination->id_product_attribute,
+					"material" => $combination->attribute_name,
+					"price_minimal" => $precio_minimo,
+					"price_cost" => $precio_costo,
+					"price_wholesaler" => $precio*1.30,
+					"price_retail" => $precio*1.30*1.30
+				);
+				
+				if(!$this->MPrices->insert($combination_price)){
+					$errors += 1;
+				}
+				
+				$j++;			
+				
+			}
+			
+		}
+		
+		// Impresión de mensaje en formato json para validar con jquery
+		if($errors > 0){
+			
+			echo '{"response":"error"}';
+			
+		}else{
+			
+			echo '{"response":"ok"}';
+			
+		}
+		
 	}
 	
 }

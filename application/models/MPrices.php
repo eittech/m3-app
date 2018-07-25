@@ -189,5 +189,38 @@ class MPrices extends CI_Model {
 		return $this->db->count_all_results();
 		
 	}
+	
+/**
+ * ------------------------------------------------------
+ * Método público para insertar los datos de precio de cada 
+ * combinación de la lista de precios.
+ * ------------------------------------------------------
+ */
+    public function insert($datos) {
+    
+		$result = $this->db->insert("pricelist", $datos);
+		$id = $this->db->insert_id();
+		return $id;
+		
+    }
+	
+/**
+ * ------------------------------------------------------
+ * Método público para buscar el siguiente número de lista.
+ * ------------------------------------------------------
+ */
+    public function next_number_list() {
+		
+		$this->db->select('list_number');
+		$this->db->order_by('list_number', 'desc');
+		$this->db->limit(1);
+        $result = $this->db->get('pricelist');
+        
+        //~ echo $this->db->last_query();
+        
+        return $result->result();
+		
+    }
+    
 }
 ?>
