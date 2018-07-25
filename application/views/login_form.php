@@ -32,7 +32,7 @@
         <div>
             <div>
 
-                <!--<h3 class="logo-name">Invision</h3>-->
+                <!--<h3 class="logo-name">M3 Uniformes</h3>-->
                 <img src="<?php echo assets_url('img/logos/'.$this->config->item('logo_login')); ?>">
 
             </div>
