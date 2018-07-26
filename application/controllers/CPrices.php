@@ -261,6 +261,9 @@ class CPrices extends CI_Controller {
 		// Para contar errores
 		$errors = 0;
 		
+		// Para contar registros
+		$records = 0;
+		
 		// Construimos la lista del cuerpo si existen combinaciones
 		if(count($attribs_product) > 0){
 			
@@ -331,6 +334,8 @@ class CPrices extends CI_Controller {
 					
 					if(!$this->MPrices->insert($combination_price)){
 						$errors += 1;
+					}else{
+						$records += 1;
 					}
 					
 				}
@@ -348,7 +353,11 @@ class CPrices extends CI_Controller {
 			
 		}else{
 			
-			echo '{"response":"ok"}';
+			if($records > 0){
+				echo '{"response":"Se ha generado la lista '.$list_number.' con '.$records.' registros"}';
+			}else{
+				echo '{"response":"La categoría seleccionada no produjo registros"}';
+			}
 			
 		}
 		
