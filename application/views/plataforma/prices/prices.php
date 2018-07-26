@@ -271,7 +271,7 @@ $(document).ready(function(){
 						}else{
 							 swal({ 
 							   title: "Guardado",
-								text: "Lista guardada con exito",
+								text: response['response'],
 								 type: "success" 
 							   },
 							   function(){
