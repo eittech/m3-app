@@ -33,7 +33,7 @@
     <div class="row">
         <div class="col-lg-12">
             <a href="<?php echo base_url() ?>prices/generate">
-				<button class="btn btn-outline btn-primary dim" type="button"><i class="fa fa-plus"></i> <?php echo $this->lang->line('btn_generation'); ?></button>
+				<button class="btn btn-outline btn-primary dim" type="button" id="save_list"><i class="fa fa-plus"></i> <?php echo $this->lang->line('btn_generation'); ?></button>
             </a>
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
@@ -229,7 +229,7 @@ $(document).ready(function(){
     
     
     // Función para validar transacción
-    $("table#tab_transactions").on('click', 'a.validar', function (e) {
+    $("#save_list").on('click', function (e) {
         e.preventDefault();
         var id = this.getAttribute('id');
         
@@ -246,26 +246,26 @@ $(document).ready(function(){
         id = id[0];
 
         swal({
-            title: "Validar transacción",
-            text: "¿Está seguro de valdiar la transacción?",
+            title: "Guardar lista",
+            text: "¿Está seguro de guardar el listado actual?",
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Validar",
-            cancelButtonText: "Denegar",
+            confirmButtonText: "Guardar",
+            cancelButtonText: "Cancelar",
             closeOnConfirm: false,
             closeOnCancel: true
           },
         function(isConfirm){
             if (isConfirm) {
              
-                $.post('<?php echo base_url(); ?>transactions/validar/', {'id': id, 'account_id': account_id, 'amount': amount, 'tipo': tipo, 'status': 'approved'}, function (response) {
+                $.post('<?php echo base_url(); ?>prices/save/', function (response) {
 
                     if (response['response'] == 'error') {
                        
                          swal({ 
                            title: "Disculpe,",
-                            text: "No se pudo validar la transacción, por favor consulte con su administrador",
+                            text: "Ocurrieron errores en el guardado, por favor consulte con su administrador",
                              type: "warning" 
                            },
                            function(){
@@ -273,46 +273,21 @@ $(document).ready(function(){
                          });
                     }else{
                          swal({ 
-                           title: "Validado",
-                            text: "Transacción validada con exito",
+                           title: "Guardado",
+                            text: "Lista guardada con exito",
                              type: "success" 
                            },
                            function(){
-                             window.location.href = '<?php echo base_url(); ?>transactions';
+                             window.location.href = '<?php echo base_url(); ?>prices';
                          });
                     }
                     
                 }, 'json');
                 
-            }else{
-				
-				$.post('<?php echo base_url(); ?>transactions/validar/', {'id': id, 'account_id': account_id, 'amount': amount, 'tipo': tipo, 'status': 'denied'}, function (response) {
-
-                    if (response['response'] == 'error') {
-                       
-                         swal({ 
-                           title: "Disculpe,",
-                            text: "No se pudo negar la transacción, por favor consulte con su administrador",
-                             type: "warning" 
-                           },
-                           function(){
-                             
-                         });
-                    }else{
-                         swal({ 
-                           title: "Negada",
-                            text: "Transacción negada con exito",
-                             type: "success" 
-                           },
-                           function(){
-                             window.location.href = '<?php echo base_url(); ?>transactions';
-                         });
-                    }
-                    
-                }, 'json');
-				
-			}
+            }
+            
         });
+        
     });
     
 });
