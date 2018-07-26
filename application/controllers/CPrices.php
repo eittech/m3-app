@@ -19,6 +19,9 @@ class CPrices extends CI_Controller {
 		$data['ident'] = "M3_Uniformes";
 		$data['ident_sub'] = "Precios";
 		
+		// Listado de categorías asociadas al id_parent 2
+		$data['categories'] = $this->MPrices->categories_list();
+		
 		//~ // Listado de productos y sus respectivas combinaciones (Filtrado final)
 		//~ $data['listar'] = array();
 		//~ 
@@ -248,9 +251,12 @@ class CPrices extends CI_Controller {
  * a la solicitud realizada con ajax desde la vista por el plugin datatable.
  */
     public function save_prices()
-	{		
+	{
+		// Id de categoría mediante post
+		$id_category = $this->input->post('id_category');
+		
 		// Consulta de listado de productos y sus respectivas combinaciones
-		$attribs_product = $this->MProducts->obtenerCombinaciones();
+		$attribs_product = $this->MProducts->obtenerCombinacionesByCategory($id_category);
 		
 		// Para contar errores
 		$errors = 0;
@@ -320,8 +326,13 @@ class CPrices extends CI_Controller {
 					"price_retail" => $precio*1.30*1.30
 				);
 				
-				if(!$this->MPrices->insert($combination_price)){
-					$errors += 1;
+				// Si el prodcuto de la combinación está activo entonces la podemos guardar
+				if($combination->product_status == 1){
+					
+					if(!$this->MPrices->insert($combination_price)){
+						$errors += 1;
+					}
+					
 				}
 				
 				$j++;			

@@ -221,6 +221,30 @@ class MPrices extends CI_Model {
         return $result->result();
 		
     }
+	
+/**
+ * ------------------------------------------------------
+ * Método público para buscar una lista de categorías asociadas a un id_parent específico.
+ * ------------------------------------------------------
+ */
+    public function categories_list() {
+		
+		//~ $this->db->select('list_number');
+		//~ $this->db->order_by('list_number', 'desc');
+		//~ $this->db->limit(1);
+		
+        $this->db->select('c.id_category, c.id_parent, c_l.name');
+		$this->db->from('category c');
+		$this->db->join('category_lang c_l', 'c_l.id_category=c.id_category');
+		$this->db->where('c_l.id_lang', 1);
+		$this->db->where('c.id_parent', 2);
+		$query = $this->db->get();
+        
+        //~ echo $this->db->last_query();
+        
+        return $query->result();
+		
+    }
     
 }
 ?>

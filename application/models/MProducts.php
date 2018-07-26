@@ -61,7 +61,7 @@ class MProducts extends CI_Model {
     // Método para consultar los atributos asociados a un prodcuto dado
     public function obtenerCombinaciones() {
 		
-		$select = "p.id_product, p.reference, c.position as category_position, c_l.id_category, c_l_parent.name as category_name_parent, ";
+		$select = "p.id_product, p.active as product_status, p.reference, c.position as category_position, c_l.id_category, c_l_parent.name as category_name_parent, ";
 		$select .= "c_l.name as category_name, c_p.position as category_position_product, p_l.name as product_name, a_l.id_attribute, ";
 		$select .= "a_l.name as attribute_name, p_a.id_product_attribute";
 		$query = $this->db->select($select);
@@ -76,6 +76,40 @@ class MProducts extends CI_Model {
 		$query = $this->db->join('attribute a', 'a.id_attribute=p_a_c.id_attribute');
 		$query = $this->db->join('attribute_group_lang a_g_l', 'a_g_l.id_attribute_group=a.id_attribute_group');
 		$query = $this->db->join('attribute_lang a_l', 'a_l.id_attribute=p_a_c.id_attribute');
+		$query = $this->db->where('c_l.id_lang', 1);
+		$query = $this->db->where('p_l.id_lang', 1);
+        $query = $this->db->group_by(array('p_l.name', 'a_l.id_attribute'));
+        $query = $this->db->order_by('c.position, c_l.id_category, c_p.position, a.position');
+        $query = $this->db->get();
+        
+        //~ echo $this->db->last_query();
+
+        if ($query->num_rows() > 0)
+            return $query->result();
+        else
+            return $query->result();
+    }
+
+    // Método para consultar los atributos asociados a un prodcuto dado
+    public function obtenerCombinacionesByCategory($id_category) {
+		
+		$select = "p.id_product, p.active as product_status, p.reference, c.position as category_position, c_l.id_category, c_l_parent.name as category_name_parent, ";
+		$select .= "c_l.name as category_name, c_p.position as category_position_product, p_l.name as product_name, a_l.id_attribute, ";
+		$select .= "a_l.name as attribute_name, p_a.id_product_attribute";
+		$query = $this->db->select($select);
+		$query = $this->db->from('product p');
+		$query = $this->db->join('category_product c_p', 'c_p.id_product=p.id_product');
+		$query = $this->db->join('category c', 'c.id_category=c_p.id_category');
+		$query = $this->db->join('category c_parent', 'c_parent.id_category=p.id_category_default');
+		$query = $this->db->join('category_lang c_l', 'c_l.id_category=p.id_category_default');
+		$query = $this->db->join('category_lang c_l_parent', 'c_l_parent.id_category=c_parent.id_parent');
+		$query = $this->db->join('product_lang p_l', 'p_l.id_product=p.id_product');
+		$query = $this->db->join('product_attribute p_a', 'p_a.id_product=p.id_product');
+		$query = $this->db->join('product_attribute_combination p_a_c', 'p_a_c.id_product_attribute=p_a.id_product_attribute');
+		$query = $this->db->join('attribute a', 'a.id_attribute=p_a_c.id_attribute');
+		$query = $this->db->join('attribute_group_lang a_g_l', 'a_g_l.id_attribute_group=a.id_attribute_group');
+		$query = $this->db->join('attribute_lang a_l', 'a_l.id_attribute=p_a_c.id_attribute');
+		$query = $this->db->where('c.id_category', $id_category);
 		$query = $this->db->where('c_l.id_lang', 1);
 		$query = $this->db->where('p_l.id_lang', 1);
         $query = $this->db->group_by(array('p_l.name', 'a_l.id_attribute'));
