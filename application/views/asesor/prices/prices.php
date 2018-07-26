@@ -9,6 +9,10 @@
 	padding-bottom: 8px !important;
 	padding-left: 8px !important;
 }
+
+.select2-container {
+	z-index: 99999;
+}
 </style>
 
 <div class="row wrapper border-bottom white-bg page-heading">
@@ -33,7 +37,7 @@
     <div class="row">
         <div class="col-lg-12">
             <a href="<?php echo base_url() ?>prices/generate">
-				<button class="btn btn-outline btn-primary dim" type="button" id="save_list"><i class="fa fa-plus"></i> <?php echo $this->lang->line('btn_generation'); ?></button>
+				<button class="btn btn-outline btn-primary dim" type="button" id="show_categories"><i class="fa fa-plus"></i> <?php echo $this->lang->line('btn_generation'); ?></button>
             </a>
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
@@ -130,6 +134,41 @@
     </div>
 </div>
 
+<!-- Modal de selección de categorías -->
+<div class="modal fade" id="modal_categories">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h5 class="modal-title">Seleccionar categoría</h5>
+            </div>
+            <div class="modal-body" >
+                <form id="modal_pass" method="post" accept-charset="utf-8" class="form-horizontal">
+					<div class="form-group">
+						<div class="col-lg-12">
+							<div class="form-group">
+								<label>Categoría</label>
+								<select class="form-control" style="width:100%;" id="categoria">
+									<option value="0">Seleccione</option>
+									<?php foreach($categories as $categorie){ ?>
+									<option value="<?php echo $categorie->id_category?>"><?php echo $categorie->name?></option>
+									<?php } ?>
+								</select>
+							</div>
+						</div>
+					</div>
+                </form>
+            </div>
+            <div class="modal-footer" >
+                <button class="btn btn-primary" type="button" id="save_list">
+                    Generar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fin de modal de selección de categorías -->
+
 
  <!-- Page-Level Scripts -->
 <script>
@@ -180,113 +219,73 @@ $(document).ready(function(){
             {"sWidth": "3%", "bSortable": false, "sClass": "center sorting_false", "bSearchable": false}
         ]
     });
-             
-    // Validacion para borrar
-    $("table#tab_transactions").on('click', 'a.borrar', function (e) {
-        e.preventDefault();
-        var id = this.getAttribute('id');
+    
+    // Activar la modal  
+    $("#show_categories").click(function (e) {
+		
+		e.preventDefault();  // Para evitar que se envíe por defecto
+		$("#modal_categories").modal('show');
+		//~ var id = this.getAttribute('id');
+		//~ $("#id_client").val(id);
 
-        swal({
-            title: "Borrar registro",
-            text: "¿Está seguro de borrar el registro?",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Eliminar",
-            cancelButtonText: "Cancelar",
-            closeOnConfirm: false,
-            closeOnCancel: true
-          },
-        function(isConfirm){
-            if (isConfirm) {
-             
-                $.post('<?php echo base_url(); ?>transactions/delete/' + id + '', function (response) {
-
-                    if (response[0] == "e") {
-                       
-                         swal({ 
-                           title: "Disculpe,",
-                            text: "No se puede eliminar se encuentra asociado a un usuario",
-                             type: "warning" 
-                           },
-                           function(){
-                             
-                         });
-                    }else{
-                         swal({ 
-                           title: "Eliminar",
-                            text: "Registro eliminado con exito",
-                             type: "success" 
-                           },
-                           function(){
-                             window.location.href = '<?php echo base_url(); ?>transactions';
-                         });
-                    }
-                });
-            } 
-        });
-    });
+	});
     
     
     // Función para validar transacción
     $("#save_list").on('click', function (e) {
         e.preventDefault();
-        var id = this.getAttribute('id');
+        var id_category = $("#categoria").val();
         
-        var account_id = id.split(';');
-        account_id = account_id[1];
+        if (id_category == 0) {
+			
+			swal("Disculpe", "No ha seleccionado ninguna categoría de la lista");
+			
+		}else{
 
-        var amount = id.split(';');
-        amount = amount[2];
+			swal({
+				title: "Guardar lista",
+				text: "¿Está seguro de guardar el listado actual?",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#DD6B55",
+				confirmButtonText: "Guardar",
+				cancelButtonText: "Cancelar",
+				closeOnConfirm: false,
+				closeOnCancel: true
+			  },
+			function(isConfirm){
+				if (isConfirm) {
+				 
+					$.post('<?php echo base_url(); ?>prices/save/', {'id_category': id_category}, function (response) {
 
-        var tipo = id.split(';');
-        tipo = tipo[3];
-
-        var id = id.split(';');
-        id = id[0];
-
-        swal({
-            title: "Guardar lista",
-            text: "¿Está seguro de guardar el listado actual?",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Guardar",
-            cancelButtonText: "Cancelar",
-            closeOnConfirm: false,
-            closeOnCancel: true
-          },
-        function(isConfirm){
-            if (isConfirm) {
-             
-                $.post('<?php echo base_url(); ?>prices/save/', function (response) {
-
-                    if (response['response'] == 'error') {
-                       
-                         swal({ 
-                           title: "Disculpe,",
-                            text: "Ocurrieron errores en el guardado, por favor consulte con su administrador",
-                             type: "warning" 
-                           },
-                           function(){
-                             
-                         });
-                    }else{
-                         swal({ 
-                           title: "Guardado",
-                            text: "Lista guardada con exito",
-                             type: "success" 
-                           },
-                           function(){
-                             window.location.href = '<?php echo base_url(); ?>prices';
-                         });
-                    }
-                    
-                }, 'json');
-                
-            }
-            
-        });
+						if (response['response'] == 'error') {
+						   
+							 swal({ 
+							   title: "Disculpe,",
+								text: "Ocurrieron errores en el guardado, por favor consulte con su administrador",
+								 type: "warning" 
+							   },
+							   function(){
+								 
+							 });
+						}else{
+							 swal({ 
+							   title: "Guardado",
+								text: response['response'],
+								 type: "success" 
+							   },
+							   function(){
+								 window.location.href = '<?php echo base_url(); ?>prices';
+							 });
+						}
+						
+					}, 'json');
+					
+				}
+				
+			});
+		
+		}
         
     });
     
