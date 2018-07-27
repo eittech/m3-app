@@ -124,6 +124,25 @@ class MProducts extends CI_Model {
             return $query->result();
     }
 
+    // Método para consultar los atributos asociados a un producto dado
+    public function obtenerCombinacionesM3($list_number) {
+		
+		$select = "pl.id, pl.list_number, pl.list_type, pl.date, pl.position, pl.category, pl.subcategory, pl.reference, ";
+		$select .= "pl.product, pl.id_combination, pl.material, pl.price_minimal, pl.price_cost, pl.price_wholesaler, pl.price_retail";
+		$query = $this->db->select($select);
+		$query = $this->db->from('pricelist pl');
+		$query = $this->db->where('pl.list_type', 26);
+		$query = $this->db->where('pl.list_number', $list_number);
+        $query = $this->db->get();
+        
+        //~ echo $this->db->last_query();
+
+        if ($query->num_rows() > 0)
+            return $query->result();
+        else
+            return $query->result();
+    }
+
     // Método para consultar el monto total de ganancia
     public function obtenerPrecio1() {
 		$sql = "SELECT (sum(cf.price)/pa.amount) as resultado FROM costs_fixed cf, productionaverage pa;";
@@ -152,6 +171,17 @@ class MProducts extends CI_Model {
 		$sql3 = "SELECT c_v.amount FROM costs_variable c_v where c_v.id_material = 0 AND c_v.id_combinacion =".$id_combination;
 		
 		$query = $this->db->query($sql3);
+        
+        //~ echo $this->db->last_query();
+
+        return $query->result();
+    }
+
+    // Método para consultar el id del la última lista de precios guardada
+    public function latest_list_m3() {
+		$sql4 = "SELECT p_l.list_number FROM pricelist p_l where p_l.list_type = 26 order by p_l.list_number desc limit 1";
+		
+		$query = $this->db->query($sql4);
         
         //~ echo $this->db->last_query();
 

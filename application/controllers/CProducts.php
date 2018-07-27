@@ -355,6 +355,72 @@ class CProducts extends CI_Controller {
 				</tbody>
 			</table>";
 	}
+    
+    
+    // Generación de lista completa de productos con sus combinaciones
+    function update_alternative_price_prestashop()
+    {
+		$list_products = "";  // Almacenará el listado de registros
+		
+		$list_number = $this->MProducts->latest_list_m3();  // Obtenemos el número de la última lista de precios guardada
+		
+		if(count($list_number) > 0){
+		
+			// Listado de productos y sus respectivas combinaciones
+			$attribs_product = $this->MProducts->obtenerCombinacionesM3($list_number[0]->list_number);
+			
+			// Construimos la lista del cuerpo si existen combinaciones
+			if(count($attribs_product) > 0){
+				
+				$i = 1;
+				foreach($attribs_product as $combination){
+					
+					$list_products .= "<tr>
+										<td>".$combination->position."</td>
+										<td>".$combination->category."</td>
+										<td>".$combination->subcategory."</td>
+										<td>".$combination->product."</td>
+										<td>".$combination->material."</td>
+										<td>".number_format($combination->price_wholesaler, 2, ',', '.')."</td>
+										<td>".number_format($combination->price_retail, 2, ',', '.')."</td>
+									</tr>";
+									
+					$i++;
+					
+				}
+				
+			}
+		
+		}
+		
+		// Imprimimos el listado resultante
+		echo "
+			<style>
+				table, tr, th, td {
+					border:1px solid; padding:10px;
+				}
+				.id-combination {
+					text-align: center;
+				}
+			</style>
+			
+			<table id='list_products'>
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Categoría</th>
+						<th>Sub Categoría</th>
+						<th>Producto</th>
+						<th>Tela</th>
+						<th>Precio Mayor</th>
+						<th>Precio Detal</th>
+					</tr>
+				</thead>
+				<tbody>
+					".$list_products."
+				</tbody>
+			</table>";
+	}
 	
 	
 	// Cálculo del precio de un producto por combinación
