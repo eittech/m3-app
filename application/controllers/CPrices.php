@@ -314,7 +314,7 @@ class CPrices extends CI_Controller {
 				
 				$combination_price = array(
 					"list_number" => $list_number,
-					"list_type" => "M3",
+					"list_type" => "".$id_category,
 					"date" => date('Y-m-d H:i:s'),
 					"position" => $j,
 					"category" => $combination->category_name_parent,
