@@ -175,53 +175,8 @@ class CProducts extends CI_Controller {
 		// Construimos la lista del cuerpo si existen combinaciones
 		if(count($attribs_product) > 0){
 			
-			$precios_minimos = array();
-			
-			$precio_minimo;
-			
-			//~ $productos = $this->MProducts->obtenerProductos();  // Listado de productos sin combinaciones
-			//~ 
-			//~ foreach($productos as $producto){
-				
-				//~ $precios_minimos[$producto->id_product] = 0;
-			
-				$i = 0;
-				foreach($attribs_product as $combination){
-					
-					// Búsqueda del precio de cada combinación de producto
-					list($costos_fijos, $costos_variables, $precio) = $this->calculate_price($combination->id_product, $combination->id_attribute, $combination->id_product_attribute);
-					
-					//~ if($combination->id_product == $producto->id_product){
-						
-						if($i == 0){
-							
-							$precio_minimo = $precio;
-							//~ $precios_minimos[$producto->id_product] = $precio;
-							
-						}else{
-							
-							// Reasignamos el valor del precio costo si el precio calculado es menor que el anterior
-							//~ if($precio < $precios_minimos[$producto->id_product]){
-							if($precio < $precio_minimo){
-								$precio_minimo = $precio;
-								//~ $precios_minimos[$producto->id_product] = $precio;
-							}
-							
-						}
-						
-					//~ }
-					
-					$i++;
-					
-				}
-				
-			//~ }
-			
-			//~ sort($precios_minimos);
-			//~ 
-			//~ print_r($precios_minimos);
-			//~ 
-			//~ exit();
+			// Generamos la lista de precios mínimos de cada producto
+			$minimum_prices = $this->minimum_prices($attribs_product);
 			
 			foreach($attribs_product as $combination){
 				
@@ -241,7 +196,7 @@ class CProducts extends CI_Controller {
 									<td>".$combination->product_name."</td>
 									<td class='id-combination'>".$combination->id_product_attribute."</td>
 									<td>".$combination->attribute_name."</td>
-									<td>".number_format($precio_minimo, 2, ',', '.')."</td>
+									<td>".number_format($minimum_prices[$combination->id_product], 2, ',', '.')."</td>
 									<td>".number_format($costos_fijos, 2, ',', '.')."</td>
 									<td>".number_format($costos_variables, 2, ',', '.')."</td>
 									<td>".$precio_costo."</td>
@@ -458,6 +413,75 @@ class CProducts extends CI_Controller {
 		
 		return array($sub_price1, $sub_price2, $price);
 		
+	}
+	
+	
+/**
+ * ------------------------------------------------------
+ * Método para genarar un arreglo con los precios mínimos de cada producto.
+ * ------------------------------------------------------
+ * 
+ * Este método permite construir un listado de precios mínimos de todos 
+ * los productos que estén incluidos en el listado de combinaciones recibido.
+ */
+    public function minimum_prices($combinations)
+	{
+		$ids = array();  // Colector de ids de productos de la lista de combinaciones
+		
+		$prices = array();  // Colector de precios de cada combinación de cada producto
+		
+		$minimum_prices = array();  // Almacenador de precios mínimos de cada producto
+		
+		// Colectamos los ids de productos de la lista de combinaciones, para producir un arreglo con la estructura:
+		// array([0] => id_producto_1, [2] => id_producto_2, [3] => id_producto_3, ...)
+		foreach($combinations as $combination){
+		
+			if(!in_array($combination->id_product, $ids)){
+				
+				$ids[] = $combination->id_product;
+				
+			}
+			
+		}
+		
+		// Colectamos los precios al detal de cada combinación de cada producto, para producir un arreglo con la estructura:
+		// array([id_producto] => array(precio1, preico2, precio3...))
+		foreach($ids as $id_product){
+			
+			foreach($combinations as $combination){
+				
+				if($id_product == $combination->id_product){
+					
+					// Búsqueda del precio de cada combinación de producto
+					list($costos_fijos, $costos_variables, $precio) = $this->calculate_price($combination->id_product, $combination->id_attribute, $combination->id_product_attribute);
+					$prices["".$id_product][] = $precio*1.30*1.30;
+			
+				}
+				
+			}
+			
+		}
+		
+		// Colectamos los precios mínimos de cada producto haciendo un recorrido con foreach múltiple, para producir un arreglo con la estructura:
+		// array([id_producto_1] => precio1, [id_producto_2] => precio2, [id_producto_3] => precio3, ...))
+		foreach($prices as $key => $product_prices){
+			
+			// Inicialización del precio mínimo del producto con el primer precio de la lista
+			$minimum_prices["".$key] = $product_prices[0];
+			
+			// Captura del precio mínimo 
+			foreach($product_prices as $product_price){
+					
+				if($product_price < $minimum_prices["".$key]){
+					
+					$minimum_prices["".$key] = $product_price;
+					
+				}
+				
+			}
+		}
+		
+		return $minimum_prices;
 	}
 
 }
