@@ -261,6 +261,15 @@ class MProducts extends CI_Model {
 		return $result;
 		
     }
+	
+    // Método público, para actualizar el impacto de precio de una combinación de producto
+    public function update_impact_price_shop($datos) {
+
+        $result = $this->db->where('id_product_attribute', $datos['id_product_attribute']);
+		$result = $this->db->update('product_attribute_shop', $datos);
+		return $result;
+		
+    }
 
 }
 
