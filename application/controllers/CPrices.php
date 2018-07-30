@@ -158,30 +158,8 @@ class CPrices extends CI_Controller {
 		// Listado de combinaciones de productos y sus respectivos precios
 		$fetch_data = $this->MPrices->make_datatables();
 		
-		// Cálculo del precio mínimo
-		$precio_minimo;
-		$i = 0;
-		foreach($fetch_data as $row){
-			
-			// Búsqueda del precio de cada combinación de producto
-			list($costos_fijos, $costos_variables, $precio) = $this->calculate_price($row->id_product, $row->id_attribute, $row->id_product_attribute);
-			
-			if($i == 0){
-				
-				$precio_minimo = $precio;
-				
-			}else{
-				
-				// Reasignamos el valor del precio costo si el precio calculado es menor que el anterior
-				if($precio < $precio_minimo){
-					$precio_minimo = $precio;
-				}
-				
-			}
-			
-			$i++;
-			
-		}
+		// Generamos la lista de precios mínimos de cada producto
+		$minimum_prices = $this->minimum_prices($fetch_data);
 		
 		// Armado del nuevo listado
 		$data = array();
@@ -215,7 +193,7 @@ class CPrices extends CI_Controller {
 			$sub_array[] = $row->product_name;
 			$sub_array[] = $row->id_product_attribute;
 			$sub_array[] = $row->attribute_name;
-			$sub_array[] = number_format($precio_minimo, 2, ',', '.');
+			$sub_array[] = number_format($minimum_prices[$row->id_product], 2, ',', '.');
 			$sub_array[] = number_format($costos_fijos, 2, ',', '.');
 			$sub_array[] = number_format($costos_variables, 2, ',', '.');
 			$sub_array[] = $precio_costo;
@@ -345,7 +323,7 @@ class CPrices extends CI_Controller {
 			foreach($products_update as $id_product){
 				$new_price = array(
 					"id_product" => $id_product,
-					"price" => $precio_minimo,
+					"price" => $minimum_prices["".$id_product],
 					//~ "wholesale_price" => $precio_costo
 				);
 				
