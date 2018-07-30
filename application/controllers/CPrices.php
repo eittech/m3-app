@@ -305,6 +305,10 @@ class CPrices extends CI_Controller {
 						
 						$update_price_impact = $this->MProducts->update_impact_price($new_price_impact);
 						
+						// Actualizamos el impacto de precio de cada combinación en la tabla 'product_attribute_shop'
+						
+						$update_price_impact_shop = $this->MProducts->update_impact_price_shop($new_price_impact);
+						
 						// Recolectamos el id del producto para luego actualizarlo
 						if(!in_array($combination->id_product, $products_update)){
 							$products_update[] = $combination->id_product;
