@@ -110,6 +110,7 @@ $route['products/catalogue/(:num)'] = 'CProducts/pdf_catalogue/$1';
 $route['products/update/price'] = 'CProducts/update_price_prestashop';
 $route['products/update/public_price'] = 'CProducts/update_public_price_prestashop';
 $route['products/update/alternative_price'] = 'CProducts/update_alternative_price_prestashop';
+$route['export_csv'] = 'CProducts/export_csv';
 
 /* Precios */
 $route['prices'] = 'CPrices';
