@@ -327,7 +327,11 @@ class CPrices extends CI_Controller {
 					//~ "wholesale_price" => $precio_costo
 				);
 				
+				// Actualizamos el precio del producto en la tabla 'product'
 				$update_price = $this->MProducts->update_price($new_price);
+				
+				// Actualizamos el precio del producto en la tabla 'product_shop'
+				$update_price_shop = $this->MProducts->update_price_shop($new_price);
 			}
 			
 		}
