@@ -210,6 +210,9 @@ class CProducts extends CI_Controller {
 		
 		// Imprimimos el listado resultante
 		echo "
+		
+			<link rel='stylesheet' href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>
+			
 			<style>
 				table, tr, th, td {
 					border:1px solid; padding:10px;
@@ -284,6 +287,9 @@ class CProducts extends CI_Controller {
 		
 		// Imprimimos el listado resultante
 		echo "
+		
+			<link rel='stylesheet' href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>
+			
 			<style>
 				table, tr, th, td {
 					border:1px solid; padding:10px;
