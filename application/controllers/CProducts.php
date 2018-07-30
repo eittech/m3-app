@@ -350,6 +350,9 @@ class CProducts extends CI_Controller {
 		
 		// Imprimimos el listado resultante
 		echo "
+		
+			<link rel='stylesheet' href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>
+			
 			<style>
 				table, tr, th, td {
 					border:1px solid; padding:10px;
@@ -358,6 +361,11 @@ class CProducts extends CI_Controller {
 					text-align: center;
 				}
 			</style>
+			
+			<a href='".base_url()."export_csv' class='btn btn-success pull-right'>Exportar</a>
+			
+			<br>
+			<br>
 			
 			<table id='list_products'>
 				<thead>
@@ -374,7 +382,12 @@ class CProducts extends CI_Controller {
 				<tbody>
 					".$list_products."
 				</tbody>
-			</table>";
+			</table>
+			
+			<br>
+			
+			<a href='".base_url()."export_csv' class='btn btn-success pull-right'>Exportar</a>
+			";
 	}
 	
 	
@@ -482,6 +495,74 @@ class CProducts extends CI_Controller {
 		}
 		
 		return $minimum_prices;
+	}
+	
+	
+/**
+ * ------------------------------------------------------
+ * Método para exportar un archivo csv con el último 
+ * listado de precios guardado.
+ * ------------------------------------------------------
+ * 
+ * Este método permite construir un archivo en foramto csv con la última
+ * lista de precios guardada.
+ */
+    function export_csv()
+    {
+		
+		$list_number = $this->MProducts->latest_list_m3();  // Obtenemos el número de la última lista de precios guardada
+		
+		if(count($list_number) > 0){
+			
+			$delimiter = ";";
+			$filename = "prices_m3_" . date('Y-m-d') . ".csv";  // Nombre del archivo
+			
+			// Crea un puntero de archivo
+			$f = fopen('php://memory', 'w');
+		
+			// Listado de productos y sus respectivas combinaciones
+			$attribs_product = $this->MProducts->obtenerCombinacionesM3($list_number[0]->list_number);
+			
+			// Construimos la lista del cuerpo si existen combinaciones
+			if(count($attribs_product) > 0){
+				
+				// Establecemos el encabezado delas columnas
+				$fields = array('Posición', 'Categoría', 'Sub Categoría', 'Producto', 'Tela', 'Precio Mayor', 'Precio Detal');
+				fputcsv($f, $fields, $delimiter);
+				
+				// Construimos una fila con cada registro y lo vamos escribiendo en el csv
+				foreach($attribs_product as $combination){
+					
+					$lineData = array(
+						$combination->position, 
+						$combination->category, 
+						$combination->subcategory, 
+						$combination->product, 
+						$combination->material, 
+						number_format($combination->price_wholesaler, 2, ',', '.'),
+						number_format($combination->price_retail, 2, ',', '.')
+					);
+					
+					fputcsv($f, $lineData, $delimiter);
+					
+				}
+				
+				// Colocamos el puntero al inicio del archivo
+				fseek($f, 0);
+				
+				// Establecemos los encabezados para descargar el archivo en lugar de mostrarlo
+				header('Content-Type: text/csv');
+				header('Content-Disposition: attachment; filename="' . $filename . '";');
+				
+				// Generamos todos los datos restantes en un puntero de archivo
+				fpassthru($f);
+				
+			}
+		
+		}
+		
+		exit;
+	
 	}
 
 }
