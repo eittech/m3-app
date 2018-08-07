@@ -19,23 +19,32 @@ $this->pdf->SetFont('Arial','B',14);
 $this->pdf->Ln(20);
 $this->pdf->SetFont('Arial','',8);
 
+# id de la orden
+$id_order = $order['order_invoice'][0]['id_order'];
+
 // Preparación de la fecha actual
-$fecha = date("d/m/Y");
+$now_delivery_date = $order['order'][0]['delivery_date'];
+$delivery_date = date("d/m/Y", strtotime($now_delivery_date));
 
 // Fecha y número de factura
 $this->pdf->SetFont('Arial','B',8);
 $this->pdf->Cell(12,4,"Fecha: ",'',0,'L',1);
 $this->pdf->SetFont('Arial','',8);
-$this->pdf->Cell(18,4,"$fecha",'',0,'L',1);
+$this->pdf->Cell(16,4,"$delivery_date",'',0,'L',1);
 $this->pdf->Cell(125,4,"",'',0,'L',1);
 $this->pdf->SetFont('Arial','B',8);
 if(isset($order['order_invoice']) && count($order['order_invoice']) > 0){
-	$num_correlative = $order['order_invoice'][0]['delivery_number'];
+	$num_correlative = $order['order_invoice'][0]['number'];
 	$delivery_number = str_pad($num_correlative, 6, "0", STR_PAD_LEFT);
 	$this->pdf->Cell(30,4,"FACTURA: ".$delivery_number,'',1,'R',1);
 }else{
 	$this->pdf->Cell(30,4,"FACTURA: ",'',1,'R',1);
 }
+
+# Ttile para la salida del PDF
+$title = "factura_".$id_order."_".$num_correlative;
+$this->pdf->SetTitle($title);
+
 // Razón social
 $this->pdf->Cell(32,4,utf8_decode("Nombre o razón social: "),'',0,'L',1);
 $this->pdf->SetFont('Arial','',8);
@@ -62,7 +71,7 @@ $this->pdf->SetFont('Arial','B',8);
 $this->pdf->Cell(23,4,utf8_decode("Dirección fiscal: "),'',0,'L',1);
 $this->pdf->SetFont('Arial','',8);
 $width_address = strlen($order['order'][0]['address_invoice'][0]['address1'])+30;  // De esta forma calculamos el espacio a asignarle a la celda (longitud de la cadena + 15)
-$this->pdf->Cell($width_address,4,utf8_decode($order['order'][0]['address_invoice'][0]['address1']),'',0,'L',1);
+$this->pdf->Cell(77,4,utf8_decode($order['order'][0]['address_invoice'][0]['address1']),'',0,'L',1);
 // Número de teléfono
 $this->pdf->SetFont('Arial','B',8);
 $this->pdf->Cell(15,4,utf8_decode(" Teléfono: "),'',0,'L',1);
@@ -193,4 +202,5 @@ $this->pdf->Write(5,utf8_decode($order['order'][0]['payment']),'',1,'C',0);
 //~ $this->pdf->Cell(125,1,"",'',1,'R',1);  // Cierre de bloque de productos
 
 // Salida del Formato PDF
-$this->pdf->Output("invoice.pdf", 'I');
+
+$this->pdf->Output("factura_".$id_order."_".$num_correlative.".pdf", 'I');
