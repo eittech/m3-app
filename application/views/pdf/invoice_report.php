@@ -1,3 +1,5 @@
+
+
 <?php
 
 $this->pdf = new PdfInventario($orientation = 'L', $unit = 'mm', $format = 'A4');
@@ -28,16 +30,18 @@ $this->pdf->Cell(18,4,"$fecha",'',0,'L',1);
 $this->pdf->Cell(125,4,"",'',0,'L',1);
 $this->pdf->SetFont('Arial','B',8);
 if(isset($order['order_invoice']) && count($order['order_invoice']) > 0){
-	$this->pdf->Cell(30,4,"FACTURA: ".$order['order_invoice'][0]['delivery_number'],'',1,'R',1);
+	$num_correlative = $order['order_invoice'][0]['delivery_number'];
+	$delivery_number = str_pad($num_correlative, 6, "0", STR_PAD_LEFT);
+	$this->pdf->Cell(30,4,"FACTURA: ".$delivery_number,'',1,'R',1);
 }else{
 	$this->pdf->Cell(30,4,"FACTURA: ",'',1,'R',1);
 }
 // Razón social
 $this->pdf->Cell(32,4,utf8_decode("Nombre o razón social: "),'',0,'L',1);
 $this->pdf->SetFont('Arial','',8);
-if(isset($order['order'][0]['customer']) && count($order['order'][0]['customer']) > 0){
-	$width_business_name = strlen($order['order'][0]['customer'][0]['company'])+15;  // De esta forma calculamos el espacio a asignarle a la celda (longitud de la cadena + 15)
-	$this->pdf->Cell($width_business_name,4,utf8_decode($order['order'][0]['customer'][0]['company']),'',0,'L',1);
+if(isset($order['order'][0]['address_delivery']) && count($order['order'][0]['address_delivery']) > 0){
+	$width_business_name = strlen($order['order'][0]['address_delivery'][0]['company'])+15;  // De esta forma calculamos el espacio a asignarle a la celda (longitud de la cadena + 15)
+	$this->pdf->Cell(71,4,utf8_decode($order['order'][0]['address_delivery'][0]['company']),'',0,'L',1);
 }else{
 	$width_business_name = 0;
 	$this->pdf->Cell($width_business_name,4,"",'',0,'L',1);
@@ -47,8 +51,8 @@ $this->pdf->SetFont('Arial','B',8);
 $this->pdf->Cell(13,4,"CI o RIF: ",'',0,'L',1);
 $this->pdf->SetFont('Arial','',8);
 if(isset($order['order'][0]['customer']) && count($order['order'][0]['customer']) > 0){
-	$width_rif = strlen($order['order'][0]['customer'][0]['siret']);  // De esta forma calculamos el espacio a asignarle a la celda (longitud de la cadena + 15)
-	$this->pdf->Cell($width_rif,4,$order['order'][0]['customer'][0]['siret'],'',1,'L',1);
+	$width_rif = strlen($order['order'][0]['address_delivery'][0]['vat_number']);  // De esta forma calculamos el espacio a asignarle a la celda (longitud de la cadena + 15)
+	$this->pdf->Cell($width_rif,4,$order['order'][0]['address_delivery'][0]['vat_number'],'',1,'L',1);
 }else{
 	$width_rif = 0;
 	$this->pdf->Cell($width_rif,4,"",'',1,'L',1);
