@@ -72,9 +72,11 @@ $this->pdf->Cell(23,4,utf8_decode("Dirección fiscal: "),'',0,'L',1);
 $this->pdf->SetFont('Arial','',8);
 $width_address = strlen($order['order'][0]['address_invoice'][0]['address1'])+30;  // De esta forma calculamos el espacio a asignarle a la celda (longitud de la cadena + 15)
 $this->pdf->Cell(77,4,utf8_decode($order['order'][0]['address_invoice'][0]['address1']),'',0,'L',1);
+$this->pdf->Ln(5);
+$this->pdf->Cell(180,4,utf8_decode($order['order'][0]['address_invoice'][0]['address2']),'',1,'L',1);
 // Número de teléfono
 $this->pdf->SetFont('Arial','B',8);
-$this->pdf->Cell(15,4,utf8_decode(" Teléfono: "),'',0,'L',1);
+$this->pdf->Cell(15,4,utf8_decode("Teléfono: "),'',0,'L',1);
 $this->pdf->SetFont('Arial','',8);
 $this->pdf->Cell(15,4,$order['order'][0]['address_invoice'][0]['phone'],'',1,'L',1);
 
@@ -170,7 +172,8 @@ $this->pdf->SetFont('Arial','B',7);
 $this->pdf->Write(5,utf8_decode("Número de pedido:"),'',1,'C',0);
 $this->pdf->SetY(55);
 $this->pdf->SetFont('Arial','',8);
-$this->pdf->Write(5,$order['order'][0]['reference'],'',1,'C',0);
+$reference = $order['order'][0]['reference'];
+$this->pdf->Write(5,"$id_order-$reference",'',1,'C',0);
 
 // Conversión de la fecha del pedido
 if(isset($order['order_invoice']) && count($order['order_invoice']) > 0){
