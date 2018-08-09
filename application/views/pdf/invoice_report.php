@@ -28,6 +28,7 @@ $delivery_date = date("d/m/Y", strtotime($now_delivery_date));
 
 // Fecha y número de factura
 $this->pdf->SetFont('Arial','B',8);
+$this->pdf->Cell(5,4,"",'',0,'L',1);
 $this->pdf->Cell(12,4,"Fecha: ",'',0,'L',1);
 $this->pdf->SetFont('Arial','',8);
 $this->pdf->Cell(16,4,"$delivery_date",'',0,'L',1);
@@ -36,9 +37,9 @@ $this->pdf->SetFont('Arial','B',8);
 if(isset($order['order_invoice']) && count($order['order_invoice']) > 0){
 	$num_correlative = $order['order_invoice'][0]['number'];
 	$delivery_number = str_pad($num_correlative, 6, "0", STR_PAD_LEFT);
-	$this->pdf->Cell(30,4,"FACTURA: ".$delivery_number,'',1,'R',1);
+	$this->pdf->Cell(32,4,"FACTURA: ".$delivery_number,'',1,'R',1);
 }else{
-	$this->pdf->Cell(30,4,"FACTURA: ",'',1,'R',1);
+	$this->pdf->Cell(32,4,"FACTURA: ",'',1,'R',1);
 }
 
 # Ttile para la salida del PDF
@@ -46,6 +47,7 @@ $title = "factura_".$id_order."_".$num_correlative;
 $this->pdf->SetTitle($title);
 
 // Razón social
+$this->pdf->Cell(5,4,"",'',0,'L',1);
 $this->pdf->Cell(32,4,utf8_decode("Nombre o razón social: "),'',0,'L',1);
 $this->pdf->SetFont('Arial','',8);
 if(isset($order['order'][0]['address_delivery']) && count($order['order'][0]['address_delivery']) > 0){
@@ -68,21 +70,25 @@ if(isset($order['order'][0]['customer']) && count($order['order'][0]['customer']
 }
 // Dirección fiscal
 $this->pdf->SetFont('Arial','B',8);
+$this->pdf->Cell(5,4,"",'',0,'L',1);
 $this->pdf->Cell(23,4,utf8_decode("Dirección fiscal: "),'',0,'L',1);
 $this->pdf->SetFont('Arial','',8);
 $width_address = strlen($order['order'][0]['address_invoice'][0]['address1'])+30;  // De esta forma calculamos el espacio a asignarle a la celda (longitud de la cadena + 15)
 $this->pdf->Cell(77,4,utf8_decode($order['order'][0]['address_invoice'][0]['address1']),'',0,'L',1);
 $this->pdf->Ln(5);
+$this->pdf->Cell(5,4,"",'',0,'L',1);
 $this->pdf->Cell(180,4,utf8_decode($order['order'][0]['address_invoice'][0]['address2']),'',1,'L',1);
 // Número de teléfono
 $this->pdf->SetFont('Arial','B',8);
+$this->pdf->Cell(5,4,"",'',0,'L',1);
 $this->pdf->Cell(15,4,utf8_decode("Teléfono: "),'',0,'L',1);
 $this->pdf->SetFont('Arial','',8);
 $this->pdf->Cell(15,4,$order['order'][0]['address_invoice'][0]['phone'],'',1,'L',1);
 
-$this->pdf->Ln(10);
+$this->pdf->Ln(5);
 
 // Títulos
+$this->pdf->Cell(5,4,"",'',0,'L',1);
 $this->pdf->Cell(30,4,utf8_decode(""),'',0,'C',1);
 $this->pdf->SetFillColor(77,77,77);
 $this->pdf->SetTextColor(255,255,255); # COLOR DEL TEXTO
@@ -110,6 +116,7 @@ $total = 0;  // Monto total
 if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 	
 	foreach($order['order_detail'] as $order_detail){
+		$this->pdf->Cell(5,4,"",'',0,'L',0);
 		$this->pdf->SetFillColor(255,255,255);
 		$this->pdf->Cell(30,5,"",'',0,'C',1);
 		// Aplicamos una variación de color de fondo a las filas
@@ -138,6 +145,7 @@ $this->pdf->SetFillColor(255,255,255);
 $this->pdf->SetTextColor(77,77,77); # COLOR DEL TEXTO
 $this->pdf->SetFont('Arial','B',8);
 $this->pdf->Cell(125,6,"",'',0,'C',1);
+$this->pdf->Cell(5,4,"",'',0,'L',1);
 $this->pdf->Cell(25,6,"Subtotal",'',0,'R',1);
 $this->pdf->SetFillColor(255,255,255);
 $this->pdf->SetFont('Arial','',8);
@@ -148,6 +156,7 @@ $this->pdf->SetFillColor(255,255,255);
 $this->pdf->SetTextColor(77,77,77); # COLOR DEL TEXTO
 $this->pdf->SetFont('Arial','B',8);
 $this->pdf->Cell(125,6,"",'',0,'C',1);
+$this->pdf->Cell(5,4,"",'',0,'L',1);
 $this->pdf->Cell(25,6,"IVA(".$tasa_iva."%)",'',0,'R',1);
 $this->pdf->SetFillColor(255,255,255);
 $this->pdf->SetFont('Arial','',8);
@@ -159,6 +168,7 @@ $this->pdf->SetFillColor(255,255,255);
 $this->pdf->SetTextColor(77,77,77); # COLOR DEL TEXTO
 $this->pdf->SetFont('Arial','B',8);
 $this->pdf->Cell(125,6,"",'',0,'C',1);
+$this->pdf->Cell(5,4,"",'',0,'L',1);
 $this->pdf->Cell(25,6,"Total",'',0,'R',1);
 $this->pdf->SetFillColor(255,255,255);
 $this->pdf->SetFont('Arial','',8);
@@ -169,10 +179,12 @@ $this->pdf->Cell(35,6,"".number_format($total, 2, ',', ' ')." Bs",'',1,'R',1);
 $this->pdf->SetY(51);
 $this->pdf->SetTextColor(77,77,77); # COLOR DEL TEXTO
 $this->pdf->SetFont('Arial','B',7);
+$this->pdf->Cell(5,4,"",'',0,'L',1);
 $this->pdf->Write(5,utf8_decode("Número de pedido:"),'',1,'C',0);
 $this->pdf->SetY(55);
 $this->pdf->SetFont('Arial','',8);
 $reference = $order['order'][0]['reference'];
+$this->pdf->Cell(5,4,"",'',0,'L',1);
 $this->pdf->Write(5,"$id_order-$reference",'',1,'C',0);
 
 // Conversión de la fecha del pedido
@@ -188,18 +200,22 @@ if(isset($order['order_invoice']) && count($order['order_invoice']) > 0){
 $this->pdf->SetY(62);
 $this->pdf->SetTextColor(77,77,77); # COLOR DEL TEXTO
 $this->pdf->SetFont('Arial','B',7);
+$this->pdf->Cell(5,4,"",'',0,'L',1);
 $this->pdf->Write(6,utf8_decode("Fecha de pedido:"),'',1,'R',0);
 $this->pdf->SetY(66);
 $this->pdf->SetFont('Arial','',8);
+$this->pdf->Cell(5,4,"",'',0,'L',1);
 $this->pdf->Write(5,$fecha_pedido,'',1,'R',0);
 
 // Método de pago
 $this->pdf->SetY(73);
 $this->pdf->SetTextColor(77,77,77); # COLOR DEL TEXTO
 $this->pdf->SetFont('Arial','B',7);
+$this->pdf->Cell(5,4,"",'',0,'L',1);
 $this->pdf->Write(5,utf8_decode("Método de pago:"),'',1,'C',0);
 $this->pdf->SetY(77);
 $this->pdf->SetFont('Arial','',8);
+$this->pdf->Cell(5,4,"",'',0,'L',1);
 $this->pdf->Write(5,utf8_decode($order['order'][0]['payment']),'',1,'C',0);
 
 //~ $this->pdf->Cell(125,1,"",'',1,'R',1);  // Cierre de bloque de productos
