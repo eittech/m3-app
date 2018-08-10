@@ -36,7 +36,7 @@ $fecha_re = date("d/m/Y");
 
 // Títulos
 $this->pdf->SetFillColor(240,240,240);
-$this->pdf->SetFont('Arial','B',6);
+$this->pdf->SetFont('Arial','B',8);
 $this->pdf->Cell(40,4,"REFERENCIA",'LT',0,'C',1);
 $this->pdf->Cell(40,4,utf8_decode("FECHA"),'T',0,'C',1);
 $this->pdf->Cell(40,4,"FECHA DE ENTREGA",'TR',1,'C',1);
@@ -44,7 +44,7 @@ $this->pdf->Cell(40,4,"FECHA DE ENTREGA",'TR',1,'C',1);
 //$this->pdf->Cell(60,4,utf8_decode("Método de Pago"),'TR',1,'C',1);
 // Contenido
 $this->pdf->SetFillColor(255,255,255);
-$this->pdf->SetFont('Arial','',6);
+$this->pdf->SetFont('Arial','',8);
 $this->pdf->Cell(40,4,$order['order'][0]['id_order']." - ".$order['order'][0]['reference'],'LB',0,'C',1);
 $this->pdf->Cell(40,4,$order['order'][0]['invoice_date'],'B',0,'C',1);
 $this->pdf->Cell(40,4,$order['order'][0]['delivery_date'],'RB',0,'C',1);
@@ -60,24 +60,24 @@ $this->pdf->Ln(10);
 
 $this->pdf->SetFillColor(240,240,240);
 $this->pdf->SetTextColor(0,0,0); # COLOR DEL TEXTO
-$this->pdf->SetFont('Arial','B',6);
+$this->pdf->SetFont('Arial','B',8);
 $this->pdf->Cell(19,4,"ID.",'LTB',0,'C',1);
 $this->pdf->Cell(10,4,"Cant.",'TB',0,'C',1);
 //$this->pdf->Cell(20,4,"Referencia",'TB',0,'C',1);
-$this->pdf->Cell(100,4,"Producto",'TB',0,'L',1);
-$this->pdf->Cell(15,4,"Tela",'TB',0,'C',1);
+$this->pdf->Cell(80,4,"Producto",'TB',0,'L',1);
+$this->pdf->Cell(25,4,"Tela",'TB',0,'L',1);
 /*
 $this->pdf->Cell(30,4,"Color",'TB',0,'C',1);
 $this->pdf->Cell(15,4,"Talla",'TB',0,'C',1);
 $this->pdf->Cell(30,4,"Variable",'TB',0,'C',1);
 $this->pdf->Cell(30,4,utf8_decode("Combinación"),'TB',0,'C',1);
 $this->pdf->Cell(30,4,"Extra",'TB',0,'C',1);*/
-$this->pdf->Cell(20,4,"Precio Unitario",'TB',0,'C',1);
-$this->pdf->Cell(20,4,"Precio Total",'TRB',1,'C',1);
+$this->pdf->Cell(25,4,"Precio Unitario",'TB',0,'C',1);
+$this->pdf->Cell(25,4,"Precio Total",'TRB',1,'C',1);
 
 $this->pdf->SetFillColor(255,255,255);
 $this->pdf->SetTextColor(0,0,0); # COLOR DEL TEXTO
-$this->pdf->SetFont('Arial','',6);
+$this->pdf->SetFont('Arial','',8);
 $total_cant = 0;  // Cantidad total
 $subtotal_price = 0;  // Precio total
 
@@ -113,7 +113,7 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 
 			// Títulos
 			$this->pdf->SetFillColor(240,240,240);
-			$this->pdf->SetFont('Arial','B',6);
+			$this->pdf->SetFont('Arial','B',8);
 			$this->pdf->Cell(40,4,"REFERENCIA",'LT',0,'C',1);
 			$this->pdf->Cell(40,4,utf8_decode("FECHA DE RECEPCIÓN"),'T',0,'C',1);
 			$this->pdf->Cell(40,4,"FECHA DE ENTREGA",'T',0,'C',1);
@@ -137,12 +137,12 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 
 			$this->pdf->SetFillColor(240,240,240);
 			$this->pdf->SetTextColor(0,0,0); # COLOR DEL TEXTO
-			$this->pdf->SetFont('Arial','B',6);
+			$this->pdf->SetFont('Arial','B',8);
 			$this->pdf->Cell(19,4,"ID.",'LTB',0,'C',1);
 			$this->pdf->Cell(10,4,"Cant.",'TB',0,'C',1);
 			$this->pdf->Cell(20,4,"Referencia",'TB',0,'C',1);
-			$this->pdf->Cell(100,4,"Producto",'TB',0,'C',1);
-			$this->pdf->Cell(15,4,"Tela",'TB',0,'C',1);
+			$this->pdf->Cell(80,4,"Producto",'TB',0,'C',1);
+			$this->pdf->Cell(25,4,"Tela",'TB',0,'L',1);
 			/*
 			$this->pdf->Cell(30,4,"Color",'TB',0,'C',1);
 			$this->pdf->Cell(15,4,"Talla",'TB',0,'C',1);
@@ -150,8 +150,8 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 			$this->pdf->Cell(30,4,utf8_decode("Combinación"),'TB',0,'C',1);
 			$this->pdf->Cell(30,4,"Extra",'TB',0,'C',1);
 			*/
-			$this->pdf->Cell(20,4,"Precio Unitario",'TB',0,'C',1);
-			$this->pdf->Cell(20,4,"Precio Total",'TRB',1,'C',1);
+			$this->pdf->Cell(25,4,"Precio Unitario",'TB',0,'C',1);
+			$this->pdf->Cell(25,4,"Precio Total",'TRB',1,'C',1);
 
 			$this->pdf->SetFillColor(255,255,255);
 			$this->pdf->SetTextColor(0,0,0); # COLOR DEL TEXTO
@@ -188,8 +188,8 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 			$this->pdf->Cell(19,4,"".$order_detail['product_id'],'LT',0,'C',1);
 			$this->pdf->Cell(10,4,"".$order_detail['product_quantity'],'T',0,'C',1);
 			//$this->pdf->Cell(20,4,utf8_decode("".$order_detail['product_reference']),'T',0,'C',1);
-			$this->pdf->Cell(41,4,utf8_decode(substr($order_detail['product_short_name'], 0, 50)),'T',0,'L',1);
-			$this->pdf->Cell(15,4,utf8_decode($tela),'T',0,'C',1);
+			$this->pdf->Cell(80,4,utf8_decode(substr($order_detail['product_short_name'], 0, 50)),'T',0,'L',1);
+			$this->pdf->Cell(25,4,utf8_decode($tela),'T',0,'L',1);
 			// Validación de atributo Color
 			//$color = ""; if(isset($order_detail['Color'])){ $color = $order_detail['Color']; }else{ $color = "No Aplica"; }
 			//$this->pdf->Cell(30,4,utf8_decode($color),'T',0,'C',1);
@@ -205,28 +205,28 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 			// Validación de atributo Extra
 			//$extra = ""; if(isset($order_detail['Extra'])){ $extra = $order_detail['Extra']; }else{ $extra = "No Aplica"; }
 			//$this->pdf->Cell(30,4,utf8_decode($extra),'T',0,'C',1);
-			$this->pdf->Cell(20,4,"".number_format((float)$order_detail['unit_price_tax_excl'], 2, ',', '.'),'T',0,'C',1);
-			$this->pdf->Cell(20,4,"".number_format((float)$order_detail['unit_price_tax_excl']*$order_detail['product_quantity'], 2, ',', '.'),'TR',1,'C',1);
+			$this->pdf->Cell(25,4,"".number_format((float)$order_detail['unit_price_tax_excl'], 2, ',', '.'),'T',0,'C',1);
+			$this->pdf->Cell(25,4,"".number_format((float)$order_detail['unit_price_tax_excl']*$order_detail['product_quantity'], 2, ',', '.'),'TR',1,'C',1);
 			
 			$this->pdf->Cell(19,3,"",'LB',0,'C',1);
 			$this->pdf->Cell(10,3,"",'B',0,'C',1);
 			$this->pdf->Cell(20,3,"",'B',0,'C',1);
-			$this->pdf->Cell(100,3,utf8_decode(substr($order_detail['product_short_name'], 50)),'B',0,'L',1);
-			$this->pdf->Cell(15,3,utf8_decode(""),'B',0,'L',1);
+			$this->pdf->Cell(80,3,utf8_decode(substr($order_detail['product_short_name'], 50)),'B',0,'L',1);
+			$this->pdf->Cell(25,3,utf8_decode(""),'B',0,'L',1);
 			$this->pdf->Cell(30,3,utf8_decode(""),'B',0,'L',1);
 			$this->pdf->Cell(15,3,utf8_decode(""),'B',0,'L',1);
 			$this->pdf->Cell(30,3,utf8_decode(""),'B',0,'L',1);
 			$this->pdf->Cell(30,3,utf8_decode(""),'B',0,'L',1);
 			$this->pdf->Cell(30,3,utf8_decode(""),'B',0,'L',1);
-			$this->pdf->Cell(20,3,"",'B',0,'C',1);
-			$this->pdf->Cell(20,3,"",'BR',1,'C',1);
+			$this->pdf->Cell(25,3,"",'B',0,'C',1);
+			$this->pdf->Cell(25,3,"",'BR',1,'C',1);
 			
 		}else{
 			$this->pdf->Cell(19,4,"".$order_detail['product_id'],'LT',0,'C',1);
 			$this->pdf->Cell(10,4,"".$order_detail['product_quantity'],'T',0,'C',1);
 			//$this->pdf->Cell(20,4,utf8_decode("".$order_detail['product_reference']),'T',0,'C',1);
-			$this->pdf->Cell(100,4,utf8_decode($order_detail['product_short_name']),'T',0,'L',1);
-			$this->pdf->Cell(15,4,utf8_decode($tela),'T',0,'C',1);
+			$this->pdf->Cell(80,4,utf8_decode($order_detail['product_short_name']),'T',0,'L',1);
+			$this->pdf->Cell(25,4,utf8_decode($tela),'T',0,'L',1);
 			// Validación de atributo Color
 			//$color = ""; if(isset($order_detail['Color'])){ $color = $order_detail['Color']; }else{ $color = "No Aplica"; }
 			//$this->pdf->Cell(30,4,utf8_decode($color),'T',0,'C',1);
@@ -242,8 +242,8 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 			// Validación de atributo Extra
 			//$extra = ""; if(isset($order_detail['Extra'])){ $extra = $order_detail['Extra']; }else{ $extra = "No Aplica"; }
 			//$this->pdf->Cell(30,4,utf8_decode($extra),'T',0,'C',1);
-			$this->pdf->Cell(20,4,"".number_format((float)$order_detail['unit_price_tax_excl'], 2, ',', '.'),'T',0,'C',1);
-			$this->pdf->Cell(20,4,"".number_format((float)$order_detail['unit_price_tax_excl']*$order_detail['product_quantity'], 2, ',', '.'),'TR',1,'C',1);
+			$this->pdf->Cell(25,4,"".number_format((float)$order_detail['unit_price_tax_excl'], 2, ',', '.'),'T',0,'C',1);
+			$this->pdf->Cell(25,4,"".number_format((float)$order_detail['unit_price_tax_excl']*$order_detail['product_quantity'], 2, ',', '.'),'TR',1,'C',1);
 		}
 		$total_cant += ($order_detail['product_quantity']);
 		$subtotal_price += ($order_detail['unit_price_tax_excl']*$order_detail['product_quantity']);
@@ -256,7 +256,7 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 // Subtotal
 $this->pdf->SetFillColor(204,204,204);
 $this->pdf->SetTextColor(0,0,0); # COLOR DEL TEXTO
-$this->pdf->SetFont('Arial','B',6);
+$this->pdf->SetFont('Arial','B',7.5);
 $this->pdf->Cell(18,6,"Cant. Total",'LB',0,'C',1);
 $this->pdf->Cell(126,6,"      $total_cant",'B',0,'L',1);
 $this->pdf->Cell(20,6,"Subtotal",'B',0,'C',1);
@@ -286,7 +286,7 @@ $this->pdf->Cell(20,6,"".number_format((float)$iva, 2, ',', '.'),'RB',1,'C',1);*
 $total_price = $order['order'][0]['total_paid_tax_incl'];
 $this->pdf->SetFillColor(255,255,255);
 $this->pdf->SetTextColor(0,0,0); # COLOR DEL TEXTO
-$this->pdf->SetFont('Arial','B',6);
+$this->pdf->SetFont('Arial','B',7.5);
 $this->pdf->Cell(18,6,"",'',0,'C',1);
 $this->pdf->Cell(126,6,"",'',0,'C',1);
 
@@ -297,7 +297,7 @@ $this->pdf->Cell(20,6,"".number_format((float)$iva, 2, ',', '.'),'RB',1,'C',1);
 
 $this->pdf->SetFillColor(255,255,255);
 $this->pdf->SetTextColor(0,0,0); # COLOR DEL TEXTO
-$this->pdf->SetFont('Arial','B',6);
+$this->pdf->SetFont('Arial','B',7.5);
 $this->pdf->Cell(18,6,"",'',0,'C',1);
 $this->pdf->Cell(126,6,"",'',0,'C',1);
 
@@ -307,19 +307,27 @@ $this->pdf->Cell(20,6,"".number_format((float)$total_price, 2, ',', '.'),'RB',1,
 
 // Info para los Terminos y Condiciones
 $this->pdf->Ln(15);
+$this->pdf->SetFont('Arial','B',9);
 $this->pdf->MultiCell(180, 5, utf8_decode($order_terms->terms), 0, 'C', 0);
 
 // Dimensiones de X,Y
+$this->pdf->SetFont('Arial','',9);
 $this->pdf->SetY(15);
-$this->pdf->SetX(129);
-$this->pdf->SetFont('Arial','',12);
+$this->pdf->SetX(124);
+$this->pdf->Cell(40,4,"M3 Uniformes, C.A",'',1,'C',0);
+
+$this->pdf->SetY(20);
+$this->pdf->SetX(131);
 $this->pdf->Cell(40,4,"Urb. Los Samanes C/1 N 343",'',1,'C',0);
-$this->pdf->SetY(21);
-$this->pdf->SetX(122);
+
+$this->pdf->SetY(25);
+$this->pdf->SetX(126);
 $this->pdf->Cell(40,4,"Maracay  Edo. Aragua",'',0,'C',0);
-$this->pdf->SetY(28);
-$this->pdf->SetX(118);
+
+$this->pdf->SetY(30);
+$this->pdf->SetX(123);
 $this->pdf->Cell(40,4,"Rif: J-31665970-4",'',0,'C',0);
+
 $this->pdf->SetY(34);
 $this->pdf->SetX(137);
 $this->pdf->Cell(40,4,"e - mail : contacto@m3uniformes.com",'',0,'C',0);
