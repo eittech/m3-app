@@ -1007,4 +1007,16 @@ class COrders extends CI_Controller {
         $this->load->view('pdf/order_report', $data);
     }
 
+    // Generación del reporte de la orden Cotizacion
+    function pdf_order_cotization($order_id)
+    {
+        // Consultamos los datos de la orden
+		$get3 = file_get_contents(base_url()."orders/details/".$order_id);
+		$exchangeRates3 = json_decode($get3, true);
+        
+        $data['order'] = $exchangeRates3;
+        
+        $this->load->view('pdf/order_cotization_report', $data);
+    }
+
 }
