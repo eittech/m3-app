@@ -1,6 +1,6 @@
 <?php
 
-$this->pdf = new FPDF($orientation = 'L', $unit = 'mm', $format = 'A4');  // Instancando la clase FPDF original SÍ toma la horientación
+$this->pdf = new FPDF($orientation = 'P', $unit = 'mm', $format = 'A4');  // Instancando la clase FPDF original SÍ toma la horientación
 // Agregamos una página
 $this->pdf->AddPage();
 // Define el alias para el número de página que se imprimirá en el pie
@@ -12,109 +12,21 @@ $this->pdf->SetFillColor(157,188,201); # COLOR DE BORDE DE LA CELDA
 $this->pdf->SetTextColor(0,0,0); # COLOR DEL TEXTO
 $this->pdf->SetMargins(8,8,8); # MÁRGENES DEL DOCUMENTO
 
-// Logo tipo de empresa
-$this->pdf->Image(base_url().'assets/img/logos/logotipo_320x130.png',265,7,25);
+// Logo tipo de empresa                                             # DI  AA AN
+$this->pdf->Image(base_url().'assets/img/logos/logotipo_320x130.png',0,7,70);
+$this->pdf->Ln(30);
 
-// SECCIÓN DE CABECERAS DE PROVEEDOR Y CLIENTE
-// Nombre cliente
-$this->pdf->SetFillColor(255,255,255);
-$this->pdf->SetFont('Arial','B',20);
+
+// Info de la empresa
+$this->pdf->SetFont('Arial','',15);
+$this->pdf->SetFillColor(157,188,201); # COLOR DE BORDE DE LA CELDA
+$this->pdf->SetTextColor(0,0,0); # COLOR DEL TEXTO
+$this->pdf->SetMargins(8,8,8); # MÁRGENES DEL DOCUMENTO
+
+
 $this->pdf->Ln(5);
-$customer_name = utf8_decode($order['order'][0]['customer'][0]['firstname']." ".$order['order'][0]['customer'][0]['lastname']);
-$this->pdf->Cell(189,5,$customer_name,0,1,'L',1);
-$this->pdf->Ln(3);
-//Títulos
-$this->pdf->SetFont('Arial','B',6);
-$this->pdf->Cell(63,5,"",0,0,'L',1);
-$this->pdf->Cell(63,5,utf8_decode("Dirección de Entrega"),0,0,'L',1);
-$this->pdf->Cell(63,5,utf8_decode("Dirección de Facturación"),0,1,'L',1);
 
-// Razón social
-$this->pdf->SetFillColor(255,255,255);
-$this->pdf->SetFont('Arial','',5);
-$this->pdf->Cell(63,6,utf8_decode(""),0,0,'L',1);
-$this->pdf->Cell(63,4,utf8_decode("Nombre o razón social: ".$order['order'][0]['address_delivery'][0]['company']),0,0,'L',1);
-$this->pdf->Cell(63,4,utf8_decode("Nombre o razón social: ".$order['order'][0]['address_invoice'][0]['company']),0,1,'L',1);
-
-// RIF
-$this->pdf->SetFillColor(255,255,255);
-$this->pdf->SetFont('Arial','',5);
-$this->pdf->Cell(63,4,utf8_decode(""),0,0,'L',1);
-$this->pdf->Cell(63,4,utf8_decode("CI o RIF: ".$order['order'][0]['address_delivery'][0]['dni']),0,0,'L',1);
-$this->pdf->Cell(63,4,utf8_decode("CI o RIF: ".$order['order'][0]['address_invoice'][0]['dni']),0,1,'L',1);
-
-// Dirección fiscal
-$this->pdf->SetFillColor(255,255,255);
-$this->pdf->SetFont('Arial','',5);
-$this->pdf->Cell(63,4,utf8_decode("Nombre o razón social: M3 Uniformes C.A."),0,0,'L',1);
-
-// Recortamos la dirección de entrega si es muy larga
-if(strlen($order['order'][0]['address_delivery'][0]['address1']) > 80){
-	$direccion_entrega = substr($order['order'][0]['address_delivery'][0]['address1'], 0, 55);
-}else{
-	$direccion_entrega = $order['order'][0]['address_delivery'][0]['address1'];
-}
-$this->pdf->Cell(63,4,utf8_decode("Dirección fiscal: ".$direccion_entrega),0,0,'L',1);
-
-// Recortamos la dirección de facturación si es muy larga
-if(strlen($order['order'][0]['address_invoice'][0]['address1']) > 80){
-	$direccion_factura = substr($order['order'][0]['address_invoice'][0]['address1'], 0, 55);
-}else{
-	$direccion_factura = $order['order'][0]['address_invoice'][0]['address1'];
-}
-$this->pdf->Cell(63,4,utf8_decode("Dirección fiscal: ".$direccion_factura),0,1,'L',1);
-
-
-// Generamos una línea más para las direcciones principales si éstas superan el límite de 55 caracteres
-if(strlen($order['order'][0]['address_delivery'][0]['address1']) > 55 || strlen($order['order'][0]['address_invoice'][0]['address1']) > 55){
-	$this->pdf->Cell(63,4,utf8_decode(""),0,0,'L',1);
-	$this->pdf->Cell(63,4,utf8_decode(substr($order['order'][0]['address_delivery'][0]['address1'], 55)),0,0,'L',1);
-	$this->pdf->Cell(63,4,utf8_decode(substr($order['order'][0]['address_invoice'][0]['address1'], 55)),0,1,'L',1);
-}
-
-// Imprimimos las direcciones secundarias si existe alguna
-if(strlen($order['order'][0]['address_delivery'][0]['address2']) > 0 || strlen($order['order'][0]['address_invoice'][0]['address2']) > 0){
-	
-	$this->pdf->Cell(63,4,utf8_decode("Dirección fiscal: Los Samanes, Maracay, estado Aragua, Maracay,"),0,0,'L',1);
-	
-	// Recortamos la dirección de entrega secundaria si es muy larga
-	if(strlen($order['order'][0]['address_delivery'][0]['address2']) > 80){
-		$direccion_entrega = substr($order['order'][0]['address_delivery'][0]['address2'], 0, 70);
-	}else{
-		$direccion_entrega = $order['order'][0]['address_delivery'][0]['address2'];
-	}
-	$this->pdf->Cell(63,4,utf8_decode($direccion_entrega),0,0,'L',1);	
-	
-	// Recortamos la dirección de facturación secundaria si es muy larga
-	if(strlen($order['order'][0]['address_invoice'][0]['address2']) > 80){
-		$direccion_factura = substr($order['order'][0]['address_invoice'][0]['address2'], 0, 70);
-	}else{
-		$direccion_factura = $order['order'][0]['address_invoice'][0]['address2'];
-	}
-	$this->pdf->Cell(63,4,utf8_decode($direccion_factura),0,1,'L',1);
-	
-}else{
-	$this->pdf->Cell(63,4,utf8_decode("Dirección fiscal: Los Samanes, Maracay, estado Aragua, Maracay,"),0,0,'L',1);
-	$this->pdf->Cell(63,4,utf8_decode(""),0,0,'L',1);
-	$this->pdf->Cell(63,4,utf8_decode(""),0,1,'L',1);
-}
-
-
-// Generamos una línea más para las direcciones secundarias si éstas superan el límite de 70 caracteres
-if(strlen($order['order'][0]['address_delivery'][0]['address2']) > 70 || strlen($order['order'][0]['address_invoice'][0]['address2']) > 70){
-	$this->pdf->Cell(63,4,utf8_decode(""),0,0,'L',1);
-	$this->pdf->Cell(63,4,utf8_decode(substr($order['order'][0]['address_delivery'][0]['address2'], 70)),0,0,'L',1);
-	$this->pdf->Cell(63,4,utf8_decode(substr($order['order'][0]['address_invoice'][0]['address2'], 70)),0,1,'L',1);
-}
-
-// Teléfono
-$this->pdf->SetFillColor(255,255,255);
-$this->pdf->SetFont('Arial','',6);
-$this->pdf->Cell(63,4,utf8_decode("Teléfono: , 0412 311.23.08"),0,0,'L',1);
-$this->pdf->Cell(63,4,utf8_decode("Teléfono: ".$order['order'][0]['address_delivery'][0]['phone'].", ".$order['order'][0]['address_delivery'][0]['phone_mobile']),0,0,'L',1);
-$this->pdf->Cell(63,4,utf8_decode("Teléfono: ".$order['order'][0]['address_invoice'][0]['phone'].", ".$order['order'][0]['address_invoice'][0]['phone_mobile']),0,1,'L',1);
-
-
+$this->pdf->Cell(180,4,utf8_decode("COTIZACION"),0,0,'C',0);
 // SECCIÓN DE REFERENICA Y FECHAS DE LA ORDEN
 
 $this->pdf->Ln(10);
@@ -152,7 +64,7 @@ $this->pdf->SetFont('Arial','B',6);
 $this->pdf->Cell(19,4,"ID.",'LTB',0,'C',1);
 $this->pdf->Cell(10,4,"Cant.",'TB',0,'C',1);
 //$this->pdf->Cell(20,4,"Referencia",'TB',0,'C',1);
-$this->pdf->Cell(41,4,"Producto",'TB',0,'L',1);
+$this->pdf->Cell(100,4,"Producto",'TB',0,'L',1);
 $this->pdf->Cell(15,4,"Tela",'TB',0,'C',1);
 /*
 $this->pdf->Cell(30,4,"Color",'TB',0,'C',1);
@@ -229,7 +141,7 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 			$this->pdf->Cell(19,4,"ID.",'LTB',0,'C',1);
 			$this->pdf->Cell(10,4,"Cant.",'TB',0,'C',1);
 			$this->pdf->Cell(20,4,"Referencia",'TB',0,'C',1);
-			$this->pdf->Cell(41,4,"Producto",'TB',0,'C',1);
+			$this->pdf->Cell(100,4,"Producto",'TB',0,'C',1);
 			$this->pdf->Cell(15,4,"Tela",'TB',0,'C',1);
 			/*
 			$this->pdf->Cell(30,4,"Color",'TB',0,'C',1);
@@ -299,7 +211,7 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 			$this->pdf->Cell(19,3,"",'LB',0,'C',1);
 			$this->pdf->Cell(10,3,"",'B',0,'C',1);
 			$this->pdf->Cell(20,3,"",'B',0,'C',1);
-			$this->pdf->Cell(41,3,utf8_decode(substr($order_detail['product_short_name'], 50)),'B',0,'L',1);
+			$this->pdf->Cell(100,3,utf8_decode(substr($order_detail['product_short_name'], 50)),'B',0,'L',1);
 			$this->pdf->Cell(15,3,utf8_decode(""),'B',0,'L',1);
 			$this->pdf->Cell(30,3,utf8_decode(""),'B',0,'L',1);
 			$this->pdf->Cell(15,3,utf8_decode(""),'B',0,'L',1);
@@ -313,7 +225,7 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 			$this->pdf->Cell(19,4,"".$order_detail['product_id'],'LT',0,'C',1);
 			$this->pdf->Cell(10,4,"".$order_detail['product_quantity'],'T',0,'C',1);
 			//$this->pdf->Cell(20,4,utf8_decode("".$order_detail['product_reference']),'T',0,'C',1);
-			$this->pdf->Cell(41,4,utf8_decode($order_detail['product_short_name']),'T',0,'L',1);
+			$this->pdf->Cell(100,4,utf8_decode($order_detail['product_short_name']),'T',0,'L',1);
 			$this->pdf->Cell(15,4,utf8_decode($tela),'T',0,'C',1);
 			// Validación de atributo Color
 			//$color = ""; if(isset($order_detail['Color'])){ $color = $order_detail['Color']; }else{ $color = "No Aplica"; }
@@ -345,8 +257,8 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 $this->pdf->SetFillColor(204,204,204);
 $this->pdf->SetTextColor(0,0,0); # COLOR DEL TEXTO
 $this->pdf->SetFont('Arial','B',6);
-$this->pdf->Cell(18,6,"Cant. Total  $total_cant",'LB',0,'C',1);
-$this->pdf->Cell(67,6,"",'B',0,'C',1);
+$this->pdf->Cell(18,6,"Cant. Total",'LB',0,'C',1);
+$this->pdf->Cell(126,6,"      $total_cant",'B',0,'L',1);
 $this->pdf->Cell(20,6,"Subtotal",'B',0,'C',1);
 $this->pdf->Cell(20,6,"".number_format((float)$subtotal_price, 2, ',', '.'),'RB',1,'C',1);
 
@@ -376,7 +288,7 @@ $this->pdf->SetFillColor(255,255,255);
 $this->pdf->SetTextColor(0,0,0); # COLOR DEL TEXTO
 $this->pdf->SetFont('Arial','B',6);
 $this->pdf->Cell(18,6,"",'',0,'C',1);
-$this->pdf->Cell(67,6,"",'',0,'C',1);
+$this->pdf->Cell(126,6,"",'',0,'C',1);
 
 $this->pdf->SetFillColor(204,204,204);
 $this->pdf->Cell(20,6,"IVA(".$tasa_iva."%)",'LB',0,'C',1);
@@ -387,11 +299,30 @@ $this->pdf->SetFillColor(255,255,255);
 $this->pdf->SetTextColor(0,0,0); # COLOR DEL TEXTO
 $this->pdf->SetFont('Arial','B',6);
 $this->pdf->Cell(18,6,"",'',0,'C',1);
-$this->pdf->Cell(67,6,"",'',0,'C',1);
+$this->pdf->Cell(126,6,"",'',0,'C',1);
 
 $this->pdf->SetFillColor(204,204,204);
 $this->pdf->Cell(20,6,"Total",'LB',0,'C',1);
 $this->pdf->Cell(20,6,"".number_format((float)$total_price, 2, ',', '.'),'RB',1,'C',1);
 
+// Info para los Terminos y Condiciones
+$this->pdf->Ln(15);
+$this->pdf->MultiCell(180, 5, utf8_decode($order_terms->terms), 0, 'C', 0);
+
+// Dimensiones de X,Y
+$this->pdf->SetY(15);
+$this->pdf->SetX(129);
+$this->pdf->SetFont('Arial','',12);
+$this->pdf->Cell(40,4,"Urb. Los Samanes C/1 N 343",'',1,'C',0);
+$this->pdf->SetY(21);
+$this->pdf->SetX(122);
+$this->pdf->Cell(40,4,"Maracay  Edo. Aragua",'',0,'C',0);
+$this->pdf->SetY(28);
+$this->pdf->SetX(118);
+$this->pdf->Cell(40,4,"Rif: J-31665970-4",'',0,'C',0);
+$this->pdf->SetY(34);
+$this->pdf->SetX(137);
+$this->pdf->Cell(40,4,"e - mail : contacto@m3uniformes.com",'',0,'C',0);
+
 // Salida del Formato PDF
-$this->pdf->Output("order.pdf", 'I');
+$this->pdf->Output("Cotizacion.pdf", 'I');
