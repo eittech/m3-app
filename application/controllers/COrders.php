@@ -56,6 +56,7 @@ class COrders extends CI_Controller {
         
         // Load database
         $this->load->model('MOrders');
+        $this->load->model('MOrdersTerms','ter');
     }
 
     // Método para cargar los datos de una orden según el id
@@ -1013,7 +1014,8 @@ class COrders extends CI_Controller {
         // Consultamos los datos de la orden
 		$get3 = file_get_contents(base_url()."orders/details/".$order_id);
 		$exchangeRates3 = json_decode($get3, true);
-        
+
+		$data['order_terms'] = $this->ter->row_order_terms($order_id);
         $data['order'] = $exchangeRates3;
         
         $this->load->view('pdf/order_cotization_report', $data);
