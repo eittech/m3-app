@@ -308,7 +308,7 @@ $this->pdf->Cell(20,6,"".number_format((float)$total_price, 2, ',', '.'),'RB',1,
 // Info para los Terminos y Condiciones
 $this->pdf->Ln(15);
 $this->pdf->SetFont('Arial','B',9);
-if(count($order_terms->terms) > 0){
+if(count($order_terms) > 0){
 	$this->pdf->MultiCell(180, 5, utf8_decode($order_terms->terms), 0, 'C', 0);
 }
 
