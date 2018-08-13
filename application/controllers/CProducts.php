@@ -537,7 +537,7 @@ class CProducts extends CI_Controller {
 			if(count($attribs_product) > 0){
 				
 				// Establecemos el encabezado delas columnas
-				$fields = array('Posición', 'Categoría', 'Sub Categoría', 'Producto', 'Tela', 'Precio Mayor', 'Precio Detal');
+				$fields = array(utf8_decode('Posición'), utf8_decode('Categoría'), utf8_decode('Sub Categoría'), 'Producto', 'Tela', 'Precio Mayor', 'Precio Detal');
 				fputcsv($f, $fields, $delimiter);
 				
 				// Construimos una fila con cada registro y lo vamos escribiendo en el csv
