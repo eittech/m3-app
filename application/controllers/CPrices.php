@@ -296,24 +296,105 @@ class CPrices extends CI_Controller {
 						$errors += 1;
 					}else{
 						$records += 1;  // Contamos el registro
-						
-						// Actualizamos el impacto de precio de cada combinación en la tabla 'product_attribute'
-						$new_price_impact = array(
-							"id_product_attribute" => $combination->id_product_attribute,
-							"price" => $precio*1.30*1.30-$minimum_prices["".$combination->id_product]
-						);
-						
-						$update_price_impact = $this->MProducts->update_impact_price($new_price_impact);
-						
-						// Actualizamos el impacto de precio de cada combinación en la tabla 'product_attribute_shop'
-						
-						$update_price_impact_shop = $this->MProducts->update_impact_price_shop($new_price_impact);
-						
-						// Recolectamos el id del producto para luego actualizarlo
-						if(!in_array($combination->id_product, $products_update)){
-							$products_update[] = $combination->id_product;
-						}
-						
+					}
+					
+				}
+				
+				$j++;			
+				
+			}
+			
+		}
+		
+		// Impresión de mensaje en formato json para validar con jquery
+		if($errors > 0){
+			
+			echo '{"response":"error"}';
+			
+		}else{
+			
+			if($records > 0){
+				echo '{"response":"Se ha generado la lista '.$list_number.' con '.$records.' registros"}';
+			}else{
+				echo '{"response":"La categoría seleccionada no produjo registros"}';
+			}
+			
+		}
+		
+	}
+	
+	
+/**
+ * ------------------------------------------------------
+ * Método para actulizar los precios desde el listado de precios
+ * en las tablas de almacenamiento de precios.
+ * ------------------------------------------------------
+ * 
+ * Este método permite generar un listado de combinaciones filtrado 
+ * por la categoría seleccionada. Además actualiza los precios de
+ * cada producto en la tabla 'product'.
+ */
+    public function update_prices()
+	{
+		// Id de categoría mediante post
+		$id_category = $this->input->post('id_category');
+		
+		// Consulta de listado de productos y sus respectivas combinaciones
+		$attribs_product = $this->MProducts->obtenerCombinacionesByCategory($id_category);
+		
+		// Para contar errores
+		$errors = 0;
+		
+		// Para contar registros
+		$records = 0;
+		
+		// Construimos la lista del cuerpo si existen combinaciones
+		if(count($attribs_product) > 0){
+		
+			// Generamos la lista de precios mínimos de cada producto
+			$minimum_prices = $this->minimum_prices($attribs_product);
+			
+			// Arreglo para recolectar los ids de los productos a actualizar
+			$products_update = array();
+			
+			$j = 1;
+			foreach($attribs_product as $combination){
+				
+				$precio = 1;
+				$precio_iva = 0;
+				
+				// Búsqueda del precio de cada combinación de producto
+				list($costos_fijos, $costos_variables, $precio) = $this->calculate_price($combination->id_product, $combination->id_attribute, $combination->id_product_attribute);
+				
+				$precio_costo = $precio;
+				
+				// Si el producto de la combinación está activo entonces le podemos actualizar el impacto de precio
+				if($combination->product_status == 1){
+					
+					// Actualizamos el impacto de precio de cada combinación en la tabla 'product_attribute'
+					$new_price_impact = array(
+						"id_product_attribute" => $combination->id_product_attribute,
+						"price" => $precio*1.30*1.30-$minimum_prices["".$combination->id_product]
+					);
+					
+					//~ $update_price_impact = $this->MProducts->update_impact_price($new_price_impact);
+					if(!$this->MProducts->update_impact_price($new_price_impact)){
+						$errors += 1;
+					}else{
+						$records += 1;  // Contamos el registro
+					}
+					
+					// Actualizamos el impacto de precio de cada combinación en la tabla 'product_attribute_shop'
+					//~ $update_price_impact_shop = $this->MProducts->update_impact_price_shop($new_price_impact);
+					if(!$this->MProducts->update_impact_price_shop($new_price_impact)){
+						$errors += 1;
+					}else{
+						$records += 1;  // Contamos el registro
+					}
+					
+					// Recolectamos el id del producto para luego actualizarlo
+					if(!in_array($combination->id_product, $products_update)){
+						$products_update[] = $combination->id_product;
 					}
 					
 				}
@@ -348,9 +429,9 @@ class CPrices extends CI_Controller {
 		}else{
 			
 			if($records > 0){
-				echo '{"response":"Se ha generado la lista '.$list_number.' con '.$records.' registros"}';
+				echo '{"response":"Se han actualizado los precios de '.($records/2).' combinaciones"}';
 			}else{
-				echo '{"response":"La categoría seleccionada no produjo registros"}';
+				echo '{"response":"La categoría seleccionada no produjo actualizaciones"}';
 			}
 			
 		}

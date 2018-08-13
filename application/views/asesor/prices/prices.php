@@ -36,8 +36,13 @@
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-lg-12">
-            <a href="<?php echo base_url() ?>prices/generate">
-				<button class="btn btn-outline btn-primary dim" type="button" id="show_categories"><i class="fa fa-plus"></i> <?php echo $this->lang->line('btn_generation'); ?></button>
+			<!-- Botón de generación de listado -->
+            <a href="#">
+				<button class="btn btn-outline btn-primary dim" type="button" id="show_categories1"><i class="fa fa-plus"></i> <?php echo $this->lang->line('btn_generation'); ?></button>
+            </a>
+            <!-- Botón de actualización de precios -->
+            <a href="#">
+				<button class="btn btn-outline btn-primary dim" type="button" id="show_categories2"><i class="fa fa-refresh"></i> <?php echo $this->lang->line('btn_update'); ?></button>
             </a>
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
@@ -163,6 +168,9 @@
                 <button class="btn btn-primary" type="button" id="save_list">
                     Generar
                 </button>
+                <button class="btn btn-primary" type="button" id="update_list">
+                    Actualizar
+                </button>
             </div>
         </div>
     </div>
@@ -220,18 +228,30 @@ $(document).ready(function(){
         ]
     });
     
-    // Activar la modal  
-    $("#show_categories").click(function (e) {
+    // Activar la modal (en caso de guardado de lista)
+    $("#show_categories1").click(function (e) {
 		
 		e.preventDefault();  // Para evitar que se envíe por defecto
 		$("#modal_categories").modal('show');
 		//~ var id = this.getAttribute('id');
-		//~ $("#id_client").val(id);
+		$("#save_list").css('display', 'block');
+		$("#update_list").css('display', 'none');
+
+	});
+    
+    // Activar la modal (en caso de actualización de precios)
+    $("#show_categories2").click(function (e) {
+		
+		e.preventDefault();  // Para evitar que se envíe por defecto
+		$("#modal_categories").modal('show');
+		//~ var id = this.getAttribute('id');
+		$("#save_list").css('display', 'none');
+		$("#update_list").css('display', 'block');
 
 	});
     
     
-    // Función para validar transacción
+    // Función para guardar el listado de precios generado
     $("#save_list").on('click', function (e) {
         e.preventDefault();
         var id_category = $("#categoria").val();
@@ -271,6 +291,65 @@ $(document).ready(function(){
 						}else{
 							 swal({ 
 							   title: "Guardado",
+								text: response['response'],
+								 type: "success" 
+							   },
+							   function(){
+								 window.location.href = '<?php echo base_url(); ?>prices';
+							 });
+						}
+						
+					}, 'json');
+					
+				}
+				
+			});
+		
+		}
+        
+    });
+    
+    
+    // Función para validar transacción
+    $("#update_list").on('click', function (e) {
+        e.preventDefault();
+        var id_category = $("#categoria").val();
+        
+        if (id_category == 0) {
+			
+			swal("Disculpe", "No ha seleccionado ninguna categoría de la lista");
+			
+		}else{
+
+			swal({
+				title: "Actualizar precios",
+				text: "¿Está seguro de actualizar los precios?",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#DD6B55",
+				confirmButtonText: "Actualizar",
+				cancelButtonText: "Cancelar",
+				closeOnConfirm: false,
+				closeOnCancel: true
+			  },
+			function(isConfirm){
+				if (isConfirm) {
+				 
+					$.post('<?php echo base_url(); ?>prices/update/', {'id_category': id_category}, function (response) {
+
+						if (response['response'] == 'error') {
+						   
+							 swal({ 
+							   title: "Disculpe,",
+								text: "Ocurrieron errores en la actualziación, por favor consulte con su administrador",
+								 type: "warning" 
+							   },
+							   function(){
+								 
+							 });
+						}else{
+							 swal({ 
+							   title: "Actualizado",
 								text: response['response'],
 								 type: "success" 
 							   },
