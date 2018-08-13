@@ -545,10 +545,10 @@ class CProducts extends CI_Controller {
 					
 					$lineData = array(
 						$combination->position, 
-						$combination->category, 
-						$combination->subcategory, 
-						$combination->product, 
-						$combination->material, 
+						utf8_decode($combination->category), 
+						utf8_decode($combination->subcategory), 
+						utf8_decode($combination->product), 
+						utf8_decode($combination->material), 
 						number_format($combination->price_wholesaler, 2, ',', '.'),
 						number_format($combination->price_retail, 2, ',', '.')
 					);
