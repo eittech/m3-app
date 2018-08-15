@@ -306,10 +306,10 @@ $this->pdf->Cell(20,6,"Total",'LB',0,'C',1);
 $this->pdf->Cell(20,6,"".number_format((float)$total_price, 2, ',', '.'),'RB',1,'C',1);
 
 // Info para los Terminos y Condiciones
-$this->pdf->Ln(15);
-$this->pdf->SetFont('Arial','B',9);
 if(count($order_terms) > 0){
-	$this->pdf->MultiCell(180, 5, utf8_decode($order_terms->terms), 0, 'C', 0);
+	$this->pdf->SetFont('Arial','B',9);
+	$this->pdf->MultiCell(180, 5, "CONDICIONES DE PAGO", 0, 'L', 0);
+	$this->pdf->MultiCell(180, 5, utf8_decode($order_terms->terms), 0, 'L', 0);
 }
 
 // Dimensiones de X,Y
