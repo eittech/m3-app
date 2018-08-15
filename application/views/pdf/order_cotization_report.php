@@ -37,17 +37,17 @@ $fecha_re = date("d/m/Y");
 // Títulos
 $this->pdf->SetFillColor(240,240,240);
 $this->pdf->SetFont('Arial','B',8);
-$this->pdf->Cell(40,4,"REFERENCIA",'LT',0,'C',1);
-$this->pdf->Cell(40,4,utf8_decode("FECHA"),'T',0,'C',1);
-$this->pdf->Cell(40,4,"FECHA DE ENTREGA",'TR',1,'C',1);
+$this->pdf->Cell(61.5,4,"REFERENCIA",'LT',0,'C',1);
+$this->pdf->Cell(61.5,4,utf8_decode("FECHA"),'T',0,'C',1);
+$this->pdf->Cell(61.5,4,"FECHA DE ENTREGA",'TR',1,'C',1);
 //$this->pdf->Cell(100,4,"TRANSPORTISTA",'T',0,'C',1);
 //$this->pdf->Cell(60,4,utf8_decode("Método de Pago"),'TR',1,'C',1);
 // Contenido
 $this->pdf->SetFillColor(255,255,255);
 $this->pdf->SetFont('Arial','',8);
-$this->pdf->Cell(40,4,$order['order'][0]['id_order']." - ".$order['order'][0]['reference'],'LB',0,'C',1);
-$this->pdf->Cell(40,4,$order['order'][0]['invoice_date'],'B',0,'C',1);
-$this->pdf->Cell(40,4,$order['order'][0]['delivery_date'],'RB',0,'C',1);
+$this->pdf->Cell(61.5,4,$order['order'][0]['id_order']." - ".$order['order'][0]['reference'],'LB',0,'C',1);
+$this->pdf->Cell(61.5,4,$order['order'][0]['invoice_date'],'B',0,'C',1);
+$this->pdf->Cell(61.5,4,$order['order'][0]['delivery_date'],'RB',0,'C',1);
 //$this->pdf->Cell(100,4,utf8_decode($order['order'][0]['carrier'][0]['name']),'B',0,'C',1);
 $pay_method = "";
 if(isset($order['order_payment'][0]['payment_method']) && count($order['order_payment'][0]['payment_method']) > 0){
