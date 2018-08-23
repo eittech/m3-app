@@ -35,11 +35,11 @@ $this->pdf->Cell(16,4,"$delivery_date",'',0,'L',1);
 $this->pdf->Cell(125,4,"",'',0,'L',1);
 $this->pdf->SetFont('Arial','B',8);
 if(isset($order['order_invoice']) && count($order['order_invoice']) > 0){
-	$num_correlative = $order['order_invoice'][0]['number'];
+	$num_correlative = $order['order'][0]['invoice_number'];
 	$delivery_number = str_pad($num_correlative, 6, "0", STR_PAD_LEFT);
-	$this->pdf->Cell(32,4,"FACTURA: ".$delivery_number,'',1,'R',1);
+	$this->pdf->Cell(32,4,"FACTURA111: ".$delivery_number,'',1,'R',1);
 }else{
-	$this->pdf->Cell(32,4,"FACTURA: ",'',1,'R',1);
+	$this->pdf->Cell(32,4,"FACTURA111: ",'',1,'R',1);
 }
 
 # Ttile para la salida del PDF
