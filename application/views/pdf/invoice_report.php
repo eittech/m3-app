@@ -20,7 +20,11 @@ $this->pdf->Ln(20);
 $this->pdf->SetFont('Arial','',8);
 
 # id de la orden
-$id_order = $order['order_invoice'][0]['id_order'];
+if(isset($order['order_invoice'][0]['id_order'])){
+	$id_order = $order['order_invoice'][0]['id_order'];
+}else{
+	$id_order = "N/A";
+}
 
 // Preparación de la fecha actual
 $now_delivery_date = $order['order'][0]['delivery_date'];
@@ -35,7 +39,11 @@ $this->pdf->Cell(16,4,"$delivery_date",'',0,'L',1);
 $this->pdf->Cell(125,4,"",'',0,'L',1);
 $this->pdf->SetFont('Arial','B',8);
 if(isset($order['order_invoice']) && count($order['order_invoice']) > 0){
-	$num_correlative = $order['order'][0]['invoice_number'];
+	if(isset($order['order'][0]['invoice_number'])){
+		$num_correlative = $order['order'][0]['invoice_number'];
+	}else{
+		$num_correlative = "N/A";
+	}
 	$delivery_number = str_pad($num_correlative, 6, "0", STR_PAD_LEFT);
 	$this->pdf->Cell(32,4,"FACTURA: ".$delivery_number,'',1,'R',1);
 }else{
@@ -43,7 +51,7 @@ if(isset($order['order_invoice']) && count($order['order_invoice']) > 0){
 }
 
 # Ttile para la salida del PDF
-$title = "factura_".$id_order."_".$num_correlative;
+$title = "factura_".$id_order."_".$order['order'][0]['invoice_number'];
 $this->pdf->SetTitle($title);
 
 // Razón social
@@ -222,4 +230,4 @@ $this->pdf->Write(5,utf8_decode($order['order'][0]['payment']),'',1,'C',0);
 
 // Salida del Formato PDF
 
-$this->pdf->Output("factura_".$id_order."_".$num_correlative.".pdf", 'I');
+$this->pdf->Output("factura_".$id_order."_".$order['order'][0]['invoice_number'].".pdf", 'I');
