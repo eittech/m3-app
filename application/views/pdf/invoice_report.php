@@ -220,6 +220,6 @@ $this->pdf->Write(5,utf8_decode($order['order'][0]['payment']),'',1,'C',0);
 
 //~ $this->pdf->Cell(125,1,"",'',1,'R',1);  // Cierre de bloque de productos
 
-// Salida del Formato PDF
+// Salida de Formato PDF
 
 $this->pdf->Output("factura_".$id_order."_".$num_correlative.".pdf", 'I');
