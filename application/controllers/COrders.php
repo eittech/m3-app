@@ -1022,7 +1022,7 @@ class COrders extends CI_Controller {
     }
 
     // Generación del reporte de la orden Payment
-    function pdf_payment($order_id)
+    function pdf_payment($order_id = 0)
     {
         // Consultamos los datos de la orden
 		$get3 = file_get_contents(base_url()."orders/details/".$order_id);
