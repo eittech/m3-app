@@ -38,7 +38,7 @@ $fecha_re = date("d/m/Y");
 $this->pdf->SetFillColor(240,240,240);
 $this->pdf->SetFont('Arial','B',8);
 $this->pdf->Cell(61.5,7,"REFERENCIA",'LT',0,'C',1);
-$this->pdf->Cell(61.5,7,utf8_decode("Fecha DE SOLICITUD"),'T',0,'C',1);
+$this->pdf->Cell(61.5,7,utf8_decode("FECHA DE SOLICITUD"),'T',0,'C',1);
 $this->pdf->Cell(61.5,7,"FECHA DE ENTREGA",'TR',1,'C',1);
 //$this->pdf->Cell(100,4,"TRANSPORTISTA",'T',0,'C',1);
 //$this->pdf->Cell(60,4,utf8_decode("Método de Pago"),'TR',1,'C',1);
