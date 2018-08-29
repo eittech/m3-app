@@ -25,7 +25,9 @@ class MOrders extends CI_Model {
         $this->db->select("*");
         $this->db->from('orders AS a');
         $this->db->join('order_payment AS b', 'a.reference = b.order_reference');
-        $this->db->where("a.id_order", $order_id);
+        if($order_id !=0){
+            $this->db->where("a.id_order", $order_id);
+        }
         $query = $this->db->get();
         return $query->result();
     }
