@@ -25,11 +25,11 @@ $this->pdf->SetMargins(8,8,8); # MÁRGENES DEL DOCUMENTO
 
 
 $this->pdf->Ln(5);
-
-$this->pdf->Cell(180,4,utf8_decode("COTIZACION"),0,0,'C',0);
+$this->pdf->SetFont('Arial','B',14);
+$this->pdf->Cell(180,4,utf8_decode("COTIZACIÓN"),0,0,'C',0);
 // SECCIÓN DE REFERENICA Y FECHAS DE LA ORDEN
 
-$this->pdf->Ln(10);
+$this->pdf->Ln(15);
 
 // Preparación de las fechas de recepción y entrega
 $fecha_re = date("d/m/Y");
@@ -37,17 +37,35 @@ $fecha_re = date("d/m/Y");
 // Títulos
 $this->pdf->SetFillColor(240,240,240);
 $this->pdf->SetFont('Arial','B',8);
-$this->pdf->Cell(61.5,4,"REFERENCIA",'LT',0,'C',1);
-$this->pdf->Cell(61.5,4,utf8_decode("FECHA"),'T',0,'C',1);
-$this->pdf->Cell(61.5,4,"FECHA DE ENTREGA",'TR',1,'C',1);
+$this->pdf->Cell(61.5,7,"REFERENCIA",'LT',0,'C',1);
+$this->pdf->Cell(61.5,7,utf8_decode("Fecha DE SOLICITUD"),'T',0,'C',1);
+$this->pdf->Cell(61.5,7,"FECHA DE ENTREGA",'TR',1,'C',1);
 //$this->pdf->Cell(100,4,"TRANSPORTISTA",'T',0,'C',1);
 //$this->pdf->Cell(60,4,utf8_decode("Método de Pago"),'TR',1,'C',1);
 // Contenido
+
+$invoice_date = $order['order'][0]['invoice_date'];
+$delivery_date = $order['order'][0]['delivery_date'];
+
+if (($timestamp_one = strtotime($invoice_date)) === false) {
+    $invoice_date_all = "";
+} else {
+	$invoice_date_all = date("d/m/Y", strtotime($order['order'][0]['invoice_date']));
+}
+
+if (($timestamp_one = strtotime($delivery_date)) === false) {
+    $delivery_date_all = "";
+} else {
+	$delivery_date_all = date("d/m/Y", strtotime($order['order'][0]['delivery_date']));
+}
+
+
+
 $this->pdf->SetFillColor(255,255,255);
 $this->pdf->SetFont('Arial','',8);
 $this->pdf->Cell(61.5,4,$order['order'][0]['id_order']." - ".$order['order'][0]['reference'],'LB',0,'C',1);
-$this->pdf->Cell(61.5,4,$order['order'][0]['invoice_date'],'B',0,'C',1);
-$this->pdf->Cell(61.5,4,$order['order'][0]['delivery_date'],'RB',0,'C',1);
+$this->pdf->Cell(61.5,4,$invoice_date_all,'B',0,'C',1);
+$this->pdf->Cell(61.5,4,$delivery_date_all,'RB',0,'C',1);
 //$this->pdf->Cell(100,4,utf8_decode($order['order'][0]['carrier'][0]['name']),'B',0,'C',1);
 $pay_method = "";
 if(isset($order['order_payment'][0]['payment_method']) && count($order['order_payment'][0]['payment_method']) > 0){
@@ -61,7 +79,7 @@ $this->pdf->Ln(10);
 $this->pdf->SetFillColor(240,240,240);
 $this->pdf->SetTextColor(0,0,0); # COLOR DEL TEXTO
 $this->pdf->SetFont('Arial','B',8);
-$this->pdf->Cell(19,4,"ID.",'LTB',0,'C',1);
+$this->pdf->Cell(19,4,"Ref Prod.",'LTB',0,'C',1);
 $this->pdf->Cell(10,4,"Cant.",'TB',0,'C',1);
 //$this->pdf->Cell(20,4,"Referencia",'TB',0,'C',1);
 $this->pdf->Cell(80,4,"Producto",'TB',0,'L',1);
@@ -138,7 +156,7 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 			$this->pdf->SetFillColor(240,240,240);
 			$this->pdf->SetTextColor(0,0,0); # COLOR DEL TEXTO
 			$this->pdf->SetFont('Arial','B',8);
-			$this->pdf->Cell(19,4,"ID.",'LTB',0,'C',1);
+			$this->pdf->Cell(19,4,"Ref Prod.",'LTB',0,'C',1);
 			$this->pdf->Cell(10,4,"Cant.",'TB',0,'C',1);
 			$this->pdf->Cell(20,4,"Referencia",'TB',0,'C',1);
 			$this->pdf->Cell(80,4,"Producto",'TB',0,'C',1);
@@ -309,7 +327,7 @@ $this->pdf->Cell(20,6,"".number_format((float)$total_price, 2, ',', '.'),'RB',1,
 if(count($order_terms) > 0){
 	$this->pdf->SetFont('Arial','B',9);
 	$this->pdf->MultiCell(180, 5, "CONDICIONES DE PAGO", 0, 'L', 0);
-	$this->pdf->MultiCell(180, 5, utf8_decode($order_terms->terms), 0, 'L', 0);
+	$this->pdf->MultiCell(180, 5, utf8_decode(str_replace("<br/>", "\n", $order_terms->terms)), 0, 'L', 0);
 }
 
 // Dimensiones de X,Y
@@ -319,20 +337,20 @@ $this->pdf->SetX(124);
 $this->pdf->Cell(40,4,"M3 Uniformes, C.A",'',1,'C',0);
 
 $this->pdf->SetY(20);
-$this->pdf->SetX(131);
-$this->pdf->Cell(40,4,"Urb. Los Samanes C/1 N 343",'',1,'C',0);
+$this->pdf->SetX(123);
+$this->pdf->Cell(40,4,"RIF: J316659704",'',1,'C',0);
 
 $this->pdf->SetY(25);
-$this->pdf->SetX(126);
-$this->pdf->Cell(40,4,"Maracay  Edo. Aragua",'',0,'C',0);
+$this->pdf->SetX(140);
+$this->pdf->Cell(40,4,"Calle 1 Casa Nro. 343, Urb. Los Samanes,",'',0,'C',0);
 
 $this->pdf->SetY(30);
-$this->pdf->SetX(123);
-$this->pdf->Cell(40,4,"Rif: J-31665970-4",'',0,'C',0);
+$this->pdf->SetX(126);
+$this->pdf->Cell(40,4,"Maracay, Edo. Aragua",'',0,'C',0);
 
 $this->pdf->SetY(34);
-$this->pdf->SetX(137);
-$this->pdf->Cell(40,4,"e - mail : contacto@m3uniformes.com",'',0,'C',0);
+$this->pdf->SetX(144.5);
+$this->pdf->Cell(40,4,utf8_decode("Correo Electrónico: contacto@m3uniformes.com"),'',0,'C',0);
 
 // Salida del Formato PDF
 $this->pdf->Output("Cotizacion.pdf", 'I');
