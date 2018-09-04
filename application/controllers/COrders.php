@@ -967,7 +967,14 @@ class COrders extends CI_Controller {
 				'invoice_number' => $this->input->get('invoice_number')
 			);
 			
+			$datos2 = array(
+				'id_order' => $this->input->get('id_order'),
+				'number' => $this->input->get('invoice_number')
+			);
+			
 			$result = $this->MOrders->update('orders',$datos);
+			
+			$result2 = $this->MOrders->update('order_invoice',$datos2);
 			
 			if ($result) {
 					
