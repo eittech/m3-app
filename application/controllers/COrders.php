@@ -959,12 +959,12 @@ class COrders extends CI_Controller {
     // Actualización del número de factura de un pedido
     public function update_order() {
 		
-		$invoice_number = $this->input->post('invoice_number');
+		$invoice_number = $this->input->get('invoice_number');
 		
 		if($invoice_number != '' && is_numeric($invoice_number)){
 			$datos = array(
-				'id_order' => $this->input->post('id_order'),
-				'invoice_number' => $this->input->post('invoice_number')
+				'id_order' => $this->input->get('id_order'),
+				'invoice_number' => $this->input->get('invoice_number')
 			);
 			
 			$result = $this->MOrders->update('orders',$datos);
