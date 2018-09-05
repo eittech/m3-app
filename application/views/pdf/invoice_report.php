@@ -59,12 +59,17 @@ $this->pdf->Cell(5,4,"",'',0,'L',1);
 $this->pdf->Cell(32,4,utf8_decode("Nombre o razón social: "),'',0,'L',1);
 $this->pdf->SetFont('Arial','',8);
 if(isset($order['order'][0]['address_delivery']) && count($order['order'][0]['address_delivery']) > 0){
-	$width_business_name = strlen($order['order'][0]['address_delivery'][0]['company'])+15;  // De esta forma calculamos el espacio a asignarle a la celda (longitud de la cadena + 15)
-	$this->pdf->Cell(71,4,utf8_decode($order['order'][0]['address_delivery'][0]['company']),'',0,'L',1);
-}else{
+	//$width_business_name = strlen($order['order'][0]['address_invoice'][0]['company'])+15;  // De esta forma calculamos el espacio a asignarle a la celda (longitud de la cadena + 15)
+	// Direccion de entrega (address_delivery)
+	if($order['order'][0]['address_delivery'][0]['address1']!= $order['order'][0]['address_invoice'][0]['address1']){
+		$this->pdf->Cell(71,4,utf8_decode($order['order'][0]['address_invoice'][0]['company']),'',0,'L',1);
+	}else{
+		$this->pdf->Cell(71,4,utf8_decode($order['order'][0]['address_delivery'][0]['company']),'',0,'L',1);
+	}
+}/*else{
 	$width_business_name = 0;
 	$this->pdf->Cell($width_business_name,4,"",'',0,'L',1);
-}
+}*/
 // Rif
 $this->pdf->SetFont('Arial','B',8);
 $this->pdf->Cell(13,4,"CI o RIF: ",'',0,'L',1);
@@ -81,7 +86,8 @@ $this->pdf->SetFont('Arial','B',8);
 $this->pdf->Cell(5,4,"",'',0,'L',1);
 $this->pdf->Cell(23,4,utf8_decode("Dirección fiscal: "),'',0,'L',1);
 $this->pdf->SetFont('Arial','',8);
-$width_address = strlen($order['order'][0]['address_invoice'][0]['address1'])+30;  // De esta forma calculamos el espacio a asignarle a la celda (longitud de la cadena + 15)
+//$width_address = strlen($order['order'][0]['address_invoice'][0]['address1'])+30;  // De esta forma calculamos el espacio a asignarle a la celda (longitud de la cadena + 30)
+// Direccion de facturación (address_invoice)
 $this->pdf->Cell(77,4,utf8_decode($order['order'][0]['address_invoice'][0]['address1']),'',0,'L',1);
 $this->pdf->Ln(5);
 $this->pdf->Cell(5,4,"",'',0,'L',1);
