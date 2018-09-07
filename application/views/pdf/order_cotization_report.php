@@ -1,6 +1,8 @@
 <?php
 
-$this->pdf = new FPDF($orientation = 'P', $unit = 'mm', $format = 'A4');  // Instancando la clase FPDF original SÍ toma la horientación
+$this->pdf = new PDF_HTML($orientation = 'P', $unit = 'mm', $format = 'A4');  // Instancando la clase FPDF original SÍ toma la horientación
+$this->html2 = new PDF_HTML();  // Instancando la clase FPDF original SÍ toma la horientación
+$this->pdf->SetFont('Arial','B',14);
 // Agregamos una página
 $this->pdf->AddPage();
 // Define el alias para el número de página que se imprimirá en el pie
@@ -326,8 +328,9 @@ $this->pdf->Cell(20,6,"".number_format((float)$total_price, 2, ',', '.'),'RB',1,
 // Info para los Terminos y Condiciones
 if(count($order_terms) > 0){
 	$this->pdf->SetFont('Arial','B',9);
-	$this->pdf->MultiCell(180, 5, "CONDICIONES DE PAGO", 0, 'L', 0);
-	$this->pdf->MultiCell(180, 5, utf8_decode(str_replace("<br/>", "\n", $order_terms->terms)), 0, 'L', 0);
+	//$this->pdf->MultiCell(180, 5, "CONDICIONES DE PAGO", 0, 'L', 0);
+	//$this->pdf->MultiCell(180, 5, utf8_decode(str_replace("<br/>", "\n", $order_terms->terms)), 0, 'L', 0);
+	$this->pdf->WriteHTML($order_terms->terms); //
 }
 
 // Dimensiones de X,Y
