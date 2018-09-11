@@ -344,6 +344,7 @@ class CProducts extends CI_Controller {
 										<td>".$combination->position."</td>
 										<td>".$combination->category."</td>
 										<td>".$combination->subcategory."</td>
+										<td>".$combination->reference."</td>
 										<td>".$combination->product."</td>
 										<td>".$combination->material."</td>
 										<td>".number_format($combination->price_wholesaler, 2, ',', '.')."</td>
@@ -383,6 +384,7 @@ class CProducts extends CI_Controller {
 						<th>#</th>
 						<th>Categoría</th>
 						<th>Sub Categoría</th>
+						<th>Referencia</th>
 						<th>Producto</th>
 						<th>Tela</th>
 						<th>Precio Mayor</th>
