@@ -177,27 +177,28 @@ $sub_total_desc = (float)$subtotal - (float)$total_discounts_tax_excl;
 $mount_discounts = $sub_total_desc * (float)$tasa_iva / 100;
 $iva_discounts =  $total_discounts_tax_excl *100 / $subtotal;
 
+if($total_discounts_tax_excl > 0){
+	$this->pdf->SetFillColor(255,255,255);
+	$this->pdf->SetTextColor(77,77,77); # COLOR DEL TEXTO
+	$this->pdf->SetFont('Arial','B',8);
+	$this->pdf->Cell(125,6,"",'',0,'C',1);
+	$this->pdf->Cell(5,4,"",'',0,'L',1);
+	$this->pdf->Cell(25,6,"Descuento(".(int)$iva_discounts."%)",'',0,'R',1);
+	$this->pdf->SetFillColor(255,255,255);
+	$this->pdf->SetFont('Arial','',8);
+	$this->pdf->Cell(35,6,"-".number_format($total_discounts_tax_excl, 2, ',', '.')." Bs",'',1,'R',1);
 
-$this->pdf->SetFillColor(255,255,255);
-$this->pdf->SetTextColor(77,77,77); # COLOR DEL TEXTO
-$this->pdf->SetFont('Arial','B',8);
-$this->pdf->Cell(125,6,"",'',0,'C',1);
-$this->pdf->Cell(5,4,"",'',0,'L',1);
-$this->pdf->Cell(25,6,"Descuento(".(int)$iva_discounts."%)",'',0,'R',1);
-$this->pdf->SetFillColor(255,255,255);
-$this->pdf->SetFont('Arial','',8);
-$this->pdf->Cell(35,6,"-".number_format($total_discounts_tax_excl, 2, ',', '.')." Bs",'',1,'R',1);
-
-// Descuento
-$this->pdf->SetFillColor(255,255,255);
-$this->pdf->SetTextColor(77,77,77); # COLOR DEL TEXTO
-$this->pdf->SetFont('Arial','B',8);
-$this->pdf->Cell(125,6,"",'',0,'C',1);
-$this->pdf->Cell(5,4,"",'',0,'L',1);
-$this->pdf->Cell(25,6,"Subtotal-desc",'',0,'R',1);
-$this->pdf->SetFillColor(255,255,255);
-$this->pdf->SetFont('Arial','',8);
-$this->pdf->Cell(35,6,"".number_format($sub_total_desc, 2, ',', '.')." Bs",'',1,'R',1);
+	// Descuento
+	$this->pdf->SetFillColor(255,255,255);
+	$this->pdf->SetTextColor(77,77,77); # COLOR DEL TEXTO
+	$this->pdf->SetFont('Arial','B',8);
+	$this->pdf->Cell(125,6,"",'',0,'C',1);
+	$this->pdf->Cell(5,4,"",'',0,'L',1);
+	$this->pdf->Cell(25,6,"Subtotal-desc",'',0,'R',1);
+	$this->pdf->SetFillColor(255,255,255);
+	$this->pdf->SetFont('Arial','',8);
+	$this->pdf->Cell(35,6,"".number_format($sub_total_desc, 2, ',', '.')." Bs",'',1,'R',1);
+}
 
 
 
@@ -211,7 +212,14 @@ $this->pdf->Cell(5,4,"",'',0,'L',1);
 $this->pdf->Cell(25,6,"IVA(".$tasa_iva."%)",'',0,'R',1);
 $this->pdf->SetFillColor(255,255,255);
 $this->pdf->SetFont('Arial','',8);
-$this->pdf->Cell(35,6,"".number_format($mount_discounts, 2, ',', '.')." Bs",'',1,'R',1);
+
+if($mount_discounts > 0){
+	$iva_total = $mount_discounts;
+}else{
+	$iva_total = $iva;
+}
+
+$this->pdf->Cell(35,6,"".number_format($iva_total, 2, ',', '.')." Bs",'',1,'R',1);
 // Total
 //~ $total = $subtotal + $iva;  // Monto anterior calculado desde el documento
 $total = $order['order'][0]['total_paid_tax_incl'];
