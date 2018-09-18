@@ -331,8 +331,8 @@ if(count($order_terms) > 0){
 	//$this->pdf->MultiCell(180, 5, "CONDICIONES DE PAGO", 0, 'L', 0);
 	//$this->pdf->MultiCell(180, 5, utf8_decode(str_replace("<br/>", "\n", $order_terms->terms)), 0, 'L', 0);
 	$this->pdf->WriteHTML(utf8_decode($order_terms->terms)); //
-	$this->pdf->Image(base_url().'assets/img/logos/firms-estimate.png',60,200,70);
 }
+$this->pdf->Image(base_url().'assets/img/logos/firms-estimate.png',60,200,70);
 
 // Dimensiones de X,Y
 $this->pdf->SetFont('Arial','',9);
