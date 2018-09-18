@@ -103,6 +103,7 @@ $route['orders/details/(:num)'] = 'COrders/details/$1';
 $route['orders/invoice/(:num)'] = 'COrders/pdf_invoice/$1';
 $route['orders/order/(:num)'] = 'COrders/pdf_order/$1';
 $route['orders/order_cotization/(:num)'] = 'COrders/pdf_order_cotization/$1';
+$route['orders/payment/(:num)'] = 'COrders/pdf_payment/$1';
 $route['orders/update_num_invoice'] = 'COrders/update_order';
 
 /* Products */
@@ -116,6 +117,7 @@ $route['export_csv'] = 'CProducts/export_csv';
 /* Precios */
 $route['prices'] = 'CPrices';
 $route['prices/save'] = 'CPrices/save_prices';
+$route['prices/update'] = 'CPrices/update_prices';
 $route['prices_list'] = 'CPricesList';
 $route['prices/edit/(:num)'] = 'CPricesList/edit/$1';
 $route['prices_json'] = 'CPrices/ajax_prices';

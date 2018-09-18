@@ -20,6 +20,18 @@ class MOrders extends CI_Model {
             return $query->result();
     }
 
+    // Public method orden Payment
+    public function order_payment($order_id) {
+        $this->db->select("*");
+        $this->db->from('orders AS a');
+        $this->db->join('order_payment AS b', 'a.reference = b.order_reference');
+        if($order_id !=0){
+            $this->db->where("a.id_order", $order_id);
+        }
+        $query = $this->db->get();
+        return $query->result();
+    }
+
     // Public method to obtain the orders by id
     public function obtenerById($table, $field, $value) {
         $query = $this->db->where($field, $value);

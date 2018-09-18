@@ -959,15 +959,22 @@ class COrders extends CI_Controller {
     // Actualización del número de factura de un pedido
     public function update_order() {
 		
-		$invoice_number = $this->input->post('invoice_number');
+		$invoice_number = $this->input->get('invoice_number');
 		
 		if($invoice_number != '' && is_numeric($invoice_number)){
 			$datos = array(
-				'id_order' => $this->input->post('id_order'),
-				'invoice_number' => $this->input->post('invoice_number')
+				'id_order' => $this->input->get('id_order'),
+				'invoice_number' => $this->input->get('invoice_number')
+			);
+			
+			$datos2 = array(
+				'id_order' => $this->input->get('id_order'),
+				'number' => $this->input->get('invoice_number')
 			);
 			
 			$result = $this->MOrders->update('orders',$datos);
+			
+			$result2 = $this->MOrders->update('order_invoice',$datos2);
 			
 			if ($result) {
 					
@@ -1019,6 +1026,19 @@ class COrders extends CI_Controller {
         $data['order'] = $exchangeRates3;
         
         $this->load->view('pdf/order_cotization_report', $data);
+    }
+
+    // Generación del reporte de la orden Payment
+    function pdf_payment($order_id = 0)
+    {
+        // Consultamos los datos de la orden
+		$get3 = file_get_contents(base_url()."orders/details/".$order_id);
+		$exchangeRates3 = json_decode($get3, true);
+
+		$data['order_payment'] = $this->MOrders->order_payment($order_id);
+        $data['order'] = $exchangeRates3;
+        
+        $this->load->view('pdf/order_payment_report', $data);
     }
 
 }

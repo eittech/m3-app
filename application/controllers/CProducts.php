@@ -344,6 +344,7 @@ class CProducts extends CI_Controller {
 										<td>".$combination->position."</td>
 										<td>".$combination->category."</td>
 										<td>".$combination->subcategory."</td>
+										<td>".$combination->reference."</td>
 										<td>".$combination->product."</td>
 										<td>".$combination->material."</td>
 										<td>".number_format($combination->price_wholesaler, 2, ',', '.')."</td>
@@ -383,6 +384,7 @@ class CProducts extends CI_Controller {
 						<th>#</th>
 						<th>Categoría</th>
 						<th>Sub Categoría</th>
+						<th>Referencia</th>
 						<th>Producto</th>
 						<th>Tela</th>
 						<th>Precio Mayor</th>
@@ -537,7 +539,7 @@ class CProducts extends CI_Controller {
 			if(count($attribs_product) > 0){
 				
 				// Establecemos el encabezado delas columnas
-				$fields = array('Posición', 'Categoría', 'Sub Categoría', 'Producto', 'Tela', 'Precio Mayor', 'Precio Detal');
+				$fields = array(utf8_decode('Posición'), utf8_decode('Categoría'), utf8_decode('Sub Categoría'), 'Producto', 'Tela', 'Precio Mayor', 'Precio Detal');
 				fputcsv($f, $fields, $delimiter);
 				
 				// Construimos una fila con cada registro y lo vamos escribiendo en el csv
@@ -545,10 +547,10 @@ class CProducts extends CI_Controller {
 					
 					$lineData = array(
 						$combination->position, 
-						$combination->category, 
-						$combination->subcategory, 
-						$combination->product, 
-						$combination->material, 
+						utf8_decode($combination->category), 
+						utf8_decode($combination->subcategory), 
+						utf8_decode($combination->product), 
+						utf8_decode($combination->material), 
 						number_format($combination->price_wholesaler, 2, ',', '.'),
 						number_format($combination->price_retail, 2, ',', '.')
 					);

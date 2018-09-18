@@ -9,6 +9,7 @@ $lang['heading_subtitle_prices'] = 'Precios';
 
 // Botón de registro
 $lang['btn_generation'] = 'Generar Lista';
+$lang['btn_update'] = 'Actualizar Precios';
 
 // Listado de transacciones
 $lang['list_title_prices'] = 'Precios Actuales';
