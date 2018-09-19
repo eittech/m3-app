@@ -175,9 +175,11 @@ $this->pdf->Cell(35,6,"".number_format($subtotal, 2, ',', '.')." Bs",'',1,'R',1)
 $total_discounts_tax_excl = $order['order'][0]['total_discounts_tax_excl'];
 $sub_total_desc = (float)$subtotal - (float)$total_discounts_tax_excl;
 $mount_discounts = $sub_total_desc * (float)$tasa_iva / 100;
-$iva_discounts =  $total_discounts_tax_excl *100 / $subtotal;
 
 if($total_discounts_tax_excl > 0){
+	
+	$iva_discounts =  $total_discounts_tax_excl *100 / $subtotal;
+
 	$this->pdf->SetFillColor(255,255,255);
 	$this->pdf->SetTextColor(77,77,77); # COLOR DEL TEXTO
 	$this->pdf->SetFont('Arial','B',8);
