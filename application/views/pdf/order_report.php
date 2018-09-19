@@ -387,30 +387,38 @@ if($total_discounts_tax_excl > 0){
 	$iva_discounts =  $total_discounts_tax_excl *100 / $subtotal_price;
 
 	# Descuento
-	$this->pdf->Cell(25,6,"",'LB',0,'C',1);
+	$this->pdf->SetFillColor(255,255,255);
+	$this->pdf->SetTextColor(0,0,0); # COLOR DEL TEXTO
+	$this->pdf->SetFont('Arial','B',9);
+	$this->pdf->Cell(25,6,"",'',0,'C',1);
 	//~ $this->pdf->Cell(20,6,"",'B',0,'C',1);
-	$this->pdf->Cell(50,6,"",'B',0,'L',1);
-	$this->pdf->Cell(15,6,"",'B',0,'L',1);
-	$this->pdf->Cell(30,6,"",'B',0,'L',1);
-	$this->pdf->Cell(10,6,"",'B',0,'L',1);
-	$this->pdf->Cell(30,6,"",'B',0,'L',1);
-	$this->pdf->Cell(30,6,"",'B',0,'L',1);
-	$this->pdf->Cell(30,6,"",'B',0,'L',1);
-	$this->pdf->Cell(30,6,"Descuento(".number_format($iva_discounts, 0, '', '')."%)",'B',0,'C',1);
+	$this->pdf->Cell(50,6,"",'',0,'L',1);
+	$this->pdf->Cell(15,6,"",'',0,'L',1);
+	$this->pdf->Cell(30,6,"",'',0,'L',1);
+	$this->pdf->Cell(10,6,"",'',0,'L',1);
+	$this->pdf->Cell(30,6,"",'',0,'L',1);
+	$this->pdf->Cell(30,6,"",'',0,'L',1);
+	$this->pdf->Cell(30,6,"",'',0,'L',1);
+	$this->pdf->SetFillColor(204,204,204);
+	$this->pdf->Cell(30,6,"Descuento(".number_format($iva_discounts, 0, '', '')."%)",'LB',0,'C',1);
 	$this->pdf->Cell(30,6,"-".number_format((float)$total_discounts_tax_excl, 2, ',', '.'),'RB',1,'R',1);
 
 	# Subtotal-desc
-	$this->pdf->Cell(25,6,"",'LB',0,'C',1);
+	$this->pdf->SetFillColor(255,255,255);
+	$this->pdf->SetTextColor(0,0,0); # COLOR DEL TEXTO
+	$this->pdf->SetFont('Arial','B',9);
+	$this->pdf->Cell(25,6,"",'',0,'C',1);
 	//~ $this->pdf->Cell(20,6,"",'B',0,'C',1);
-	$this->pdf->Cell(50,6,"",'B',0,'L',1);
-	$this->pdf->Cell(15,6,"",'B',0,'L',1);
-	$this->pdf->Cell(30,6,"",'B',0,'L',1);
-	$this->pdf->Cell(10,6,"",'B',0,'L',1);
-	$this->pdf->Cell(30,6,"",'B',0,'L',1);
-	$this->pdf->Cell(30,6,"",'B',0,'L',1);
-	$this->pdf->Cell(30,6,"",'B',0,'L',1);
-	$this->pdf->Cell(30,6,"Subtotal-desc",'B',0,'C',1);
-	$this->pdf->Cell(30,6,"-".number_format((float)$sub_total_desc, 2, ',', '.'),'RB',1,'R',1);
+	$this->pdf->Cell(50,6,"",'',0,'L',1);
+	$this->pdf->Cell(15,6,"",'',0,'L',1);
+	$this->pdf->Cell(30,6,"",'',0,'L',1);
+	$this->pdf->Cell(10,6,"",'',0,'L',1);
+	$this->pdf->Cell(30,6,"",'',0,'L',1);
+	$this->pdf->Cell(30,6,"",'',0,'L',1);
+	$this->pdf->Cell(30,6,"",'',0,'L',1);
+	$this->pdf->SetFillColor(204,204,204);
+	$this->pdf->Cell(30,6,"Subtotal Desc",'LB',0,'C',1);
+	$this->pdf->Cell(30,6,number_format((float)$sub_total_desc, 2, ',', '.'),'RB',1,'R',1);
 }
 
 // Descuento
