@@ -126,10 +126,10 @@ $fecha_re = date("d/m/Y");
 $invoice_date_all;
 $delivery_date_all;
 
-if (($timestamp_one = strtotime($order['order'][0]['invoice_date'])) === false) {
+if (($timestamp_one = strtotime($order['order'][0]['date_add'])) === false) {
    $invoice_date_all = "";
 } else {
-    $invoice_date_all = date("d/m/Y", strtotime($order['order'][0]['invoice_date']));
+    $invoice_date_all = date("d/m/Y", strtotime($order['order'][0]['date_add']));
 }
 
 if (($timestamp_one = strtotime($order['order'][0]['delivery_date'])) === false) {
@@ -154,8 +154,9 @@ $this->pdf->Cell(50,4,$invoice_date_all,'B',0,'C',1);
 $this->pdf->Cell(50,4,$delivery_date_all,'B',0,'C',1);
 $this->pdf->Cell(80,4,utf8_decode($order['order'][0]['carrier'][0]['name']),'B',0,'C',1);
 $pay_method = "";
-if(isset($order['order_payment'][0]['payment_method']) && count($order['order_payment'][0]['payment_method']) > 0){
-	$pay_method = $order['order_payment'][0]['payment_method'].': '.number_format((float)$order['order_payment'][0]['amount'], 2, ',', '.');
+if(isset($order['order'][0]['payment']) && count($order['order'][0]['payment']) > 0){
+	#$pay_method = $order['order'][0]['payment'].': '.number_format((float)$order['order'][0]['amount'], 2, ',', '.');
+	$pay_method = $order['order'][0]['payment'];
 }
 $this->pdf->Cell(50,4,$pay_method,'RB',1,'C',1);
 
@@ -232,8 +233,9 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 			$this->pdf->Cell(40,4,$delivery_date_all,'B',0,'C',1);
 			$this->pdf->Cell(100,4,utf8_decode($order['order'][0]['carrier'][0]['name']),'B',0,'C',1);
 			$pay_method = "";
-			if(isset($order['order_payment'][0]['payment_method']) && count($order['order_payment'][0]['payment_method']) > 0){
-				$pay_method = $order['order_payment'][0]['payment_method'].': '.number_format((float)$order['order_payment'][0]['amount'], 2, ',', '.');
+			if(isset($order['order'][0]['payment']) && count($order['order'][0]['payment']) > 0){
+				#$pay_method = $order['order'][0]['payment'].': '.number_format((float)$order['order'][0]['amount'], 2, ',', '.');
+				$pay_method = $order['order'][0]['payment'];
 			}
 			$this->pdf->Cell(60,4,$pay_method,'RB',1,'C',1);
 
@@ -346,7 +348,7 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 			$extra = ""; if(isset($order_detail['Extra'])){ $extra = $order_detail['Extra']; }else{ $extra = "No Aplica"; }
 			$this->pdf->Cell(30,5,utf8_decode($extra),'T',0,'C',1);
 			$this->pdf->Cell(30,5,"".number_format((float)$order_detail['unit_price_tax_excl'], 2, ',', '.'),'T',0,'C',1);
-			$this->pdf->Cell(30,5,"".number_format((float)$order_detail['unit_price_tax_excl']*$order_detail['product_quantity'], 2, ',', '.'),'TR',1,'C',1);
+			$this->pdf->Cell(30,5,"".number_format((float)$order_detail['unit_price_tax_excl']*$order_detail['product_quantity'], 2, ',', '.'),'TR',1,'R',1);
 		}
 		$total_cant += ($order_detail['product_quantity']);
 		$subtotal_price += ($order_detail['unit_price_tax_excl']*$order_detail['product_quantity']);
@@ -373,7 +375,48 @@ $this->pdf->Cell(30,6,"",'B',0,'L',1);
 $this->pdf->Cell(30,6,"",'B',0,'L',1);
 $this->pdf->Cell(30,6,"",'B',0,'L',1);
 $this->pdf->Cell(30,6,"Subtotal",'B',0,'C',1);
-$this->pdf->Cell(30,6,"".number_format((float)$subtotal_price, 2, ',', '.'),'RB',1,'C',1);
+$this->pdf->Cell(30,6,"".number_format((float)$subtotal_price, 2, ',', '.'),'RB',1,'R',1);
+
+// Descuento
+$total_discounts_tax_excl = $order['order'][0]['total_discounts_tax_excl'];
+$sub_total_desc = (float)$subtotal_price - (float)$total_discounts_tax_excl;
+$mount_discounts = $sub_total_desc * (float)$tasa_iva / 100;
+
+if($total_discounts_tax_excl > 0){
+
+	$iva_discounts =  $total_discounts_tax_excl *100 / $subtotal_price;
+
+	# Descuento
+	$this->pdf->Cell(25,6,"",'LB',0,'C',1);
+	//~ $this->pdf->Cell(20,6,"",'B',0,'C',1);
+	$this->pdf->Cell(50,6,"",'B',0,'L',1);
+	$this->pdf->Cell(15,6,"",'B',0,'L',1);
+	$this->pdf->Cell(30,6,"",'B',0,'L',1);
+	$this->pdf->Cell(10,6,"",'B',0,'L',1);
+	$this->pdf->Cell(30,6,"",'B',0,'L',1);
+	$this->pdf->Cell(30,6,"",'B',0,'L',1);
+	$this->pdf->Cell(30,6,"",'B',0,'L',1);
+	$this->pdf->Cell(30,6,"Descuento(".number_format($iva_discounts, 0, '', '')."%)",'B',0,'C',1);
+	$this->pdf->Cell(30,6,"-".number_format((float)$total_discounts_tax_excl, 2, ',', '.'),'RB',1,'R',1);
+
+	# Subtotal-desc
+	$this->pdf->Cell(25,6,"",'LB',0,'C',1);
+	//~ $this->pdf->Cell(20,6,"",'B',0,'C',1);
+	$this->pdf->Cell(50,6,"",'B',0,'L',1);
+	$this->pdf->Cell(15,6,"",'B',0,'L',1);
+	$this->pdf->Cell(30,6,"",'B',0,'L',1);
+	$this->pdf->Cell(10,6,"",'B',0,'L',1);
+	$this->pdf->Cell(30,6,"",'B',0,'L',1);
+	$this->pdf->Cell(30,6,"",'B',0,'L',1);
+	$this->pdf->Cell(30,6,"",'B',0,'L',1);
+	$this->pdf->Cell(30,6,"Subtotal-desc",'B',0,'C',1);
+	$this->pdf->Cell(30,6,"-".number_format((float)$sub_total_desc, 2, ',', '.'),'RB',1,'R',1);
+}
+
+// Descuento
+$total_discounts_tax_excl = $order['order'][0]['total_discounts_tax_excl'];
+$sub_total_desc = (float)$subtotal_price - (float)$total_discounts_tax_excl;
+$mount_discounts = $sub_total_desc * (float)$tasa_iva / 100;
 
 // Iva
 $iva = $subtotal_price * (float)$tasa_iva / 100;
@@ -382,6 +425,13 @@ $this->pdf->SetTextColor(0,0,0); # COLOR DEL TEXTO
 $this->pdf->SetFont('Arial','B',9);
 $this->pdf->Cell(25,6,"",'',0,'C',1);
 //~ $this->pdf->Cell(20,6,"",'',0,'C',1);
+
+if($mount_discounts > 0){
+	$iva_total = $mount_discounts;
+}else{
+	$iva_total = $iva;
+}
+
 $this->pdf->Cell(50,6,"",'',0,'L',1);
 $this->pdf->Cell(15,6,"",'',0,'L',1);
 $this->pdf->Cell(30,6,"",'',0,'L',1);
@@ -391,7 +441,7 @@ $this->pdf->Cell(30,6,"",'',0,'L',1);
 $this->pdf->Cell(30,6,"",'',0,'L',1);
 $this->pdf->SetFillColor(204,204,204);
 $this->pdf->Cell(30,6,"IVA(".$tasa_iva."%)",'LB',0,'C',1);
-$this->pdf->Cell(30,6,"".number_format((float)$iva, 2, ',', '.'),'RB',1,'C',1);
+$this->pdf->Cell(30,6,"".number_format((float)$iva_total, 2, ',', '.'),'RB',1,'R',1);
 
 // Total + Iva
 //~ $total_price = $subtotal_price + $iva;  // Monto anterior calculado desde el documento
@@ -410,7 +460,7 @@ $this->pdf->Cell(30,6,"",'',0,'L',1);
 $this->pdf->Cell(30,6,"",'',0,'L',1);
 $this->pdf->SetFillColor(204,204,204);
 $this->pdf->Cell(30,6,"Total",'LB',0,'C',1);
-$this->pdf->Cell(30,6,"".number_format((float)$total_price, 2, ',', '.'),'RB',1,'C',1);
+$this->pdf->Cell(30,6,"".number_format((float)$total_price, 2, ',', '.'),'RB',1,'R',1);
 
 $name_doc = "Pedido_".str_pad($order['order'][0]['id_order'], 6, "0", STR_PAD_LEFT).".pdf";
 
