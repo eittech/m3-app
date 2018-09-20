@@ -46,13 +46,13 @@ $this->pdf->Cell(61.5,7,"FECHA DE ENTREGA",'TR',1,'C',1);
 //$this->pdf->Cell(60,4,utf8_decode("Método de Pago"),'TR',1,'C',1);
 // Contenido
 
-$invoice_date = $order['order'][0]['invoice_date'];
+$invoice_date = $order['order'][0]['date_add'];
 $delivery_date = $order['order'][0]['delivery_date'];
 
 if (($timestamp_one = strtotime($invoice_date)) === false) {
     $invoice_date_all = "";
 } else {
-	$invoice_date_all = date("d/m/Y", strtotime($order['order'][0]['invoice_date']));
+	$invoice_date_all = date("d/m/Y", strtotime($order['order'][0]['date_add']));
 }
 
 if (($timestamp_one = strtotime($delivery_date)) === false) {
@@ -282,6 +282,51 @@ $this->pdf->Cell(126,6,"      $total_cant",'B',0,'L',1);
 $this->pdf->Cell(20,6,"Subtotal",'B',0,'C',1);
 $this->pdf->Cell(20,6,"".number_format((float)$subtotal_price, 2, ',', '.'),'RB',1,'C',1);
 
+// Variables de calculos
+$total_discounts_tax_excl = $order['order'][0]['total_discounts_tax_excl'];
+$sub_total_desc = (float)$subtotal_price - (float)$total_discounts_tax_excl;
+$mount_discounts = $sub_total_desc * (float)$tasa_iva / 100;
+
+if($total_discounts_tax_excl > 0){
+	
+	$iva_discounts =  $total_discounts_tax_excl *100 / $subtotal_price;
+
+	/*$this->pdf->SetFillColor(255,255,255);
+	$this->pdf->SetTextColor(77,77,77); # COLOR DEL TEXTO
+	$this->pdf->SetFont('Arial','B',8);
+	$this->pdf->Cell(125,6,"",'',0,'C',1);
+	$this->pdf->Cell(5,4,"",'',0,'L',1);
+	$this->pdf->Cell(25,6,"Descuento(".number_format($iva_discounts, 0, '', '')."%)",'',0,'R',1);
+	$this->pdf->SetFillColor(255,255,255);
+	$this->pdf->SetFont('Arial','',8);
+	$this->pdf->Cell(35,6,"-".number_format($total_discounts_tax_excl, 2, ',', '.')." Bs",'',1,'R',1);*/
+	$this->pdf->SetFillColor(255,255,255);
+	$this->pdf->SetFont('Arial','B',7);
+	$this->pdf->Cell(18,6,"",'',0,'C',1);
+	$this->pdf->Cell(126,6,"",'',0,'C',1);
+	$this->pdf->SetFillColor(204,204,204);
+	$this->pdf->Cell(20,6,"Descuento(".number_format($iva_discounts, 0, '', '')."%)",'LB',0,'C',1);
+	$this->pdf->Cell(20,6,"-".number_format($total_discounts_tax_excl, 2, ',', '.'),'RB',1,'C',1);
+
+	// Descuento
+	/*$this->pdf->SetFillColor(255,255,255);
+	$this->pdf->SetTextColor(77,77,77); # COLOR DEL TEXTO
+	$this->pdf->SetFont('Arial','B',8);
+	$this->pdf->Cell(125,6,"",'',0,'C',1);
+	$this->pdf->Cell(5,4,"",'',0,'L',1);
+	$this->pdf->Cell(25,6,"Subtotal-Desc",'',0,'R',1);
+	$this->pdf->SetFillColor(255,255,255);
+	$this->pdf->SetFont('Arial','',8);
+	$this->pdf->Cell(35,6,"".number_format($sub_total_desc, 2, ',', '.')." Bs",'',1,'R',1);*/
+	$this->pdf->SetFillColor(255,255,255);
+	$this->pdf->SetFont('Arial','B',7.5);
+	$this->pdf->Cell(18,6,"",'',0,'C',1);
+	$this->pdf->Cell(126,6,"",'',0,'C',1);
+	$this->pdf->SetFillColor(204,204,204);
+	$this->pdf->Cell(20,6,"Subtotal-Desc",'LB',0,'C',1);
+	$this->pdf->Cell(20,6,"-".number_format($total_discounts_tax_excl, 2, ',', '.'),'RB',1,'C',1);
+}
+
 // Iva
 $iva = $subtotal_price * (float)$tasa_iva / 100;
 /*$this->pdf->SetFillColor(255,255,255);
@@ -303,6 +348,7 @@ $this->pdf->Cell(20,6,"".number_format((float)$iva, 2, ',', '.'),'RB',1,'C',1);*
 
 // Total + Iva
 //~ $total_price = $subtotal_price + $iva;  // Monto anterior calculado desde el documento
+
 $total_price = $order['order'][0]['total_paid_tax_incl'];
 $this->pdf->SetFillColor(255,255,255);
 $this->pdf->SetTextColor(0,0,0); # COLOR DEL TEXTO
@@ -310,9 +356,14 @@ $this->pdf->SetFont('Arial','B',7.5);
 $this->pdf->Cell(18,6,"",'',0,'C',1);
 $this->pdf->Cell(126,6,"",'',0,'C',1);
 
+if($mount_discounts > 0){
+	$iva_total = $mount_discounts;
+}else{
+	$iva_total = $iva;
+}
 $this->pdf->SetFillColor(204,204,204);
 $this->pdf->Cell(20,6,"IVA(".$tasa_iva."%)",'LB',0,'C',1);
-$this->pdf->Cell(20,6,"".number_format((float)$iva, 2, ',', '.'),'RB',1,'C',1);
+$this->pdf->Cell(20,6,"".number_format($iva_total, 2, ',', '.'),'RB',1,'C',1);
 
 
 $this->pdf->SetFillColor(255,255,255);
@@ -332,7 +383,7 @@ if(count($order_terms) > 0){
 	//$this->pdf->MultiCell(180, 5, utf8_decode(str_replace("<br/>", "\n", $order_terms->terms)), 0, 'L', 0);
 	$this->pdf->WriteHTML(utf8_decode($order_terms->terms)); //
 }
-$this->pdf->Image(base_url().'assets/img/logos/firms-estimate.png',60,200,70);
+$this->pdf->Image(base_url().'assets/img/logos/firms-estimate.png',60,200,80);
 
 // Dimensiones de X,Y
 $this->pdf->SetFont('Arial','',9);
