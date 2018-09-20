@@ -196,7 +196,7 @@ if($total_discounts_tax_excl > 0){
 	$this->pdf->SetFont('Arial','B',8);
 	$this->pdf->Cell(125,6,"",'',0,'C',1);
 	$this->pdf->Cell(5,4,"",'',0,'L',1);
-	$this->pdf->Cell(25,6,"Subtotal-desc",'',0,'R',1);
+	$this->pdf->Cell(25,6,"Subtotal-Desc",'',0,'R',1);
 	$this->pdf->SetFillColor(255,255,255);
 	$this->pdf->SetFont('Arial','',8);
 	$this->pdf->Cell(35,6,"".number_format($sub_total_desc, 2, ',', '.')." Bs",'',1,'R',1);
