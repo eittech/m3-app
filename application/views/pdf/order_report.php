@@ -417,7 +417,7 @@ if($total_discounts_tax_excl > 0){
 	$this->pdf->Cell(30,6,"",'',0,'L',1);
 	$this->pdf->Cell(30,6,"",'',0,'L',1);
 	$this->pdf->SetFillColor(204,204,204);
-	$this->pdf->Cell(30,6,"Subtotal Desc",'LB',0,'C',1);
+	$this->pdf->Cell(30,6,"Subtotal-Desc",'LB',0,'C',1);
 	$this->pdf->Cell(30,6,number_format((float)$sub_total_desc, 2, ',', '.'),'RB',1,'R',1);
 }
 
