@@ -391,5 +391,7 @@ $this->pdf->SetY(34);
 $this->pdf->SetX(144.5);
 $this->pdf->Cell(40,4,utf8_decode("Correo Electrónico: contacto@m3uniformes.com"),'',0,'C',0);
 
+$id_order = $order['order'][0]['id_order'];
+
 // Salida del Formato PDF
-$this->pdf->Output("Cotizacion.pdf", 'I');
+$this->pdf->Output("Cotizacion_$id_order.pdf", 'I');
