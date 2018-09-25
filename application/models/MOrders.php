@@ -55,18 +55,6 @@ class MOrders extends CI_Model {
             return $query->result();
     }
 
-    // Public get detail customization value
-    public function get_customization($value) {
-
-        $this->db->select("a.value");
-        $this->db->where("a.id_customization", $value);
-        $this->db->where("a.index <=", 6);
-        $this->db->order_by('a.index','ASC');
-        $query = $this->db->get("customized_data AS a");
-        return $query->row();
-    }
-    // select a.value from customized_data AS a where a.id_customization = 6423 AND a.index >= 6 AND a.index <= 6 order by a.index ASC
-
     // Public method to obtain the specific field detail
     public function obtenerDetalle($table, $key, $id) {
         $query = $this->db->where($key, $id);
