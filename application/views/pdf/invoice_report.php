@@ -27,7 +27,7 @@ if(isset($order['order_invoice'][0]['id_order'])){
 }
 
 // Preparación de la fecha actual
-$now_delivery_date = $order['order'][0]['delivery_date'];
+$now_delivery_date = $order['order'][0]['date_add'];
 $delivery_date = date("d/m/Y", strtotime($now_delivery_date));
 
 // Fecha y número de factura
@@ -166,10 +166,10 @@ $this->pdf->SetTextColor(77,77,77); # COLOR DEL TEXTO
 $this->pdf->SetFont('Arial','B',8);
 $this->pdf->Cell(125,6,"",'',0,'C',1);
 $this->pdf->Cell(5,4,"",'',0,'L',1);
-$this->pdf->Cell(25,6,"Subtotal",'',0,'R',1);
+$this->pdf->Cell(29.5,6,"Subtotal",'',0,'R',1);
 $this->pdf->SetFillColor(255,255,255);
 $this->pdf->SetFont('Arial','',8);
-$this->pdf->Cell(35,6,"".number_format($subtotal, 2, ',', '.')." Bs",'',1,'R',1);
+$this->pdf->Cell(31,6,"".number_format($subtotal, 2, ',', '.')." Bs",'',1,'R',1);
 
 // Descuento
 $total_discounts_tax_excl = $order['order'][0]['total_discounts_tax_excl'];
@@ -185,10 +185,10 @@ if($total_discounts_tax_excl > 0){
 	$this->pdf->SetFont('Arial','B',8);
 	$this->pdf->Cell(125,6,"",'',0,'C',1);
 	$this->pdf->Cell(5,4,"",'',0,'L',1);
-	$this->pdf->Cell(25,6,"Descuento(".number_format($iva_discounts, 0, '', '')."%)",'',0,'R',1);
+	$this->pdf->Cell(29.5,6,"Descuento(".number_format($iva_discounts, 0, '', '')."%)",'',0,'R',1);
 	$this->pdf->SetFillColor(255,255,255);
 	$this->pdf->SetFont('Arial','',8);
-	$this->pdf->Cell(35,6,"-".number_format($total_discounts_tax_excl, 2, ',', '.')." Bs",'',1,'R',1);
+	$this->pdf->Cell(31,6,"-".number_format($total_discounts_tax_excl, 2, ',', '.')." Bs",'',1,'R',1);
 
 	// Descuento
 	$this->pdf->SetFillColor(255,255,255);
@@ -196,10 +196,10 @@ if($total_discounts_tax_excl > 0){
 	$this->pdf->SetFont('Arial','B',8);
 	$this->pdf->Cell(125,6,"",'',0,'C',1);
 	$this->pdf->Cell(5,4,"",'',0,'L',1);
-	$this->pdf->Cell(25,6,"Subtotal-Desc",'',0,'R',1);
+	$this->pdf->Cell(29.5,6,"Subtotal-desc",'',0,'R',1);
 	$this->pdf->SetFillColor(255,255,255);
 	$this->pdf->SetFont('Arial','',8);
-	$this->pdf->Cell(35,6,"".number_format($sub_total_desc, 2, ',', '.')." Bs",'',1,'R',1);
+	$this->pdf->Cell(31,6,"".number_format($sub_total_desc, 2, ',', '.')." Bs",'',1,'R',1);
 }
 
 
@@ -211,7 +211,7 @@ $this->pdf->SetTextColor(77,77,77); # COLOR DEL TEXTO
 $this->pdf->SetFont('Arial','B',8);
 $this->pdf->Cell(125,6,"",'',0,'C',1);
 $this->pdf->Cell(5,4,"",'',0,'L',1);
-$this->pdf->Cell(25,6,"IVA(".$tasa_iva."%)",'',0,'R',1);
+$this->pdf->Cell(29.5,6,"IVA(".$tasa_iva."%)",'',0,'R',1);
 $this->pdf->SetFillColor(255,255,255);
 $this->pdf->SetFont('Arial','',8);
 
@@ -221,7 +221,7 @@ if($mount_discounts > 0){
 	$iva_total = $iva;
 }
 
-$this->pdf->Cell(35,6,"".number_format($iva_total, 2, ',', '.')." Bs",'',1,'R',1);
+$this->pdf->Cell(31,6,"".number_format($iva_total, 2, ',', '.')." Bs",'',1,'R',1);
 // Total
 //~ $total = $subtotal + $iva;  // Monto anterior calculado desde el documento
 $total = $order['order'][0]['total_paid_tax_incl'];
@@ -230,10 +230,10 @@ $this->pdf->SetTextColor(77,77,77); # COLOR DEL TEXTO
 $this->pdf->SetFont('Arial','B',8);
 $this->pdf->Cell(125,6,"",'',0,'C',1);
 $this->pdf->Cell(5,4,"",'',0,'L',1);
-$this->pdf->Cell(25,6,"Total",'',0,'R',1);
+$this->pdf->Cell(29.5,6,"Total",'',0,'R',1);
 $this->pdf->SetFillColor(255,255,255);
 $this->pdf->SetFont('Arial','',8);
-$this->pdf->Cell(35,6,"".number_format($total, 2, ',', '.')." Bs",'',1,'R',1);
+$this->pdf->Cell(31,6,"".number_format($total, 2, ',', '.')." Bs",'',1,'R',1);
 
 
 // Número de pedido
