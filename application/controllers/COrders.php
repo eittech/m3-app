@@ -541,6 +541,23 @@ class COrders extends CI_Controller {
 										$field_data['product_short_name'] = $datalle_producto[0]->name;
 										
 									}
+									/* Consulta el value si contiene customizationes relacionadas a la tabla (customized_data) */
+									if($key == "id_customization"){
+
+										
+										$detalle_personalización = $this->MOrders->obtenerByIds('customized_data', 'id_customization', 'index', $valor, 6);
+
+                                        
+
+                                        if(count($detalle_personalización) > 0){
+
+                                            // Cargamos el campo-valor del nombre del la customizacion
+
+                                            $field_data['customized_data'] = $detalle_personalización[0]->value;
+
+                                        }
+										
+									}
 									
 								}
 								
