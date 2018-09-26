@@ -178,7 +178,7 @@ $this->pdf->Cell(10,4,"Talla",'TB',0,'C',1);
 $this->pdf->Cell(30,4,"Variable",'TB',0,'C',1);
 $this->pdf->Cell(30,4,utf8_decode("Combinación"),'TB',0,'C',1);
 $this->pdf->Cell(30,4,"Extra",'TB',0,'C',1);
-$this->pdf->Cell(60,4,"Comentarios",'TBR',1,'C',1);
+$this->pdf->Cell(60,4,"Observaciones",'TBR',1,'C',1);
 //$this->pdf->Cell(30,4,"Precio Total",'TRB',1,'C',1);
 
 $this->pdf->SetFillColor(255,255,255);
@@ -368,7 +368,8 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 			$this->pdf->Cell(30,$cell_y,utf8_decode($combinacion),'T',0,'C',1);
 			// Validación de atributo Extra
 			$extra = ""; if(isset($order_detail['Extra'])){ $extra = $order_detail['Extra']; }else{ $extra = "No Aplica"; }
-			$this->pdf->Cell(30,$cell_y,utf8_decode($extra),'T',0,'C',1);
+			// Cambiar aqui
+			$this->pdf->Cell(30,$cell_y,utf8_decode($extra."-".$order_detail['id_customization']),'T',0,'C',1);
 			#$this->pdf->Cell(30,5,utf8_decode($extra."-".$order_detail['id_customization']),'T',0,'C',1);
 
 
