@@ -341,7 +341,10 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 			if(strlen($value_customized) > 250){
 				$cell_y = 35;
 				$align_text = "L";
-			}else{
+			}else if(strlen($value_customized) >= 96){
+				$cell_y = 15;
+				$align_text = "L";
+			}else if(strlen($value_customized) <= 96){
 				$cell_y = 5;
 				$align_text = "C";
 			}
@@ -370,7 +373,7 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 
 
 			#$this->pdf->Cell(60,30,$value_customized,'TR',1,'C',1);
-			$this->pdf->MultiCell(60, 5, utf8_decode($value_customized),"RBT",1, $align_text, 1);
+			$this->pdf->MultiCell(60, 5, utf8_decode($value_customized),"RT",1, $align_text, 1);
 			//$this->pdf->Cell(30,5,"".number_format((float)$order_detail['unit_price_tax_excl']*$order_detail['product_quantity'], 2, ',', '.'),'TR',1,'R',1);
 		}
 		$total_cant += ($order_detail['product_quantity']);
