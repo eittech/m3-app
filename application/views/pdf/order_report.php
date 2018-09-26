@@ -208,7 +208,7 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 	foreach($order['order_detail'] as $order_detail){
 		
 		#SECCIÓN PARA EL SALTO DE PÁGINA CADA VEZ QUE IMPRIMA 25 REGISTROS (IMPRIMIMOS LAS REFERENCIAS Y LOS TÍTULOS)
-		if ($j == 25){
+		if ($j == 30){
 		
 			$this->pdf->AddPage();
 
