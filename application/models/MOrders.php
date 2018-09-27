@@ -58,10 +58,12 @@ class MOrders extends CI_Model {
     // Public get detail customization value
     public function get_customization($value) {
 
-        $this->db->select("a.value");
+        $this->db->select("group_concat('Comentario: ',a.value) AS value");
         $this->db->where("a.id_customization", $value);
-        $this->db->where("a.index <=", 6);
-        $this->db->where("a.index >=", 6);
+        //$this->db->where("a.index <=", 6);
+        //$this->db->where("a.index >=", 6);
+        $index_ids = array(6,7);
+        $this->db->where_in('a.index', $index_ids );
         $this->db->order_by("a.index",'ASC');
         $query = $this->db->get("customized_data AS a");
         return $query->result();
