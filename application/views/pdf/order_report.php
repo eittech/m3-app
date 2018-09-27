@@ -338,11 +338,11 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 				}
 			}
 
-			if(strlen($value_customized) > 250){
-				$cell_y = 35;
+			if(strlen($value_customized) > 286){
+				$cell_y = 40;
 				$align_text = "L";
 			}else if(strlen($value_customized) >= 96){
-				$cell_y = 15;
+				$cell_y = 17;
 				$align_text = "L";
 			}else if(strlen($value_customized) <= 96){
 				$cell_y = 5;
