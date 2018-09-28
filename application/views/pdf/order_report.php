@@ -294,7 +294,10 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 
 		$value_customized = $order_detail['customized_data'];
 
-		if(strlen($value_customized) >= 325){
+		if(strlen($value_customized) >= 195){
+			$cell_y = 50;
+			$align_text = "L";
+		}if(strlen($value_customized) >= 325){
 			$cell_y = 50;
 			$align_text = "L";
 		}else if(strlen($value_customized) >= 96){
