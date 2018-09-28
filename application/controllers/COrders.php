@@ -548,7 +548,8 @@ class COrders extends CI_Controller {
 
                                         if(count($detalle_personalizacion) > 0){
                                             // Cargamos el campo-valor del nombre del la customizacion
-                                            $field_data['customized_data'] = $detalle_personalizacion[0]->value;
+                                            $replace_text = $this->MOrders->replace_text("Observaciones","Bordado",$detalle_personalizacion[0]->value);
+                                            $field_data['customized_data'] = $replace_text;
                                         }
 									}
 									
