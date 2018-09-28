@@ -56,15 +56,25 @@ class MOrders extends CI_Model {
     }
 
     // Public get detail customization value
+
+    public function replace_text($search, $replace_text, $text_real){
+        
+        $pos = strrpos($text_real, $search);
+        
+        if($pos !== false){
+            $text_real = substr_replace($text_real, $replace_text, $pos, strlen($search));
+        }
+        
+        return $text_real;
+    }
+
     public function get_customization($value) {
 
-        $this->db->select("group_concat('Comentario: ',a.value) AS value");
+        $this->db->select("group_concat('Observaciones: ',a.value) AS value");
         $this->db->where("a.id_customization", $value);
-        //$this->db->where("a.index <=", 6);
-        //$this->db->where("a.index >=", 6);
-        $index_ids = array(6,7);
-        $this->db->where_in('a.index', $index_ids );
+        $this->db->where("a.index >=", 6);
         $this->db->order_by("a.index",'ASC');
+        $this->db->limit(7);
         $query = $this->db->get("customized_data AS a");
         return $query->result();
     }
