@@ -210,7 +210,7 @@ if(isset($order_detail_where) && count($order_detail_where) > 0){
 		// Si el nombre del producto es muy extenso, generamos dos filas para que quepa.
 		if(strlen($order_detail->product_name) > 50){
 			
-			$this->pdf->Cell(19,4,"".$order_detail->product_id,'LT',0,'C',1);
+			$this->pdf->Cell(19,4,"".$order_detail->product_reference,'LT',0,'C',1);
 			$this->pdf->Cell(10,4,"".$order_detail->product_quantity,'T',0,'C',1);
 			//$this->pdf->Cell(20,4,utf8_decode("".$order_detail['product_reference']),'T',0,'C',1);
 			$this->pdf->Cell(80,4,utf8_decode(explode("-", $order_detail->product_name)[0]),'T',0,'L',1);
@@ -247,7 +247,7 @@ if(isset($order_detail_where) && count($order_detail_where) > 0){
 			$this->pdf->Cell(25,3,"",'BR',1,'C',1);
 			
 		}else{
-			$this->pdf->Cell(19,4,"".$order_detail->product_id,'LT',0,'C',1);
+			$this->pdf->Cell(19,4,"".$order_detail->product_reference,'LT',0,'C',1);
 			$this->pdf->Cell(10,4,"".$order_detail->product_quantity,'T',0,'C',1);
 			//$this->pdf->Cell(20,4,utf8_decode("".$order_detail['product_reference']),'T',0,'C',1);
 			$this->pdf->Cell(80,4,utf8_decode(explode("-", $order_detail->product_name)[0]),'T',0,'L',1);
