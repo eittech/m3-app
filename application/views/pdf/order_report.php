@@ -236,6 +236,8 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 			$talla = "No Aplica";
 		}
 
+		$Observaciones = "";
+		$Bordado = "";
 		if(isset($order_detail['Observaciones'])){
 			$Observaciones = "Observaciones: ".TRIM($order_detail['Observaciones']).".";
 
