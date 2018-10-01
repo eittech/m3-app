@@ -1035,6 +1035,8 @@ class COrders extends CI_Controller {
 
 		$data['order_terms'] = $this->ter->row_order_terms($order_id);
         $data['order'] = $exchangeRates3;
+		$data['order_detail_where'] = $this->MOrders->order_detail_where($order_id);
+		//echo $this->db->last_query(); exit;
         
         $this->load->view('pdf/order_cotization_report', $data);
     }
