@@ -542,7 +542,7 @@ class COrders extends CI_Controller {
 										
 									}
 									/* Consulta el value si contiene customizationes relacionadas a la tabla (customized_data) */
-									if($key == "id_customization"){
+									/*if($key == "id_customization"){
 
 										$detalle_personalizacion = $this->MOrders->get_customization($valor);
 
@@ -551,7 +551,7 @@ class COrders extends CI_Controller {
                                             $replace_text = $this->MOrders->replace_text("Observaciones","Bordado",$detalle_personalizacion[0]->value);
                                             $field_data['customized_data'] = $replace_text;
                                         }
-									}
+									}*/
 									
 								}
 								
@@ -572,10 +572,10 @@ class COrders extends CI_Controller {
 									$i = 0;
 									foreach($reg_data as $reg){
 										// Validamos que coincida el id del producto pero no el id de su personalización (customization)
-										if($reg['product_id'] == $field_data['product_id'] && $reg['id_customization'] != $field_data['id_customization']){
+										/*if($reg['product_id'] == $field_data['product_id'] && $reg['id_customization'] != $field_data['id_customization']){
 											//~ $reg_data[$i]['product_quantity'] += (int)$field_data['product_quantity'];
 											$encontrado += 1;
-										}
+										}*/
 										$i += 1;
 									}
 									// Incluimos el nuevo producto si no lo encontramos
@@ -1022,6 +1022,8 @@ class COrders extends CI_Controller {
 		$exchangeRates2 = json_decode($get2, true);
         
         $data['order'] = $exchangeRates2;
+
+        $data['order_detail_where'] = $this->MOrders->order_detail_where($order_id);
         
         $this->load->view('pdf/order_report', $data);
     }

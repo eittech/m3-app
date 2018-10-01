@@ -80,7 +80,7 @@ class MOrders extends CI_Model {
 
     public function get_customization($value) {
 
-        $this->db->select("group_concat('Observaciones: ',a.value) AS value");
+        $this->db->select("group_concat(a.value) AS value");
         $this->db->where("a.id_customization", $value);
         $this->db->where("a.index >=", 6);
         $this->db->order_by("a.index",'ASC');
