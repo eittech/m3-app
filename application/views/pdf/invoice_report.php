@@ -26,6 +26,15 @@ if(isset($order['order_invoice'][0]['id_order'])){
 	$id_order = "N/A";
 }
 
+// Conversión de la fecha del pedido
+if(isset($order['order_invoice']) && count($order['order_invoice']) > 0){
+	$fecha_pedido = explode(" ", $order['order_invoice'][0]['date_add']);
+	$fecha_pedido = explode("-", $fecha_pedido[0]);
+	$fecha_pedido = $fecha_pedido[2]."/".$fecha_pedido[1]."/".$fecha_pedido[0];
+}else{
+	$fecha_pedido = "";
+}
+
 // Preparación de la fecha actual
 $now_delivery_date = $order['order'][0]['date_add'];
 $delivery_date = date("d/m/Y", strtotime($now_delivery_date));
@@ -35,7 +44,7 @@ $this->pdf->SetFont('Arial','B',8);
 $this->pdf->Cell(5,4,"",'',0,'L',1);
 $this->pdf->Cell(12,4,"Fecha: ",'',0,'L',1);
 $this->pdf->SetFont('Arial','',8);
-$this->pdf->Cell(16,4,"$delivery_date",'',0,'L',1);
+$this->pdf->Cell(16,4,"$fecha_pedido",'',0,'L',1);
 $this->pdf->Cell(125,4,"",'',0,'L',1);
 $this->pdf->SetFont('Arial','B',8);
 if(isset($order['order_invoice']) && count($order['order_invoice']) > 0){
@@ -248,15 +257,6 @@ $reference = $order['order'][0]['reference'];
 $this->pdf->Cell(5,4,"",'',0,'L',1);
 $this->pdf->Write(5,"$id_order-$reference",'',1,'C',0);
 
-// Conversión de la fecha del pedido
-if(isset($order['order_invoice']) && count($order['order_invoice']) > 0){
-	$fecha_pedido = explode(" ", $order['order_invoice'][0]['date_add']);
-	$fecha_pedido = explode("-", $fecha_pedido[0]);
-	$fecha_pedido = $fecha_pedido[2]."/".$fecha_pedido[1]."/".$fecha_pedido[0];
-}else{
-	$fecha_pedido = "";
-}
-
 // Fecha de pedido
 $this->pdf->SetY(62);
 $this->pdf->SetTextColor(77,77,77); # COLOR DEL TEXTO
@@ -266,7 +266,7 @@ $this->pdf->Write(6,utf8_decode("Fecha de pedido:"),'',1,'R',0);
 $this->pdf->SetY(66);
 $this->pdf->SetFont('Arial','',8);
 $this->pdf->Cell(5,4,"",'',0,'L',1);
-$this->pdf->Write(5,$fecha_pedido,'',1,'R',0);
+$this->pdf->Write(5,$delivery_date,'',1,'R',0);
 
 // Método de pago
 $this->pdf->SetY(73);
