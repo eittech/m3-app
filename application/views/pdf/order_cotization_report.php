@@ -1,5 +1,10 @@
 <?php
 
+#echo "<pre>";
+#print_r($order_detail_where);
+#echo "</pre>";
+#exit;
+
 $this->pdf = new PDF_HTML($orientation = 'P', $unit = 'mm', $format = 'A4');  // Instancando la clase FPDF original SÍ toma la horientación
 $this->html2 = new PDF_HTML();  // Instancando la clase FPDF original SÍ toma la horientación
 $this->pdf->SetFont('Arial','B',14);
@@ -160,7 +165,6 @@ if(isset($order_detail_where) && count($order_detail_where) > 0){
 			$this->pdf->SetFont('Arial','B',8);
 			$this->pdf->Cell(19,4,"Ref Prod.",'LTB',0,'C',1);
 			$this->pdf->Cell(10,4,"Cant.",'TB',0,'C',1);
-			$this->pdf->Cell(20,4,"Referencia",'TB',0,'C',1);
 			$this->pdf->Cell(80,4,"Producto",'TB',0,'C',1);
 			$this->pdf->Cell(25,4,"Tela",'TB',0,'L',1);
 			/*
@@ -202,69 +206,17 @@ if(isset($order_detail_where) && count($order_detail_where) > 0){
 			}
 		}	
 		
-		// Si el nombre del producto es muy extenso, generamos dos filas para que quepa.
-		if(strlen($order_detail->product_name) > 50){
-			
-			$this->pdf->Cell(19,4,"".$order_detail->product_id,'LT',0,'C',1);
-			$this->pdf->Cell(10,4,"".$order_detail->product_quantity,'T',0,'C',1);
-			//$this->pdf->Cell(20,4,utf8_decode("".$order_detail['product_reference']),'T',0,'C',1);
-			$this->pdf->Cell(80,4,utf8_decode(explode("-", $order_detail->product_name)[0]),'T',0,'L',1);
-			$this->pdf->Cell(25,4,utf8_decode($tela),'T',0,'L',1);
-			// Validación de atributo Color
-			//$color = ""; if(isset($order_detail['Color'])){ $color = $order_detail['Color']; }else{ $color = "No Aplica"; }
-			//$this->pdf->Cell(30,4,utf8_decode($color),'T',0,'C',1);
-			// Validación de atributo Talla
-			/*$talla = "";*/ //if(isset($order_detail['Talla'])){ $talla = $order_detail['Talla']; }/*else{ $talla = "No Aplica"; }*/
-			//$this->pdf->Cell(15,4,utf8_decode($talla),'T',0,'C',1);
-			// Validación de atributo Variable
-			//$variable = ""; if(isset($order_detail['Variable'])){ $variable = $order_detail['Variable']; }else{ $variable = "No Aplica"; }
-			//$this->pdf->Cell(30,4,utf8_decode($variable),'T',0,'C',1);
-			// Validación de atributo Combinación
-			//$combinacion = ""; if(isset($order_detail['Combinación'])){ $combinacion = $order_detail['Combinación']; }else{ $combinacion = "No Aplica"; }
-			//$this->pdf->Cell(30,4,utf8_decode($combinacion),'T',0,'C',1);
-			// Validación de atributo Extra
-			//$extra = ""; if(isset($order_detail['Extra'])){ $extra = $order_detail['Extra']; }else{ $extra = "No Aplica"; }
-			//$this->pdf->Cell(30,4,utf8_decode($extra),'T',0,'C',1);
-			$this->pdf->Cell(25,4,"".number_format((float)$order_detail->unit_price_tax_excl, 2, ',', '.'),'T',0,'R',1);
-			$this->pdf->Cell(25,4,"".number_format((float)$order_detail->unit_price_tax_excl*$order_detail->product_quantity, 2, ',', '.'),'TR',1,'R',1);
-			
-			$this->pdf->Cell(19,3,"",'LB',0,'C',1);
-			$this->pdf->Cell(10,3,"",'B',0,'C',1);
-			$this->pdf->Cell(20,3,"",'B',0,'C',1);
-			$this->pdf->Cell(80,3,utf8_decode(explode("-", $order_detail->product_name)[0]),'B',0,'L',1);
-			$this->pdf->Cell(25,3,utf8_decode(""),'B',0,'L',1);
-			$this->pdf->Cell(30,3,utf8_decode(""),'B',0,'L',1);
-			$this->pdf->Cell(15,3,utf8_decode(""),'B',0,'L',1);
-			$this->pdf->Cell(30,3,utf8_decode(""),'B',0,'L',1);
-			$this->pdf->Cell(30,3,utf8_decode(""),'B',0,'L',1);
-			$this->pdf->Cell(30,3,utf8_decode(""),'B',0,'L',1);
-			$this->pdf->Cell(25,3,"",'B',0,'C',1);
-			$this->pdf->Cell(25,3,"",'BR',1,'C',1);
-			
-		}else{
-			$this->pdf->Cell(19,4,"".$order_detail->product_reference,'LT',0,'C',1);
-			$this->pdf->Cell(10,4,"".$order_detail->product_quantity,'T',0,'C',1);
-			//$this->pdf->Cell(20,4,utf8_decode("".$order_detail['product_reference']),'T',0,'C',1);
-			$this->pdf->Cell(80,4,utf8_decode(explode("-", $order_detail->product_name)[0]),'T',0,'L',1);
-			$this->pdf->Cell(25,4,utf8_decode($tela),'T',0,'L',1);
-			// Validación de atributo Color
-			//$color = ""; if(isset($order_detail['Color'])){ $color = $order_detail['Color']; }else{ $color = "No Aplica"; }
-			//$this->pdf->Cell(30,4,utf8_decode($color),'T',0,'C',1);
-			// Validación de atributo Talla
-			/*$talla = "";*/ //if(isset($order_detail['Talla'])){ $talla = $order_detail['Talla']; }/*else{ $talla = "No Aplica"; }*/
-			//$this->pdf->Cell(15,4,utf8_decode($talla),'T',0,'C',1);
-			// Validación de atributo Variable
-			//$variable = ""; if(isset($order_detail['Variable'])){ $variable = $order_detail['Variable']; }else{ $variable = "No Aplica"; }
-			//$this->pdf->Cell(30,4,utf8_decode($variable),'T',0,'C',1);
-			// Validación de atributo Combinación
-			//$combinacion = ""; if(isset($order_detail['Combinación'])){ $combinacion = $order_detail['Combinación']; }else{ $combinacion = "No Aplica"; }
-			//$this->pdf->Cell(30,4,utf8_decode($combinacion),'T',0,'C',1);
-			// Validación de atributo Extra
-			//$extra = ""; if(isset($order_detail['Extra'])){ $extra = $order_detail['Extra']; }else{ $extra = "No Aplica"; }
-			//$this->pdf->Cell(30,4,utf8_decode($extra),'T',0,'C',1);
-			$this->pdf->Cell(25,4,"".number_format((float)$order_detail->unit_price_tax_excl, 2, ',', '.'),'T',0,'R',1);
-			$this->pdf->Cell(25,4,"".number_format((float)$order_detail->unit_price_tax_excl*$order_detail->product_quantity, 2, ',', '.'),'TR',1,'R',1);
-		}
+		// Impresion de los datos
+		
+		$this->pdf->Cell(19,4,"".$order_detail->product_reference,'LT',0,'C',1);
+		$this->pdf->Cell(10,4,"".$order_detail->product_quantity,'T',0,'C',1);
+		//$this->pdf->Cell(20,4,utf8_decode("".$order_detail['product_reference']),'T',0,'C',1);
+		$this->pdf->Cell(80,4,utf8_decode(explode("-", $order_detail->product_name)[0]),'T',0,'L',1);
+		$this->pdf->Cell(25,4,utf8_decode($tela),'T',0,'L',1);
+		
+		$this->pdf->Cell(25,4,"".number_format((float)$order_detail->unit_price_tax_excl, 2, ',', '.'),'T',0,'R',1);
+		$this->pdf->Cell(25,4,"".number_format((float)$order_detail->unit_price_tax_excl*$order_detail->product_quantity, 2, ',', '.'),'TR',1,'R',1);
+
 		$total_cant += ($order_detail->product_quantity);
 		$subtotal_price += ($order_detail->unit_price_tax_excl*$order_detail->product_quantity);
 		
