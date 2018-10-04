@@ -1,6 +1,7 @@
 <?php
 
 #echo "<pre>";
+#echo count($order['order_detail']);
 #print_r($order['order_detail']);
 #echo "</pre>";
 #exit;
@@ -190,7 +191,11 @@ $this->pdf->SetFillColor(240,240,240);
 $this->pdf->SetTextColor(0,0,0); # COLOR DEL TEXTO
 $this->pdf->SetFont('Arial','B',9);
 
-/*$this->pdf->Cell(15,4,"ID.",'LTB',0,'C',1);
+$this->pdf->SetFillColor(240,240,240);
+$this->pdf->SetTextColor(0,0,0); # COLOR DEL TEXTO
+$this->pdf->SetFont('Arial','B',9);
+
+$this->pdf->Cell(15,4,"ID.",'LTB',0,'C',1);
 $this->pdf->Cell(10,4,"Cant.",'TB',0,'C',1);
 $this->pdf->Cell(110,4,"Producto",'TB',0,'C',1);
 $this->pdf->Cell(15,4,"Tela",'TB',0,'C',1);
@@ -198,7 +203,7 @@ $this->pdf->Cell(30,4,"Color",'TB',0,'C',1);
 $this->pdf->Cell(10,4,"Talla",'TB',0,'C',1);
 $this->pdf->Cell(30,4,"Variable",'TB',0,'C',1);
 $this->pdf->Cell(30,4,utf8_decode("Combinación"),'TB',0,'C',1);
-$this->pdf->Cell(30,4,"Extra",'TBR',1,'C',1);*/
+$this->pdf->Cell(30,4,"Extra",'TBR',1,'C',1);
 
 if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 	$j = 0;  # Contador para el salto de página
@@ -239,10 +244,10 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 		$Observaciones = "";
 		$Bordado = "";
 		if(isset($order_detail['Observaciones'])){
-			$Observaciones = "Observaciones: ".TRIM($order_detail['Observaciones']).".";
+			$Observaciones = "Observaciones: ".TRIM($order_detail['Observaciones']);
 
 		}if(isset($order_detail['Bordado'])){
-			$Bordado = "Bordado: ".TRIM($order_detail['Bordado']).".";
+			$Bordado = "Bordado: ".TRIM($order_detail['Bordado']);
 		}
 
 		$variable = "";
@@ -266,20 +271,6 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 			$extra = "No Aplica";
 		}
 
-		$this->pdf->SetFillColor(240,240,240);
-		$this->pdf->SetTextColor(0,0,0); # COLOR DEL TEXTO
-		$this->pdf->SetFont('Arial','B',9);
-
-		$this->pdf->Cell(15,4,"ID.",'LTB',0,'C',1);
-		$this->pdf->Cell(10,4,"Cant.",'TB',0,'C',1);
-		$this->pdf->Cell(110,4,"Producto",'TB',0,'C',1);
-		$this->pdf->Cell(15,4,"Tela",'TB',0,'C',1);
-		$this->pdf->Cell(30,4,"Color",'TB',0,'C',1);
-		$this->pdf->Cell(10,4,"Talla",'TB',0,'C',1);
-		$this->pdf->Cell(30,4,"Variable",'TB',0,'C',1);
-		$this->pdf->Cell(30,4,utf8_decode("Combinación"),'TB',0,'C',1);
-		$this->pdf->Cell(30,4,"Extra",'TBR',1,'C',1);
-
 		$this->pdf->SetFillColor(255,255,255);
 		$this->pdf->SetTextColor(0,0,0); # COLOR DEL TEXTO
 		$this->pdf->SetFont('Arial','',9);
@@ -295,12 +286,6 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 		$this->pdf->Cell(30,4,utf8_decode($combinacion),'TB',0,'C',1);
 		$this->pdf->Cell(30,4,utf8_decode($extra),'TBR',1,'C',1);
 		$this->pdf->Ln(0);
-		$this->pdf->SetFillColor(240,240,240);
-		$this->pdf->SetTextColor(0,0,0); # COLOR DEL TEXTO
-		$this->pdf->SetFont('Arial','B',9);
-		$this->pdf->Cell(280,4,"Observaciones",'LTBR',1,'C',1);
-		$this->pdf->SetFillColor(255,255,255);
-		$this->pdf->SetTextColor(0,0,0); # COLOR DEL TEXTO
 		$this->pdf->SetFont('Arial','',9);
 		$this->pdf->MultiCell(280, 4, utf8_decode($Observaciones." ".$Bordado),"LTBR",1, "L", 1);
 
