@@ -278,7 +278,7 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 		$this->pdf->SetFont('Arial','',9);
 
 		// Impresion de datos
-		$this->pdf->Cell(15,4,$order_detail['id_customization'],'LTB',0,'C',1);
+		$this->pdf->Cell(15,4,$i,'LTB',0,'C',1);
 		$this->pdf->Cell(10,4,$order_detail['product_quantity'],'TB',0,'C',1);
 		$this->pdf->Cell(110,4,utf8_decode(explode("-",$order_detail['product_name'])[0]),'TB',0,'C',1);
 		$this->pdf->Cell(15,4,utf8_decode($tela),'TB',0,'C',1);
