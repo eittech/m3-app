@@ -78,17 +78,10 @@ class MOrders extends CI_Model {
         return $text_real;
     }
 
-    public function get_customization($value) {
+    public function get_customization($id_customization) {
 
-        $this->db->select("group_concat(a.value) AS value");
-        $this->db->where("a.id_customization", $value);
-        $this->db->where("a.index >=", 6);
-        $this->db->order_by("a.index",'ASC');
-        $this->db->limit(7);
-        $query = $this->db->get("customized_data AS a");
-        return $query->result();
-        /*$result = $this->db->query("SELECT a.value FROM customized_data AS a WHERE a.id_customization = $value ORDER BY a.id_customization ASC LIMIT 5,6");
-        return $result->result();*/
+        $obj = $this->db->query("SELECT a.value FROM customized_data AS a WHERE a.id_customization = $id_customization ORDER BY a.id_customization ASC LIMIT 5,6");
+        return $obj->result();
     }
 
     // Public method to obtain the specific field detail
