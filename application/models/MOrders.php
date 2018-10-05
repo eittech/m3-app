@@ -87,6 +87,8 @@ class MOrders extends CI_Model {
         $this->db->limit(7);
         $query = $this->db->get("customized_data AS a");
         return $query->result();
+        /*$result = $this->db->query("SELECT a.value FROM customized_data AS a WHERE a.id_customization = $value ORDER BY a.id_customization ASC LIMIT 5,6");
+        return $result->result();*/
     }
 
     // Public method to obtain the specific field detail

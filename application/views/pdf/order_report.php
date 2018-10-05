@@ -5,6 +5,8 @@
 #print_r($order['order_detail']);
 #echo "</pre>";
 #exit;
+$this->load->model('MOrders');
+
 
 
 $this->pdf = new FPDF($orientation = 'L', $unit = 'mm', $format = 'A4');  // Instancando la clase FPDF original SÍ toma la horientación
@@ -276,7 +278,7 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 		$this->pdf->SetFont('Arial','',9);
 
 		// Impresion de datos
-		$this->pdf->Cell(15,4,$i,'LTB',0,'C',1);
+		$this->pdf->Cell(15,4,$order_detail['id_customization'],'LTB',0,'C',1);
 		$this->pdf->Cell(10,4,$order_detail['product_quantity'],'TB',0,'C',1);
 		$this->pdf->Cell(110,4,utf8_decode(explode("-",$order_detail['product_name'])[0]),'TB',0,'C',1);
 		$this->pdf->Cell(15,4,utf8_decode($tela),'TB',0,'C',1);
@@ -287,7 +289,19 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 		$this->pdf->Cell(30,4,utf8_decode($extra),'TBR',1,'C',1);
 		$this->pdf->Ln(0);
 		$this->pdf->SetFont('Arial','',9);
-		$this->pdf->MultiCell(280, 4, utf8_decode($Observaciones." ".$Bordado),"LTBR",1, "L", 1);
+
+		$id_customization = $order_detail['id_customization']; # ID de id_customization
+
+		$obj_custom = $this->db->query("select a.value from customized_data AS a where a.id_customization = $id_customization order by a.id_customization ASC LIMIT 5,6");
+		$return_customized = $obj_custom->result();
+
+		$string_customized = "";
+		$replace_text = "";
+		foreach ($return_customized as $key => $value) {
+			$string_customized .= "Observaciones: ".$value->value."\n";
+		}
+		$replace_text = $this->MOrders->replace_text("Observaciones","Bordado",$string_customized);
+		$this->pdf->MultiCell(280, 4, utf8_decode($replace_text),"LTBR",1, "L", 1);
 
 		$j++;
 		
