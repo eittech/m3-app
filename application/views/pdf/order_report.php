@@ -300,8 +300,17 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 		foreach ($return_customized as $key => $value) {
 			$string_customized .= "Observaciones: ".$value->value."\n";
 		}
+		
 		$replace_text = $this->MOrders->replace_text("Observaciones","Bordado",$string_customized);
 		$this->pdf->MultiCell(280, 4, utf8_decode($replace_text),"LTBR",1, "L", 1);
+		/*$string_customized = "";
+		$replace_text = "";
+		foreach ($return_customized as $key => $value) {
+			$string_customized .= $value->value." |";
+		}
+		$customized_data = "Observaciones: ".$string_customized;
+		$replace_string = str_replace("Observaciones: . |", "", $customized_data);
+		$this->pdf->MultiCell(280, 4, utf8_decode($replace_string),"LTBR",1, "L", 1);*/
 
 		$j++;
 		
