@@ -104,7 +104,7 @@ $route['orders/invoice/(:num)'] = 'COrders/pdf_invoice/$1';
 $route['orders/order/(:num)'] = 'COrders/pdf_order/$1';
 //$route['orders/order_cotization/(:num)'] = 'COrders/pdf_order_cotization/$1';
 $route['orders/estimate/(:num)'] = 'COrders/pdf_order_cotization/$1';
-$route['orders/payment/(:num)'] = 'COrders/pdf_payment/$1';
+$route['orders/payment/(:num)/(:num)'] = 'COrders/pdf_payment/$1/$2';
 $route['orders/update_num_invoice'] = 'COrders/update_order';
 
 /* Products */
