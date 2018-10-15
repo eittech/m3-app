@@ -36,7 +36,33 @@ $this->pdf->SetFont('Arial','B',14);
 $this->pdf->Cell(180,4,utf8_decode("COTIZACIÓN"),0,0,'C',0);
 // SECCIÓN DE REFERENICA Y FECHAS DE LA ORDEN
 
-$this->pdf->Ln(15);
+$this->pdf->Ln(5);
+// Datos de la Direccion de Entrega
+$this->pdf->SetFillColor(255,255,255);
+$this->pdf->SetFont('Arial','B',10);
+$this->pdf->Cell(90,5,utf8_decode("Dirección"),0,1,'L',1);
+// Razón social
+$this->pdf->SetFillColor(255,255,255);
+$this->pdf->SetFont('Arial','',8);
+$this->pdf->Cell(90,4,utf8_decode("Nombre o razón social: ".$order['order'][0]['address_invoice'][0]['company']),0,1,'L',1);
+// RIF
+$this->pdf->SetFillColor(255,255,255);
+$this->pdf->SetFont('Arial','',8);
+$this->pdf->Cell(90,4,utf8_decode("CI o RIF: ".$order['order'][0]['address_invoice'][0]['dni']),0,1,'L',1);
+// Direccion de Entrega
+if(strlen($order['order'][0]['address_invoice'][0]['address1']) > 90){
+	$address_invoice = substr($order['order'][0]['address_invoice'][0]['address1'], 0, 55);
+}else{
+	$address_invoice = $order['order'][0]['address_invoice'][0]['address1'];
+}
+$this->pdf->Cell(90,4,utf8_decode("Dirección fiscal: ".$address_invoice),0,1,'L',1);
+$this->pdf->Cell(90,4,utf8_decode($order['order'][0]['address_invoice'][0]['address2']),0,1,'L',1);
+$this->pdf->Cell(90,4,utf8_decode("Teléfono: ".$order['order'][0]['address_invoice'][0]['phone'].", ".$order['order'][0]['address_invoice'][0]['phone_mobile']),0,1,'L',1);
+
+// Generamos una línea más para las direcciones principales si éstas superan el límite de 55 caracteres
+#$this->pdf->Cell(90,4,utf8_decode(substr($order['order'][0]['address_invoice'][0]['address1'], 55)),0,1,'L',1);
+
+$this->pdf->Ln(8);
 
 // Preparación de las fechas de recepción y entrega
 $fecha_re = date("d/m/Y");
@@ -46,7 +72,7 @@ $this->pdf->SetFillColor(240,240,240);
 $this->pdf->SetFont('Arial','B',8);
 $this->pdf->Cell(61.5,7,"REFERENCIA",'LT',0,'C',1);
 $this->pdf->Cell(61.5,7,utf8_decode("FECHA DE SOLICITUD"),'T',0,'C',1);
-$this->pdf->Cell(61.5,7,"FECHA DE ENTREGA",'TR',1,'C',1);
+$this->pdf->Cell(61.5,7,"",'TR',1,'C',1);
 //$this->pdf->Cell(100,4,"TRANSPORTISTA",'T',0,'C',1);
 //$this->pdf->Cell(60,4,utf8_decode("Método de Pago"),'TR',1,'C',1);
 // Contenido
@@ -72,7 +98,7 @@ $this->pdf->SetFillColor(255,255,255);
 $this->pdf->SetFont('Arial','',8);
 $this->pdf->Cell(61.5,4,$order['order'][0]['id_order']." - ".$order['order'][0]['reference'],'LB',0,'C',1);
 $this->pdf->Cell(61.5,4,$invoice_date_all,'B',0,'C',1);
-$this->pdf->Cell(61.5,4,$delivery_date_all,'RB',0,'C',1);
+$this->pdf->Cell(61.5,4,"",'RB',0,'C',1);
 //$this->pdf->Cell(100,4,utf8_decode($order['order'][0]['carrier'][0]['name']),'B',0,'C',1);
 $pay_method = "";
 if(isset($order['order_payment'][0]['payment_method']) && count($order['order_payment'][0]['payment_method']) > 0){
