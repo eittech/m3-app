@@ -236,8 +236,8 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 		}
 
 		$color = "";
-		if(isset($order_detail->color)){
-			$color = $order_detail->color;
+		if(isset($order_detail['Color'])){
+			$color = $order_detail['Color'];
 		}else{
 			$color = "No Aplica";
 		}
