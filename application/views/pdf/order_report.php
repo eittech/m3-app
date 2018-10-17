@@ -219,129 +219,137 @@ if(isset($order['order_detail']) && count($order['order_detail']) > 0){
 	$i = 1;  # Contador de productos
 	foreach($order['order_detail'] as $order_detail){
 
-		$total_cant += ($order_detail['product_quantity']);
+		//echo explode("-",$order_detail['product_name'])[0]; exit;
 
-		$this->pdf->SetFillColor(255,255,255);
-		$this->pdf->SetTextColor(0,0,0); # COLOR DEL TEXTO
-		$this->pdf->SetFont('Arial','',9);
+		if(explode("-",$order_detail['product_name'])[0]){
 
-		$product_long_name = explode(",", $order_detail['product_name']);
+			$total_cant += ($order_detail['product_quantity']);
 
-		$tela = "No Aplica";
-		$pos1 = strpos($product_long_name[0], "Tela");
-		if(!$pos1 === false){
-			$tela = explode(" - ", $product_long_name[0]);
-			$tela = explode(" : ", $tela[1]);
-			$tela = $tela[1];
-		}
+			$this->pdf->SetFillColor(255,255,255);
+			$this->pdf->SetTextColor(0,0,0); # COLOR DEL TEXTO
+			$this->pdf->SetFont('Arial','',9);
 
-		$color = "";
-		if(isset($order_detail['Color'])){
-			$color = $order_detail['Color'];
-		}else{
-			$color = "No Aplica";
-		}
+			$product_long_name = explode(",", $order_detail['product_name']);
 
-		$talla = "";
-		if($order_detail['Talla'] !=""){
-			$talla = $order_detail['Talla'];
-		}else{
-			$talla = "No Aplica";
-		}
-
-		$Observaciones = "";
-		$Bordado = "";
-		if(isset($order_detail['Observaciones'])){
-			$Observaciones = "Observaciones: ".TRIM($order_detail['Observaciones']);
-
-		}if(isset($order_detail['Bordado'])){
-			$Bordado = "Bordado: ".TRIM($order_detail['Bordado']);
-		}
-
-		$variable = "";
-		if(isset($order_detail['Variable'])){
-			$variable = $order_detail['Variable'];
-		}else{
-			$variable = "No Aplica";
-		}
-
-		$combinacion = "";
-		if(isset($order_detail['Combinación'])){
-			$combinacion = $order_detail['Combinación'];
-		}else{
-			$combinacion = "No Aplica";
-		}
-
-		$extra = "";
-		if(isset($order_detail['Extra'])){
-			$extra = $order_detail['Extra'];
-		}else{
-			$extra = "No Aplica";
-		}
-
-		$this->pdf->SetFillColor(255,255,255);
-		$this->pdf->SetTextColor(0,0,0); # COLOR DEL TEXTO
-		$this->pdf->SetFont('Arial','',9);
-
-		// Impresion de datos
-		$this->pdf->Cell(15,4,$i,'LTB',0,'C',1);
-		$this->pdf->Cell(10,4,$order_detail['product_quantity'],'TB',0,'C',1);
-		$this->pdf->Cell(110,4,utf8_decode(explode("-",$order_detail['product_name'])[0]),'TB',0,'C',1);
-		$this->pdf->Cell(15,4,utf8_decode($tela),'TB',0,'C',1);
-		$this->pdf->Cell(30,4,utf8_decode($color),'TB',0,'C',1);
-		$this->pdf->Cell(10,4,utf8_decode($talla),'TB',0,'C',1);
-		$this->pdf->Cell(30,4,utf8_decode($variable),'TB',0,'C',1);
-		$this->pdf->Cell(30,4,utf8_decode($combinacion),'TB',0,'C',1);
-		$this->pdf->Cell(30,4,utf8_decode($extra),'TBR',1,'C',1);
-		$this->pdf->Ln(0);
-		$this->pdf->SetFont('Arial','',9);
-
-		$id_customization = $order_detail['id_customization']; # ID de id_customization
-
-		$cus_obj = $this->MOrders->get_customization($id_customization);
-
-		$string_customized = "";
-		foreach ($cus_obj as $key => $value) {
-
-			if($key == 0){
-				$etxt = "Observaciones:";
-			}if($key == 1){
-				$etxt = "Bordado:";
+			$tela = "No Aplica";
+			$pos1 = strpos($product_long_name[0], "Tela");
+			if(!$pos1 === false){
+				$tela = explode(" - ", $product_long_name[0]);
+				$tela = explode(" : ", $tela[1]);
+				$tela = $tela[1];
 			}
 
-			$string_customized .= $etxt." ".$value->value."\n";
-		}
-		$replace_string = str_replace("Observaciones: .", "", $string_customized);
+			$color = "";
+			if(isset($order_detail['Color'])){
+				$color = $order_detail['Color'];
+			}else{
+				$color = "No Aplica";
+			}
 
-		if(count($cus_obj) > 0){
+			$talla = "";
+			if(isset($order_detail['Talla'])){
+				$talla = $order_detail['Talla'];
+			}else{
+				$talla = "No Aplica";
+			}
+
+			$Observaciones = "";
+			$Bordado = "";
+			if(isset($order_detail['Observaciones'])){
+				$Observaciones = "Observaciones: ".TRIM($order_detail['Observaciones']);
+
+			}if(isset($order_detail['Bordado'])){
+				$Bordado = "Bordado: ".TRIM($order_detail['Bordado']);
+			}
+
+			$variable = "";
+			if(isset($order_detail['Variable'])){
+				$variable = $order_detail['Variable'];
+			}else{
+				$variable = "No Aplica";
+			}
+
+			$combinacion = "";
+			if(isset($order_detail['Combinación'])){
+				$combinacion = $order_detail['Combinación'];
+			}else{
+				$combinacion = "No Aplica";
+			}
+
+			$extra = "";
+			if(isset($order_detail['Extra'])){
+				$extra = $order_detail['Extra'];
+			}else{
+				$extra = "No Aplica";
+			}
+
+			$this->pdf->SetFillColor(255,255,255);
+			$this->pdf->SetTextColor(0,0,0); # COLOR DEL TEXTO
+			$this->pdf->SetFont('Arial','',9);
+
+			// Impresion de datos
+			$this->pdf->Cell(15,4,$i,'LTB',0,'C',1);
+			$this->pdf->Cell(10,4,$order_detail['product_quantity'],'TB',0,'C',1);
+			$this->pdf->Cell(110,4,utf8_decode(explode("-",$order_detail['product_name'])[0]),'TB',0,'C',1);
+			$this->pdf->Cell(15,4,utf8_decode($tela),'TB',0,'C',1);
+			$this->pdf->Cell(30,4,utf8_decode($color),'TB',0,'C',1);
+			$this->pdf->Cell(10,4,utf8_decode($talla),'TB',0,'C',1);
+			$this->pdf->Cell(30,4,utf8_decode($variable),'TB',0,'C',1);
+			$this->pdf->Cell(30,4,utf8_decode($combinacion),'TB',0,'C',1);
+			$this->pdf->Cell(30,4,utf8_decode($extra),'TBR',1,'C',1);
+			$this->pdf->Ln(0);
+			$this->pdf->SetFont('Arial','',9);
+
+
+
+			$id_customization = $order_detail['id_customization']; # ID de id_customization
+
+			$cus_obj = $this->MOrders->get_customization($id_customization);
+
+			$string_customized = "";
+			foreach ($cus_obj as $key => $value) {
+
+				if($key == 0){
+					$etxt = "Observaciones:";
+				}if($key == 1){
+					$etxt = "Bordado:";
+				}
+
+				$string_customized .= $etxt." ".$value->value."\n";
+			}
+			$replace_string = str_replace("Observaciones: .", "", $string_customized);
+
+			if(count($cus_obj) > 0){
+				$this->pdf->MultiCell(280, 4, utf8_decode($replace_string),"LTBR",1, "L", 1);
+			}
+
+			/*$obj_custom = $this->db->query("select a.value from customized_data AS a where a.id_customization = $id_customization order by a.id_customization ASC LIMIT 5,6");
+			$return_customized = $obj_custom->result();
+
+			$string_customized = "";
+			$replace_text = "";
+			foreach ($return_customized as $key => $value) {
+				$string_customized .= "Observaciones: ".$value->value."\n";
+			}
+
+			$replace_text = $this->MOrders->replace_text("Observaciones","Bordado",$string_customized);
+			$replace_string = str_replace("Bordado: .", "", $replace_text);
 			$this->pdf->MultiCell(280, 4, utf8_decode($replace_string),"LTBR",1, "L", 1);
+			/*$string_customized = "";
+			$replace_text = "";
+			foreach ($return_customized as $key => $value) {
+				$string_customized .= $value->value." |";
+			}
+			$customized_data = "Observaciones: ".$string_customized;
+			$replace_string = str_replace("Observaciones: . |", "", $customized_data);
+			$this->pdf->MultiCell(280, 4, utf8_decode($replace_string),"LTBR",1, "L", 1);*/
+
+			$j++;
+			
+			$i++;
 		}
-
-		/*$obj_custom = $this->db->query("select a.value from customized_data AS a where a.id_customization = $id_customization order by a.id_customization ASC LIMIT 5,6");
-		$return_customized = $obj_custom->result();
-
-		$string_customized = "";
-		$replace_text = "";
-		foreach ($return_customized as $key => $value) {
-			$string_customized .= "Observaciones: ".$value->value."\n";
-		}
-
-		$replace_text = $this->MOrders->replace_text("Observaciones","Bordado",$string_customized);
-		$replace_string = str_replace("Bordado: .", "", $replace_text);
-		$this->pdf->MultiCell(280, 4, utf8_decode($replace_string),"LTBR",1, "L", 1);
-		/*$string_customized = "";
-		$replace_text = "";
-		foreach ($return_customized as $key => $value) {
-			$string_customized .= $value->value." |";
-		}
-		$customized_data = "Observaciones: ".$string_customized;
-		$replace_string = str_replace("Observaciones: . |", "", $customized_data);
-		$this->pdf->MultiCell(280, 4, utf8_decode($replace_string),"LTBR",1, "L", 1);*/
-
-		$j++;
-		
-		$i++;
 	}
+
 	/*foreach(range(1, 30) as $order_detail){
 		$this->pdf->Cell(15,4,"ID.",'LTB',0,'C',1);
 		$this->pdf->Cell(10,4,"Cant.",'TB',0,'C',1);

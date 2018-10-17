@@ -437,6 +437,7 @@ class COrders extends CI_Controller {
 						
 						// Consultamos las personalizaciones del detalle(producto) 
 						$customizations = $this->MOrders->getCustomizations($data_order[0]->id_cart, $registro->product_attribute_id, $registro->product_id);
+
 						
 						$customs = array();  // Agrupará los atributos de las personalizaciones por id_customization
 						
@@ -510,6 +511,7 @@ class COrders extends CI_Controller {
 										
 										// Consultamos los detalles de la asociación a la tabla resultante
 										$data_detalle = $this->MOrders->obtenerDetalle($table2, $clave, $valor);
+
 										
 										// Cargamos un nuevo campo-valor con los detalles del campo asociado
 										// En este caso la clave será simplificada y recortada para eliminar el segmento 'id_'
@@ -564,15 +566,25 @@ class COrders extends CI_Controller {
 								 * Proceso de agrupación de los productos repetidos.
 								 * No se suman las cantidades de los productos duplicados.
 								 * */
+
 								if(count($reg_data) == 0){
+									
 									$reg_data[] = $field_data;
 								}else{
+									
 									// Buscamos
 									$encontrado = 0;
 									$i = 0;
+									/*echo "<pre>";
+									print_r($reg_data);
+									echo "</pre>";
+									exit;*/
+
 									foreach($reg_data as $reg){
+
+
 										// Validamos que coincida el id del producto pero no el id de su personalización (customization)
-										if($reg['product_id'] == $field_data['product_id'] && $reg['id_customization'] == $field_data['id_customization']){
+										if($reg['product_id'] == $field_data['product_id']){
 											//$reg_data[$i]['product_quantity'] += (int)$reg['product_quantity'];
 											$encontrado += 1;
 										}
@@ -1020,11 +1032,7 @@ class COrders extends CI_Controller {
         // Consultamos los datos de la orden
 		$get2 = file_get_contents(base_url()."orders/details/".$order_id);
 		$exchangeRates2 = json_decode($get2, true);
-        
         $data['order'] = $exchangeRates2;
-
-        $data['order_detail_where'] = $this->MOrders->order_detail_where($order_id);
-        
         $this->load->view('pdf/order_report', $data);
     }
 
