@@ -584,7 +584,7 @@ class COrders extends CI_Controller {
 
 
 										// Validamos que coincida el id del producto pero no el id de su personalización (customization)
-										if($reg['product_id'] == $field_data['product_id'] && $reg['id_customization'] != $field_data['id_customization']){
+										if($reg['product_id'] == $field_data['product_id'] && $reg['id_customization'] == $field_data['id_customization']){
 											//$reg_data[$i]['product_quantity'] += (int)$reg['product_quantity'];
 											$encontrado += 1;
 										}
