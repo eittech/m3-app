@@ -341,7 +341,7 @@ class CProducts extends CI_Controller {
 				foreach($attribs_product as $combination){
 					
 					$list_products .= "<tr>
-										<td>".$combination->position."</td>
+										<td>".$i."</td>
 										<td>".$combination->category."</td>
 										<td>".$combination->subcategory."</td>
 										<td>".$combination->reference."</td>
