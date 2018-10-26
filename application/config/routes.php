@@ -100,6 +100,7 @@ $route['coins/delete/(:num)'] = 'CCoins/delete/$1';
 /* Orders */
 $route['orders/(:num)'] = 'COrders/index/$1';
 $route['orders/details/(:num)'] = 'COrders/details/$1';
+$route['orders/details_orders/(:num)'] = 'COrders/details_orders/$1';
 $route['orders/invoice/(:num)'] = 'COrders/pdf_invoice/$1';
 $route['orders/order/(:num)'] = 'COrders/pdf_order/$1';
 //$route['orders/order_cotization/(:num)'] = 'COrders/pdf_order_cotization/$1';
