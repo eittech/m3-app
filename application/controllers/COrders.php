@@ -1442,6 +1442,41 @@ class COrders extends CI_Controller {
 		}
 		
     }
+
+    # Actualizacion de fecha de entrega
+    public function update_delivery_date() {
+		
+		$delivery_stamp = date('H:i:s');
+		$delivery_date  = $this->input->get('delivery_date');
+		
+		$format = explode("-", $delivery_date);
+		$day    = $format[0];
+		$month  = $format[1];
+		$year   = $format[2];
+		$format_delivery_date = $year."-".$month."-".$day." ".$delivery_stamp;
+		
+		if($delivery_date != ''){
+			$datos = array(
+				'id_order' => $this->input->get('id_order'),
+				'delivery_date' => $format_delivery_date
+			);
+			
+			$result = $this->MOrders->update('orders',$datos);
+			
+			if ($result) {
+					
+				echo '{"response":"ok"}';
+				
+			}else{
+				
+				echo '{"response":"error"}';
+				
+			}
+		}else{
+			echo '{"response":"invalid number invoice field"}';
+		}
+		
+    }
     
 	// Generación del reporte de la orden
     function pdf_invoice($order_id)
