@@ -1481,7 +1481,10 @@ class COrders extends CI_Controller {
     # Registro de pagos
     public function register_payments() {
 
-    	if($this->input->get('amount') != ''){
+    	$date_add = $this->input->get('date_add');
+    	$amount   = $this->input->get('amount');
+
+    	if($date_add != '' && $amount != ''){
 
     		$date_add_stamp = date('H:i:s');
 			$date_add  = $this->input->get('date_add');
@@ -1491,6 +1494,9 @@ class COrders extends CI_Controller {
 			$month  = $format[1];
 			$year   = $format[2];
 			$format_date_add = $year."-".$month."-".$day." ".$date_add_stamp;
+
+			$amount_point = str_replace('.', '', $amount);
+			$amount_format = str_replace(',', '.', $amount_point);
 
 			$datos = array(
 				'order_reference' => $this->input->get('order_reference'),
@@ -1504,7 +1510,7 @@ class COrders extends CI_Controller {
 				'date_add' => $format_date_add,
 				'payment_method' => $this->input->get('payment_method'),
 				'transaction_id' => $this->input->get('transaction_id'),
-				'amount' => $this->input->get('amount'),
+				'amount' => $amount_format,
 			);
 			
 			$result = $this->MOrders->save('order_payment',$datos);
@@ -1519,7 +1525,13 @@ class COrders extends CI_Controller {
 				
 			}
 		}else{
-			echo '{"response":"invalid payments orders field"}';
+
+			if($date_add == ""){
+				echo '{"response":"Campo invalido, ingrese la fecha"}';
+			}else if($amount == ""){
+				echo '{"response":"Campo invalido, ingrese el monto"}';
+			}
+
 		}
 
     }
