@@ -145,11 +145,18 @@ class MOrders extends CI_Model {
 	
 	// Public method to update a order  
     public function update($table, $datos) {
-		
-		$result = $this->db->where('id_order', $datos['id_order']);
-		$result = $this->db->update($table, $datos);
-		return $result;
         
+        $result = $this->db->where('id_order', $datos['id_order']);
+        $result = $this->db->update($table, $datos);
+        return $result;
+        
+    }
+
+    // Public method to update a order  
+    public function save($table, $datos) {
+
+		return $this->db->insert($table, $datos);
+
     }
 }
 
