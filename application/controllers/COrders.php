@@ -1477,6 +1477,52 @@ class COrders extends CI_Controller {
 		}
 		
     }
+
+    # Registro de pagos
+    public function register_payments() {
+
+    	if($this->input->get('amount') != ''){
+
+    		$date_add_stamp = date('H:i:s');
+			$date_add  = $this->input->get('date_add');
+			
+			$format = explode("-", $date_add);
+			$day    = $format[0];
+			$month  = $format[1];
+			$year   = $format[2];
+			$format_date_add = $year."-".$month."-".$day." ".$date_add_stamp;
+
+			$datos = array(
+				'order_reference' => $this->input->get('order_reference'),
+				'id_currency' => 1,
+				'conversion_rate' => 1,
+				'card_number' => NULL,
+				'card_brand' => NULL,
+				'card_expiration' => NULL,
+				'card_holder' => NULL,
+				'status' => 1,
+				'date_add' => $format_date_add,
+				'payment_method' => $this->input->get('payment_method'),
+				'transaction_id' => $this->input->get('transaction_id'),
+				'amount' => $this->input->get('amount'),
+			);
+			
+			$result = $this->MOrders->save('order_payment',$datos);
+			
+			if ($result) {
+					
+				echo '{"response":"ok"}';
+				
+			}else{
+				
+				echo '{"response":"error"}';
+				
+			}
+		}else{
+			echo '{"response":"invalid payments orders field"}';
+		}
+
+    }
     
 	// Generación del reporte de la orden
     function pdf_invoice($order_id)

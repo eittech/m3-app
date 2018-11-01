@@ -109,6 +109,9 @@ $route['orders/payment/(:num)/(:num)'] = 'COrders/pdf_payment/$1/$2';
 $route['orders/update_num_invoice'] = 'COrders/update_order';
 # Actualizacion de fecha de entrega
 $route['orders/update_delivery_date'] = 'COrders/update_delivery_date';
+# Registro de pagos
+$route['orders/send_payments'] = 'COrders/register_payments';
+
 
 /* Products */
 $route['products/(:num)'] = 'CProducts/index/$1';
