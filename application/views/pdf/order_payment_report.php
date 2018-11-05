@@ -48,19 +48,28 @@ $this->pdf->Cell(15,7,"ID.",'TB',0,'C',1);
 $this->pdf->Cell(35,7,"Metodo de pago",'TB',0,'L',1);
 $this->pdf->Cell(25,7,"Nro de Referencia",'TB',0,'L',1);
 $this->pdf->Cell(25,7,"Monto",'TB',0,'C',1);
-$this->pdf->Cell(60,7,"Observaciones",'TRB',1,'C',1);
+$this->pdf->Cell(15,7,"Aprobado",'TB',0,'C',1);
+$this->pdf->Cell(45,7,"Observaciones",'TRB',1,'C',1);
 
 foreach ($order_payment as $key => $value) {
+
+	if($value->status == 0){
+		$status = "No";
+	}else{
+		$status = "Si";
+	}
+
 	$this->pdf->SetFillColor(255,255,255);
 	$this->pdf->SetTextColor(0,0,0); # COLOR DEL TEXTO
 	$this->pdf->SetFont('Arial','',7);
 	$this->pdf->Cell(25,7,$value->date_add,'LTB',0,'C',1);
 	$this->pdf->SetFont('Arial','',8);
-	$this->pdf->Cell(15,7,$value->id_order_payment,'TB',0,'C',1);
+	$this->pdf->Cell(15,7,$value->id_order,'TB',0,'C',1);
 	$this->pdf->Cell(35,7,$value->payment_method,'TB',0,'L',1);
 	$this->pdf->Cell(25,7,$value->transaction_id,'TB',0,'L',1);
 	$this->pdf->Cell(25,7,number_format((float)$value->amount, 2, ',', '.'),'TB',0,'C',1);
-	$this->pdf->Cell(60,7,"",'LTBR',1,'C',1);
+	$this->pdf->Cell(15,7,$status,'TB',0,'C',1);
+	$this->pdf->Cell(45,7,"",'LTBR',1,'C',1);
 }
 
 $this->pdf->SetFillColor(255,255,255);
