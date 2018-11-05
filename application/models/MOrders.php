@@ -22,13 +22,14 @@ class MOrders extends CI_Model {
 
     // Public method orden Payment
     public function order_payment($year, $month) {
-        $this->db->select("*");
+        $this->db->select("date_format(b.date_add, '%d-%m-%Y') AS date_add, a.id_order, b.payment_method, b.transaction_id, b.amount, b.status");
         $this->db->from('orders AS a');
         $this->db->join('order_payment AS b', 'a.reference = b.order_reference');
         if($year !="" && $month !=""){
             $this->db->where("YEAR(b.date_add)", $year);
             $this->db->where("MONTH(b.date_add)", $month);
         }
+        $this->db->order_by('b.date_add');
         $query = $this->db->get();
         return $query->result();
     }
