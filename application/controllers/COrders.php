@@ -1506,7 +1506,7 @@ class COrders extends CI_Controller {
 				'card_brand' => NULL,
 				'card_expiration' => NULL,
 				'card_holder' => NULL,
-				'status' => 1,
+				'status' => 0,
 				'date_add' => $format_date_add,
 				'payment_method' => $this->input->get('payment_method'),
 				'transaction_id' => $this->input->get('transaction_id'),
