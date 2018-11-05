@@ -1576,13 +1576,24 @@ class COrders extends CI_Controller {
     // Generación del reporte de la orden Payment
     function pdf_payment($year, $month)
     {
-        // Consultamos los datos de la orden
-		//$get3 = file_get_contents(base_url()."orders/details/".$order_id);
-		//$exchangeRates3 = json_decode($get3, true);
-
 		$data['order_payment'] = $this->MOrders->order_payment($year, $month);
         $data['order'] = $exchangeRates3;
+        $data['year'] = $year;
+        $data['month'] = $month;
         $this->load->view('pdf/order_payment_report', $data);
+    }
+
+    // Generación del reporte de la orden Payment (Filtros)
+    function pdf_payment_filter($unapproved)
+    {
+    	if($unapproved == "unapproved"){
+    		$param = 0;
+    	}else{
+    		$param = 1;
+    	}
+
+		$data['order_payment'] = $this->MOrders->pdf_payment_filter($param);
+        $this->load->view('pdf/order_payment_filter_report', $data);
     }
 
 }

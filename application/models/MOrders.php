@@ -20,7 +20,7 @@ class MOrders extends CI_Model {
             return $query->result();
     }
 
-    // Public method orden Payment
+    // Generación del reporte de la orden Payment
     public function order_payment($year, $month) {
         $this->db->select("date_format(b.date_add, '%d-%m-%Y') AS date_add, a.id_order, b.payment_method, b.transaction_id, b.amount, b.status");
         $this->db->from('orders AS a');
@@ -29,6 +29,17 @@ class MOrders extends CI_Model {
             $this->db->where("YEAR(b.date_add)", $year);
             $this->db->where("MONTH(b.date_add)", $month);
         }
+        $this->db->order_by('b.date_add');
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    // Generación del reporte de la orden Payment (Filtros)
+    public function pdf_payment_filter($unapproved) {
+        $this->db->select("date_format(b.date_add, '%d-%m-%Y') AS date_add, a.id_order, b.payment_method, b.transaction_id, b.amount, b.status");
+        $this->db->from('orders AS a');
+        $this->db->join('order_payment AS b', 'a.reference = b.order_reference');
+        $this->db->where("b.status", $unapproved);
         $this->db->order_by('b.date_add');
         $query = $this->db->get();
         return $query->result();

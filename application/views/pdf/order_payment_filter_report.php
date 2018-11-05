@@ -27,10 +27,7 @@ $this->pdf->SetMargins(8,8,8); # MÁRGENES DEL DOCUMENTO
 $this->pdf->Ln(-10);
 
 $this->pdf->Cell(180,4,utf8_decode("Reporte de Pagos"),0,0,'C',0);
-$this->pdf->Ln(8);
-$this->pdf->SetFillColor(255,255,255);
-	$this->pdf->SetTextColor(0,0,0); # COLOR DEL TEXTO
-$this->pdf->Cell(180,4,utf8_decode("Mes $month del año $year"),0,0,'C',1);
+
 // SECCIÓN DE REFERENICA Y FECHAS DE LA ORDEN
 
 $this->pdf->Ln(5);

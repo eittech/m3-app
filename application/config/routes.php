@@ -106,6 +106,7 @@ $route['orders/order/(:num)'] = 'COrders/pdf_order/$1';
 //$route['orders/order_cotization/(:num)'] = 'COrders/pdf_order_cotization/$1';
 $route['orders/estimate/(:num)'] = 'COrders/pdf_order_cotization/$1';
 $route['orders/payment/(:num)/(:num)'] = 'COrders/pdf_payment/$1/$2';
+$route['orders/payment_filter/([a-z 0-9 -]+)'] = 'COrders/pdf_payment_filter/$1';
 $route['orders/update_num_invoice'] = 'COrders/update_order';
 # Actualizacion de fecha de entrega
 $route['orders/update_delivery_date'] = 'COrders/update_delivery_date';
