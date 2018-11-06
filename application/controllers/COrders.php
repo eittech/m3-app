@@ -1535,6 +1535,36 @@ class COrders extends CI_Controller {
 		}
 
     }
+
+    # Proceso de cambio de state en la visual administrativa de prestashop
+    public function change_payment() {
+
+    	$id_order_payment = $this->input->get('id_order_payment');
+    	$status = $this->input->get('status');
+
+    	if($id_order_payment > 0){
+
+			$datos = array(
+				'id_order_payment' => $id_order_payment,
+				'status' => $status,
+			);
+			
+			$result = $this->MOrders->update_change_payment('order_payment',$datos);
+			
+			if ($result) {
+					
+				echo '{"response":"ok"}';
+				
+			}else{
+				
+				echo '{"response":"error"}';
+				
+			}
+		}else{
+			echo '{"response":"Campo invalido..."}';
+		}
+
+    }
     
 	// Generación del reporte de la orden
     function pdf_invoice($order_id)

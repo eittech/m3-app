@@ -170,6 +170,15 @@ class MOrders extends CI_Model {
 		return $this->db->insert($table, $datos);
 
     }
+
+    // Public method to update a order_payment
+    public function update_change_payment($table, $datos) {
+
+        $result = $this->db->where('id_order_payment', $datos['id_order_payment']);
+        $result = $this->db->update($table, $datos);
+        return $result;
+
+    }
 }
 
 ?>
