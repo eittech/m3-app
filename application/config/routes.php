@@ -112,6 +112,8 @@ $route['orders/update_num_invoice'] = 'COrders/update_order';
 $route['orders/update_delivery_date'] = 'COrders/update_delivery_date';
 # Registro de pagos
 $route['orders/send_payments'] = 'COrders/register_payments';
+# Proceso de cambio de state en la visual administrativa de prestashop
+$route['orders/change_payment'] = 'COrders/change_payment';
 
 
 /* Products */
